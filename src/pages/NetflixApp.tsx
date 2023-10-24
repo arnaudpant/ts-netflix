@@ -1,6 +1,6 @@
 import { AppBar, Toolbar, Typography } from "@mui/material";
 
-//TODO: Installer tailwind + voir MUI theme
+//TODO: voir MUI theme
 const NetflixApp = () => {
     return (
         <div>
