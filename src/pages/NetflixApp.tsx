@@ -1,19 +1,19 @@
 import { AppBar, Toolbar, Typography } from "@mui/material";
 
-//TODO: Installer tailwind + recupérer css de base + voir MUI theme
+//TODO: Installer tailwind + voir MUI theme
 const NetflixApp = () => {
     return (
         <div>
 
             <AppBar>
                 <Toolbar>
-                    <img src="/images/netflix-logo.png" alt="logo Netflix" className="logo-netflix" color="secondary" />
+                    <img src="/images/netflix-logo.png" alt="logo Netflix" className="h-5" color="secondary" />
                     <a href="#"><Typography variant="h6">Accueil</Typography></a>
                     <a href="#"><Typography variant="h6">Séries</Typography></a>
                     <a href="#"><Typography variant="h6">Films</Typography></a>
                     <a href="#"><Typography variant="h6">Nouveautés</Typography></a>
                     <a href="#"><Typography variant="h6">Ma liste</Typography></a>
-                    <img src="/images/netflix-avatar.png" alt="logo Netflix" className="logo-netflix" />
+                    <img src="/images/netflix-avatar.png" alt="logo Netflix" className="h-5" />
                 </Toolbar>
             </AppBar>
 

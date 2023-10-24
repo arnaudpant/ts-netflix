@@ -2,7 +2,7 @@ import { createTheme } from "@mui/material";
 
 export const theme = createTheme({
     palette: {
-        // type: 'dark',
+        mode: 'dark',
         primary: {
             main: '#111'
         },
@@ -11,3 +11,24 @@ export const theme = createTheme({
         },
     },
 })
+
+/**
+ declare module '@mui/material/styles' {
+    interface PaletteColor {
+        darker?: string;
+    }
+
+    interface SimplePaletteColorOptions {
+        darker?: string;
+    }
+}
+
+
+
+
+
+
+
+
+
+ */
