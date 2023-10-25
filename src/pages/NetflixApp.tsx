@@ -1,11 +1,54 @@
 import { AppBar, Toolbar, Typography } from "@mui/material";
+import { styled } from '@mui/material/styles';
+import { useEffect, useState } from "react";
 
-//TODO: voir MUI theme
 const NetflixApp = () => {
-    return (
-        <div>
+    const [appBarStyle, setAppBarStyle] = useState(
+        {
+            background: 'transparent',
+            transition: 'background .5s linear',
+            boxShadow: 'none',
+        }
+    )
 
-            <AppBar>
+    useEffect(() => {
+        //TODO: voir type pour e
+        const onScroll = (e: any): void => {
+            if (e.target.documentElement.scrollTop > 100) {
+                setAppBarStyle(
+                    {
+                        background: '#111',
+                        transition:'background .5s linear',
+                        boxShadow: 'none',
+                    }
+                )
+            } else {
+                setAppBarStyle(
+                    {
+                        background: 'transparent',
+                        transition:'background .5s linear',
+                        boxShadow: 'none',
+                    }
+                )
+            }
+        }
+        window.addEventListener('scroll', onScroll)
+
+        return () => window.removeEventListener('scroll', onScroll)
+    }, [])
+
+    /** MUI */
+    const AppBarStyle = styled(AppBar)(
+        appBarStyle
+    ) as typeof AppBar
+
+
+
+
+    return (
+        <div className="bg-[#111]">
+
+            <AppBarStyle >
                 <Toolbar>
                     <img src="/images/netflix-logo.png" alt="logo Netflix" className="h-5" color="secondary" />
                     <a href="#"><Typography variant="h6">Accueil</Typography></a>
@@ -15,46 +58,48 @@ const NetflixApp = () => {
                     <a href="#"><Typography variant="h6">Ma liste</Typography></a>
                     <img src="/images/netflix-avatar.png" alt="logo Netflix" className="h-5" />
                 </Toolbar>
-            </AppBar>
+            </AppBarStyle>
 
 
 
-            <header>
-                <div>
-                    <h1>La casa de papel</h1>
-                    <div>
-                        <button>Lecture</button>
-                        <button>Ajouter a ma liste</button>
+            <header className="banner h-[448px] bg">
+                {/* TODO: Image en background */}
+                <div className="h-[190px] ml-[30px] pt-[140px]">
+                    <h1 className="text-5xl font-bold pb-1">La casa de papel</h1>
+                    <div className="mt-1">
+                        <button className="px-8 mr-4 py-2 cursor-pointer outline-none border-none text-lg font-bold hover:opacity-70 rounded bg-[#e6e6e6] text-[#000]">Lecture</button>
+                        <button className="px-8 mr-4 py-2 cursor-pointer outline-none border-none text-lg font-bold hover:opacity-70 rounded bg-slate-400 text-[#fff]">Ajouter a ma liste</button>
                     </div>
-                    <h1>le Professeur recrute une jeune braqueuse et sept autres criminels en vue d'un cambriolage grandiose ciblant la Maison royale de la monnaie d'Espagne</h1>
+                    <h1 className="synopsis text-[#fff] font-normal w-full max-w-[500px] ">le Professeur recrute une jeune braqueuse et sept autres criminels en vue d'un cambriolage grandiose ciblant la Maison royale de la monnaie d'Espagne</h1>
                 </div>
             </header>
 
 
 
-            <div>
+            <div className="text-white ml-5">
                 <h2>Films Netflix</h2>
-                <div>
-                    <img src="/images/sample.jpg" alt="" className="sample-img " />
-                    <img src="/images/sample1.jpg" alt="" className="sample-img " />
-                    <img src="/images/sample.jpg" alt="" className="sample-img " />
-                    <img src="/images/sample1.jpg" alt="" className="sample-img " />
+                <div className="flex overflow-y-hidden overflow-x-scroll p-5">
+                    {/* TODO: transition */}
+                    <img src="/images/sample.jpg" alt="" className="cursor-pointer object-contain w-full max-h-[250px] mr-3 hover:scale-110" />
+                    <img src="/images/sample1.jpg" alt="" className="cursor-pointer w-full object-contain max-h-[250px] mr-3 hover:scale-110" />
+                    <img src="/images/sample.jpg" alt="" className="cursor-pointer w-full object-contain max-h-[250px] mr-3 hover:scale-110" />
+                    <img src="/images/sample1.jpg" alt="" className="cursor-pointer w-full object-contain max-h-[250px] mr-3 hover:scale-110" />
                 </div>
             </div>
 
 
-            <div>
+            <div className="text-white ml-5">
                 <h2>Séries Netflix</h2>
-                <div>
-                    <img src="/images/sample-poster.jpg" alt="" className="sample-img " />
-                    <img src="/images/sample-poster1.jpg" alt="" className="sample-img " />
-                    <img src="/images/sample-poster.jpg" alt="" className="sample-img " />
-                    <img src="/images/sample-poster1.jpg" alt="" className="sample-img " />
+                <div className="flex overflow-y-hidden overflow-x-scroll p-5">
+                    <img src="/images/sample-poster.jpg" alt="" className="cursor-pointer object-contain w-full max-h-[250px] mr-3 hover:scale-110" />
+                    <img src="/images/sample-poster1.jpg" alt="" className="cursor-pointer object-contain w-full max-h-[250px] mr-3 hover:scale-110" />
+                    <img src="/images/sample-poster.jpg" alt="" className="cursor-pointer object-contain w-full max-h-[250px] mr-3 hover:scale-110" />
+                    <img src="/images/sample-poster1.jpg" alt="" className="cursor-pointer object-contain w-full max-h-[250px] mr-3 hover:scale-110" />
                 </div>
             </div>
 
 
-            <footer>Netflix Clone</footer>
+            <footer className="text-center text-gray-400 mt-[10px] pb-2">Netflix Clone</footer>
         </div>
     );
 };

@@ -1,4 +1,20 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.banner {
+    background-image: url("/images/banner.jpg");
+    background-size: cover;
+    background-position: center center;
+    color: white;
+    object-fit: contain;
+}
+.synopsis {
+    line-height: normal;
+    font-weight: 400;
+    font-size: calc(18px + (4) * ((100vw - 300px) / (1600 - 300)));
+    text-shadow: 2px 2px 4px rgb(0 0 0 / 45%);
+    margin-top: 0.1vw;
+    padding-top: 1rem;
+    overflow: hidden;
+}
