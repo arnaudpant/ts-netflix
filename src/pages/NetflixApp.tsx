@@ -12,13 +12,15 @@ const NetflixApp = () => {
     )
 
     useEffect(() => {
-        //TODO: voir type pour e
-        const onScroll = (e: any): void => {
-            if (e.target.documentElement.scrollTop > 100) {
+        const handleScroll = (event: any): void => {
+            const scrollHeight = event.currentTarget.scrollY
+            console.log(event.currentTarget)
+
+            if (scrollHeight > 150) {
                 setAppBarStyle(
                     {
                         background: '#111',
-                        transition:'background .5s linear',
+                        transition: 'background .5s linear',
                         boxShadow: 'none',
                     }
                 )
@@ -26,15 +28,15 @@ const NetflixApp = () => {
                 setAppBarStyle(
                     {
                         background: 'transparent',
-                        transition:'background .5s linear',
+                        transition: 'background .5s linear',
                         boxShadow: 'none',
                     }
                 )
             }
         }
-        window.addEventListener('scroll', onScroll)
+        window.addEventListener('scroll', handleScroll)
 
-        return () => window.removeEventListener('scroll', onScroll)
+        return () => window.removeEventListener('scroll', handleScroll)
     }, [])
 
     /** MUI */
@@ -49,14 +51,14 @@ const NetflixApp = () => {
         <div className="bg-[#111]">
 
             <AppBarStyle >
-                <Toolbar>
+                <Toolbar >
                     <img src="/images/netflix-logo.png" alt="logo Netflix" className="h-5" color="secondary" />
-                    <a href="#"><Typography variant="h6">Accueil</Typography></a>
-                    <a href="#"><Typography variant="h6">Séries</Typography></a>
-                    <a href="#"><Typography variant="h6">Films</Typography></a>
-                    <a href="#"><Typography variant="h6">Nouveautés</Typography></a>
-                    <a href="#"><Typography variant="h6">Ma liste</Typography></a>
-                    <img src="/images/netflix-avatar.png" alt="logo Netflix" className="h-5" />
+                    <a href="#" className="m-2"><Typography variant="h6">Accueil</Typography></a>
+                    <a href="#" className="m-2"><Typography variant="h6">Séries</Typography></a>
+                    <a href="#" className="m-2"><Typography variant="h6">Films</Typography></a>
+                    <a href="#" className="m-2"><Typography variant="h6">Nouveautés</Typography></a>
+                    <a href="#" className="m-2"><Typography variant="h6">Ma liste</Typography></a>
+                    <img src="/images/netflix-avatar.png" alt="logo Netflix" className="h-5 ml-auto" />
                 </Toolbar>
             </AppBarStyle>
 
