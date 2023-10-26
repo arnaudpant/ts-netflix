@@ -3,7 +3,7 @@ type MovieHeader = {
 }
 
 const NetflixHeader = ({ imageUrl }: MovieHeader) => {
-    console.log(imageUrl)
+    //console.log(imageUrl)
     return (
         <header className="banner h-[448px] bg">
             {/* TODO: Image en background */}

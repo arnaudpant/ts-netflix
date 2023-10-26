@@ -1,10 +1,21 @@
+import { useEffect } from "react";
 import NetflixAppBar from "../components/NetflixAppBar";
 import NetflixFooter from "../components/NetflixFooter";
 import NetflixHeader from "../components/NetflixHeader";
 import NetflixRow from "../components/NetflixRow";
-
+import { httpClient } from "../api/api";
 
 const NetflixApp = () => {
+    
+
+    useEffect( () => {
+        const movieHeader = async () => {
+            const response = await httpClient.get(`848278?api_key=${import.meta.env.VITE_API_KEY}`).json()
+            console.log(response)
+        }
+        movieHeader()
+    }, [])
+
 
     return (
         <div className="bg-[#111]">
