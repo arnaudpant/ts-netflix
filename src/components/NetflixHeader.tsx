@@ -1,12 +1,13 @@
+import clsx from "clsx";
+
+
 type MovieHeader = {
     imageUrl: string,
 }
 
 const NetflixHeader = ({ imageUrl }: MovieHeader) => {
-    //console.log(imageUrl)
     return (
-        <header className="banner h-[448px] bg">
-            {/* TODO: Image en background */}
+        <header className={clsx(`banner h-[448px] bg-[url('${imageUrl}')]`)}>
             <div className="h-[190px] ml-[30px] pt-[140px]">
                 <h1 className="text-5xl font-bold pb-1">La casa de papel</h1>
                 <div className="mt-1">
