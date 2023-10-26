@@ -6,11 +6,11 @@ import NetflixRow from "../components/NetflixRow";
 import { httpClient } from "../api/api";
 
 const NetflixApp = () => {
-    
+    const lang = 'fr-fr'
 
     useEffect( () => {
         const movieHeader = async () => {
-            const response = await httpClient.get(`848278?api_key=${import.meta.env.VITE_API_KEY}`).json()
+            const response = await httpClient.get(`848278?api_key=${import.meta.env.VITE_API_KEY}&language=${lang}`).json()
             console.log(response)
         }
         movieHeader()

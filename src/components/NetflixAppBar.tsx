@@ -54,7 +54,7 @@ const NetflixAppBar = () => {
                 <a href="#" className="m-2"><Typography variant="h6">Films</Typography></a>
                 <a href="#" className="m-2"><Typography variant="h6">Nouveautés</Typography></a>
                 <a href="#" className="m-2"><Typography variant="h6">Ma liste</Typography></a>
-                <img src="/images/netflix-avatar.png" alt="logo Netflix" className="h-5 ml-auto" />
+                <img src="/avatar/avatar-default2.svg" alt="logo Netflix" className="h-8 ml-auto" />
             </Toolbar>
         </AppBarStyle>
 
