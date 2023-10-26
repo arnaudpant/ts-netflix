@@ -6,11 +6,10 @@ import NetflixRow from "../components/NetflixRow";
 
 const NetflixApp = () => {
 
-
     return (
         <div className="bg-[#111]">
             <NetflixAppBar />
-            <NetflixHeader />
+            <NetflixHeader imageUrl="test" />
             <NetflixRow title="Netflix films" wideImage={true} />
             <NetflixRow title="Netflix séries" wideImage={false} />
             <NetflixFooter />
