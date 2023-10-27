@@ -4,7 +4,7 @@ import clsx from "clsx";
 type MovieHeader = {
     imageUrl: string,
 }
-
+//TODO: PB affichage a resoudre
 const NetflixHeader = ({ imageUrl }: MovieHeader) => {
     return (
         <header className={clsx(`banner h-[448px] bg-[url('${imageUrl}')]`)}>
