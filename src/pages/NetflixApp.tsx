@@ -20,7 +20,7 @@ const NetflixApp = () => {
     return (
         <div className="bg-[#111]">
             <NetflixAppBar />
-            <NetflixHeader imageUrl="/images/banner.jpg" />
+            <NetflixHeader imageUrl='/images/banner.jpg' />
             <NetflixRow title="Netflix films" wideImage={true} />
             <NetflixRow title="Netflix séries" wideImage={false} />
             <NetflixFooter />

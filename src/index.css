@@ -2,12 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-.banner {
-    background-size: cover;
-    background-position: center center;
-    color: white;
-    object-fit: contain;
-}
 .synopsis {
     line-height: normal;
     font-weight: 400;
