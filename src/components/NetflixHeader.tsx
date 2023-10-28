@@ -9,7 +9,7 @@ const NetflixHeader = ({ imageUrl }: MovieHeader) => {
     const tempImg = imageUrl
     console.log(tempImg)
     return (
-        <header className={clsx(`h-[448px] bg-[url('/header/banner.jpg')] bg-center bg-cover object-cover text-white`)}>
+        <header className={clsx(`h-[448px] bg-[url('/header/${imageUrl}')] bg-center bg-cover object-cover text-white`)}>
             <div className="h-[190px] ml-[30px] pt-[140px]">
                 <h1 className="text-5xl font-bold pb-1">La casa de papel</h1>
                 <div className="mt-1">
