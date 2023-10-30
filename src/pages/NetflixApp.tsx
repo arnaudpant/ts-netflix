@@ -15,9 +15,8 @@ const NetflixApp = () => {
 
         const movieHeader = async () => {
             //const response = await httpClient.get(`1008042?api_key=${import.meta.env.VITE_API_KEY}&language=${lang}`).json()
-            const response = await ky(`1008042?api_key=${import.meta.env.API_KEY}&language=${lang}`,
+            const response = await ky(`1008042?api_key=${import.meta.env.VITE_API_KEY}&language=${lang}`,
                 { prefixUrl: 'https://api.themoviedb.org/3/movie/' },
-
             ).json()
             setHeaderMovie(response)
 
@@ -33,6 +32,7 @@ const NetflixApp = () => {
             <NetflixHeader movie={headerMovie} />
             <NetflixRow title="Netflix films" wideImage={true} />
             <NetflixRow title="Netflix séries" wideImage={false} />
+            <div className="h-[800px]"></div>
             <NetflixFooter />
         </div>
     );

@@ -8,7 +8,6 @@ const NetflixAppBar = () => {
     const [appBarStyle, setAppBarStyle] = useState(
         {
             background: 'transparent',
-            transition: 'background .5s linear',
             boxShadow: 'none',
         }
     )
@@ -16,13 +15,11 @@ const NetflixAppBar = () => {
     useEffect(() => {
         const handleScroll = (event: any): void => {
             const scrollHeight = event.currentTarget.scrollY
-            console.log(event.currentTarget)
 
-            if (scrollHeight > 150) {
+            if (scrollHeight > 100) {
                 setAppBarStyle(
                     {
                         background: '#111',
-                        transition: 'background .5s linear',
                         boxShadow: 'none',
                     }
                 )
@@ -30,7 +27,6 @@ const NetflixAppBar = () => {
                 setAppBarStyle(
                     {
                         background: 'transparent',
-                        transition: 'background .5s linear',
                         boxShadow: 'none',
                     }
                 )
@@ -46,8 +42,8 @@ const NetflixAppBar = () => {
     ) as typeof AppBar
 
     return (
-        <AppBarStyle >
-            <Toolbar >
+        <AppBarStyle>
+            <Toolbar  >
                 <img src="/vignettes/netflix-logo.png" alt="logo Netflix" className="h-5" color="secondary" />
                 <a href="#" className="m-2"><Typography variant="h6">Accueil</Typography></a>
                 <a href="#" className="m-2"><Typography variant="h6">Séries</Typography></a>

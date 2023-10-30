@@ -12,6 +12,7 @@ dist
 dist-ssr
 netflix-clone
 *.local
+*.md
 
 # Editor directories and files
 .vscode/*
