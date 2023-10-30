@@ -14,6 +14,7 @@ const NetflixApp = () => {
         const movieHeader = async () => {
             const response = await httpClient.get(`1008042?api_key=${import.meta.env.VITE_API_KEY}&language=${lang}`).json()
             setHeaderMovie(response)
+            console.log(response)
         }
         movieHeader()
     }, [])
