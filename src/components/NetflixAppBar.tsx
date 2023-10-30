@@ -48,7 +48,7 @@ const NetflixAppBar = () => {
     return (
         <AppBarStyle >
             <Toolbar >
-                <img src="/images/netflix-logo.png" alt="logo Netflix" className="h-5" color="secondary" />
+                <img src="/vignettes/netflix-logo.png" alt="logo Netflix" className="h-5" color="secondary" />
                 <a href="#" className="m-2"><Typography variant="h6">Accueil</Typography></a>
                 <a href="#" className="m-2"><Typography variant="h6">Séries</Typography></a>
                 <a href="#" className="m-2"><Typography variant="h6">Films</Typography></a>
