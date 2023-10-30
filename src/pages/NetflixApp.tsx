@@ -8,11 +8,11 @@ import { httpClient } from "../api/api";
 const NetflixApp = () => {
 
     const [headerMovie, setHeaderMovie] = useState<any>()
-    
-    useEffect( () => {
+
+    useEffect(() => {
         const lang = 'fr-fr'
         const movieHeader = async () => {
-            const response = await httpClient.get(`848278?api_key=${import.meta.env.VITE_API_KEY}&language=${lang}`).json()
+            const response = await httpClient.get(`1008042?api_key=${import.meta.env.VITE_API_KEY}&language=${lang}`).json()
             setHeaderMovie(response)
         }
         movieHeader()
@@ -29,6 +29,6 @@ const NetflixApp = () => {
             <NetflixFooter />
         </div>
     );
-}; 
+};
 
 export default NetflixApp;

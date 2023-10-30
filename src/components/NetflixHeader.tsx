@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { MovieHeader } from "../type/types";
 import clsx from "clsx";
 
@@ -12,13 +13,16 @@ const NetflixHeader = ({ movie }: MovieHeader) => {
         }
     }
 
+    const [imgURL, setImgURL] = useState("")
+    
+    useEffect(() => {
+        if (movie) {
+            setImgURL(`https://image.tmdb.org/t/p/original${movie.backdrop_path}`)
+            console.log(movie)
+        }
+    }, [movie])
 
 
-    let imgURL: string = ""
-    if (movie) {
-        imgURL = `https://image.tmdb.org/t/p/original${movie.backdrop_path}`
-        console.log(movie)
-    }
 
     return (
         <header className={clsx('h-[448px] bg-center bg-cover object-cover text-white overflow-hidden z-10', imgURL !== "" ? `bg-[url('${imgURL}')]` : `bg-[url('${movieDefault.movie.backdrop_path}')]`)}>
