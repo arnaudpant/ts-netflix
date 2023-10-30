@@ -3,7 +3,8 @@ import NetflixAppBar from "../components/NetflixAppBar";
 import NetflixFooter from "../components/NetflixFooter";
 import NetflixHeader from "../components/NetflixHeader";
 import NetflixRow from "../components/NetflixRow";
-import { httpClient } from "../api/api";
+// import { httpClient } from "../api/api";
+import ky from "ky";
 
 const NetflixApp = () => {
 
@@ -11,10 +12,15 @@ const NetflixApp = () => {
 
     useEffect(() => {
         const lang = 'fr-fr'
+
         const movieHeader = async () => {
-            const response = await httpClient.get(`1008042?api_key=${import.meta.env.VITE_API_KEY}&language=${lang}`).json()
+            //const response = await httpClient.get(`1008042?api_key=${import.meta.env.VITE_API_KEY}&language=${lang}`).json()
+            const response = await ky(`1008042?api_key=${import.meta.env.VITE_API_KEY}&language=${lang}`,
+                { prefixUrl: 'https://api.themoviedb.org/3/movie/' },
+
+            ).json()
             setHeaderMovie(response)
-            console.log(response)
+
         }
         movieHeader()
     }, [])
