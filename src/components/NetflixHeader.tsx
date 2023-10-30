@@ -16,7 +16,7 @@ const NetflixHeader = ({ movie }: MovieHeader) => {
 
 
     return (
-        <header className={clsx('h-[448px] bg-center bg-cover object-cover text-white', movie ? `bg-[url('${movie.backdrop_path}')]`:`bg-[url('${movieDefault.movie.backdrop_path}')]`)}>
+        <header className={clsx('h-[448px] bg-center bg-cover object-cover text-white z-10', movie ? `bg-[url('${movie.backdrop_path}')]`:`bg-[url('${movieDefault.movie.backdrop_path}')]`)}>
             <div className="h-[190px] ml-[30px] pt-[140px]">
                 <h1 className="text-5xl font-bold pb-1">{
                     movie ? `${movie.title}` : `${movieDefault.movie.title}`

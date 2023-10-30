@@ -1,4 +1,6 @@
 
+
+
 .row-header-title {
     display: table-cell;
     vertical-align: bottom;
@@ -45,13 +47,8 @@
 
 
 /* banner */
-.banner {
-    background-image: url("../assets/images/banner.jpg");
-    background-size: cover;
-    background-position: center center;
-    color: white;
-    object-fit: contain;
-    height: 448px;
+.vignettes {
+    transition: all 0.3s linear;
 }
 
 .banner__contents {
@@ -140,8 +137,4 @@
 .nav__black {
     background-color: #111;
 }
-.footer {
-    text-align: center;
-    color: grey;
-    margin: 10px;
-}
+
