@@ -24,8 +24,8 @@ const NetflixHeader = ({ movie }: MovieHeader) => {
 
     return (
         <header className="relative h-[448px] text-white">
-            <div className="absolute top-0 h-[448px] w-full overflow-hidden z-0 ">
-                <img src={`${imgURL}`} className="object-cover h-[448px] w-full"/>
+            <div className="absolute top-0 h-[448px] w-full z-0 ">
+                <img src={`${imgURL}`} className="object-cover object-center h-[448px] w-full" />
             </div>
             <div className="relative h-[190px] ml-[30px] pt-[140px] z-20">
                 <h1 className="text-5xl font-bold pb-1">{
@@ -35,9 +35,11 @@ const NetflixHeader = ({ movie }: MovieHeader) => {
                     <button className="px-8 mr-4 py-2 cursor-pointer outline-none border-none text-lg font-bold hover:opacity-70 rounded bg-[#e6e6e6] text-[#000]">Lecture</button>
                     <button className="px-8 mr-4 py-2 cursor-pointer outline-none border-none text-lg font-bold hover:opacity-70 rounded bg-slate-400 text-[#fff]">Ajouter a ma liste</button>
                 </div>
-                <h1 className="synopsis text-[#fff] font-normal w-full max-w-[600px]">{
-                    movie ? `${movie.overview}` : `${movieDefault.movie.overview}`
-                }</h1>
+                <div className="h-[200px] overflow-y-scroll">
+                    <h1 className="synopsis text-[#fff] font-normal w-full max-w-[640px]">{
+                        movie ? `${movie.overview}` : `${movieDefault.movie.overview}`
+                    }</h1>
+                </div>
             </div>
         </header>
     );
