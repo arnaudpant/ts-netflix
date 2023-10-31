@@ -3,9 +3,9 @@ import NetflixAppBar from "../components/NetflixAppBar";
 import NetflixFooter from "../components/NetflixFooter";
 import NetflixHeader from "../components/NetflixHeader";
 import NetflixRow from "../components/NetflixRow";
-import ky from "ky";
-import { API_KEY, API_URL, lang } from '../utils/config'
-import { getRandomMovieOrSerie, getRandomType } from "../utils/helpers";
+import { lang } from '../utils/config'
+//import { getRandomMovieOrSerie, getRandomType } from "../utils/helpers";
+import axios from "axios";
 // import { clientAPI } from "../utils/api";
 
 const NetflixApp = () => {
@@ -13,23 +13,20 @@ const NetflixApp = () => {
     const [headerMovie, setHeaderMovie] = useState<any>()
 
     /** TYPE DE FILM OU SERIE */
-    const [type] = useState<string>(getRandomType())
-    const headerMovieID: number = getRandomMovieOrSerie(type)
+    //const [type] = useState<string>(getRandomType())
+    //const headerMovieID: number = getRandomMovieOrSerie(type)
 
     useEffect(() => {
 
         const movieHeader = async () => {
-            const response = await ky(`${headerMovieID}?api_key=${API_KEY}&language=${lang}`,
-                { prefixUrl: `${API_URL}${type}/` },
-            ).json()
-            // const response = await clientAPI(`${type}/${headerMovieID}`)
-
-            setHeaderMovie(response)
-            console.log(type)
+            axios.get(`https://api.themoviedb.org/3/movie/926393?api_key=${import.meta.env.VITE_API_KEY}&language=${lang}`)
+            .then(response => setHeaderMovie(response.data))
         }
         movieHeader()
-    }, [])
 
+    }, [])
+    
+    console.log("response", headerMovie)
 
 
     return (
