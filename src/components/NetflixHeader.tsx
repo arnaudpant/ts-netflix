@@ -17,7 +17,6 @@ const NetflixHeader = ({ movie }: MovieHeader) => {
     useEffect(() => {
         if (movie) {
             setImgURL(`https://image.tmdb.org/t/p/original${movie.backdrop_path}`)
-            console.log(movie.backdrop_path)
         }
     }, [movie])
 
