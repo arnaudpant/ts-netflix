@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { MovieHeader } from "../type/types";
 
 
@@ -13,20 +13,16 @@ const NetflixHeader = ({ movie }: MovieHeader) => {
     }
 
     const [imgURL, setImgURL] = useState("")
-
-    useEffect(() => {
-        if (movie) {
-            setImgURL(`https://image.tmdb.org/t/p/original${movie.backdrop_path}`)
-            console.log(movie.backdrop_path)
-        }
-    }, [movie])
+    if (movie) {
+        setImgURL(`https://image.tmdb.org/t/p/original${movie.backdrop_path}`)
+    }
 
 
     return (
         <header className="relative h-[448px] text-white">
             <div className="absolute top-0 h-[448px] w-full z-0 ">
                 {
-                    movie ? (<img src={`${imgURL}`} className="object-cover object-center h-[448px] w-full" />) : (<img src={`${movieDefault.movie.backdrop_path}`} className="object-cover object-center h-[448px] w-full" />)
+                    imgURL !== "" ? (<img src={`${imgURL}`} className="object-cover object-center h-[448px] w-full" />) : (<img src={`${movieDefault.movie.backdrop_path}`} className="object-cover object-center h-[448px] w-full" />)
                 }
             </div>
             <div className="relative h-[190px] ml-[30px] pt-[140px] z-20">
