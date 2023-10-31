@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { MovieHeader } from "../type/types";
+import { imagePathOriginal } from "../utils/config";
 
 
 const NetflixHeader = ({ movie }: MovieHeader) => {
@@ -14,7 +15,7 @@ const NetflixHeader = ({ movie }: MovieHeader) => {
 
     const [imgURL, setImgURL] = useState("")
     if (movie) {
-        setImgURL(`https://image.tmdb.org/t/p/original${movie.backdrop_path}`)
+        setImgURL(`${imagePathOriginal}${movie.backdrop_path}`)
     }
 
 
