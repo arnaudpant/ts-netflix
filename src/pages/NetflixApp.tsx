@@ -3,10 +3,10 @@ import NetflixAppBar from "../components/NetflixAppBar";
 import NetflixFooter from "../components/NetflixFooter";
 import NetflixHeader from "../components/NetflixHeader";
 import NetflixRow from "../components/NetflixRow";
-//import ky from "ky";
-//import { API_KEY, API_URL, lang } from '../utils/config'
+import ky from "ky";
+import { API_KEY, API_URL, lang } from '../utils/config'
 import { getRandomMovieOrSerie, getRandomType } from "../utils/helpers";
-import { clientAPI } from "../utils/api";
+// import { clientAPI } from "../utils/api";
 
 const NetflixApp = () => {
 
@@ -19,13 +19,13 @@ const NetflixApp = () => {
     useEffect(() => {
 
         const movieHeader = async () => {
-            // const response = await ky(`${headerMovieID}?api_key=${API_KEY}&language=${lang}`,
-            //     { prefixUrl: `${API_URL}${type}/` },
-            // ).json()
-            const response = await clientAPI(`${type}/${headerMovieID}`)
+            const response = await ky(`${headerMovieID}?api_key=${API_KEY}&language=${lang}`,
+                { prefixUrl: `${API_URL}${type}/` },
+            ).json()
+            // const response = await clientAPI(`${type}/${headerMovieID}`)
 
             setHeaderMovie(response)
-            // console.log(response)
+            console.log(type)
         }
         movieHeader()
     }, [])
