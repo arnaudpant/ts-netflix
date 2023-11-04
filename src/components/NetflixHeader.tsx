@@ -30,9 +30,12 @@ const NetflixHeader = ({ movie }: MovieHeader) => {
                 }
             </div>
             <div className="relative h-[190px] ml-[30px] pt-[140px] z-20">
-                <h1 className="text-5xl font-bold pb-1">{
-                    movie ? `${movie.title}` : `${movieDefault.movie.title}`
-                }</h1>
+                <h1 className="text-5xl font-bold pb-1">
+                    {
+                    movie ? 
+                    movie.title ? `${movie.title}` : movie.name !== "" ? `${movie.name}` : "" : `${movieDefault.movie.title}`
+                    }
+                </h1>
                 <div className="mt-1">
                     <button className="px-8 mr-4 py-2 cursor-pointer outline-none border-none text-lg font-bold hover:opacity-70 rounded bg-[#e6e6e6] text-[#000]">Lecture</button>
                     <button className="px-8 mr-4 py-2 cursor-pointer outline-none border-none text-lg font-bold hover:opacity-70 rounded bg-slate-400 text-[#fff]">Ajouter a ma liste</button>

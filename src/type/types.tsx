@@ -3,5 +3,6 @@ export type MovieHeader = {
         backdrop_path: string,
         title: string,
         overview: string,
+        name? : string
     }
 }
