@@ -9,39 +9,68 @@ import NetflixFooter from "../components/NetflixFooter";
 import { getRandomMovieOrSerie, getRandomType } from "../utils/helpers";
 /** API */
 import { clientAPI } from "../api/apiMovieDB";
-
+/** MUI */
+import { CircularProgress } from "@mui/material";
+import { Alert, AlertTitle } from "@mui/material";
+import { styled } from '@mui/material/styles';
 
 
 const NetflixApp = () => {
 
     const [headerMovie, setHeaderMovie] = useState<any>()
+    const [statusAPI, setStatusAPI] = useState<'idle' | 'fetching' | 'done' | 'error'>('idle')
+
+    /** MUI */
+    const CustumizedAlert = styled(Alert)`
+        padding-left: 40px;
+    `
 
     /** TYPE DE FILM OU SERIE */
     const [type] = useState<string>(getRandomType())
     const headerMovieID: number = getRandomMovieOrSerie(type)
 
+    /** APPEL API POUR */
     useEffect(() => {
+        setStatusAPI('fetching')
         const movieHeader = async () => {
-            /** METHODE AXIOS CLASSIQUE
-             * axios.get(`${BASE_URL}/${type}/${headerMovieID}?api_key=${API_KEY}&language=${lang}`)
-             * .then(response => setHeaderMovie(response.data))
-             * .catch(error => console.error(error))
-             */
-            clientAPI(`${type}/${headerMovieID}`).then(response => setHeaderMovie(response.data))
+            clientAPI(`${type}/${headerMovieID}`)
+                .then(response => {
+                    setHeaderMovie(response.data)
+                    setStatusAPI('done')
+                })
+                .catch(error => {
+                    console.log(error)
+                    setStatusAPI('error')
+                })
         }
         movieHeader()
     }, [])
-    
-    // console.log("response", headerMovie)
+
 
 
     return (
-        <div className="bg-[#111]">
+        <div className="bg-[#111] relative">
             <NetflixAppBar />
             <NetflixHeader movie={headerMovie} />
             <NetflixRow title="Netflix films" wideImage={true} />
             <NetflixRow title="Netflix séries" wideImage={false} />
-            <div className="h-[800px]"></div>
+            {
+                statusAPI === 'error' && (
+                    <div className="absolute top-20 left-0 w-full">
+                        <CustumizedAlert severity="error" variant="filled">
+                            <AlertTitle>Warning</AlertTitle>
+                            Une erreur avec la base de donnée est survenue
+                        </CustumizedAlert>
+                    </div>
+                )
+            }
+            {
+                statusAPI === 'fetching' && (
+                    <div className="absolute top-14 left-0 w-full flex justify-center z-10">
+                        <CircularProgress color="success" size={80} />
+                    </div>
+                )
+            }
             <NetflixFooter />
         </div>
     );
