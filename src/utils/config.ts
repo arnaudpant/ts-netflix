@@ -6,4 +6,3 @@ export const IMAGE_URL_ORIGINAL = `${IMAGE_URL}/original`
 export const IMAGE_URL_PATH400 = `${IMAGE_URL}/w400`
 export const TYPE_TV = 'tv'
 export const TYPE_MOVIE = 'movie'
-

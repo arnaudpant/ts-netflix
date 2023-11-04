@@ -6,10 +6,9 @@ import NetflixAppBar from "../components/NetflixAppBar";
 import NetflixRow from "../components/NetflixRow";
 import NetflixFooter from "../components/NetflixFooter";
 /** UTILS */
-import { API_KEY, BASE_URL, lang } from '../utils/config'
 import { getRandomMovieOrSerie, getRandomType } from "../utils/helpers";
 /** API */
-import axios from "axios";
+import { clientAPI } from "../api/apiMovieDB";
 
 
 
@@ -23,8 +22,12 @@ const NetflixApp = () => {
 
     useEffect(() => {
         const movieHeader = async () => {
-            axios.get(`${BASE_URL}/${type}/${headerMovieID}?api_key=${API_KEY}&language=${lang}`)
-            .then(response => setHeaderMovie(response.data))
+            /** METHODE AXIOS CLASSIQUE
+             * axios.get(`${BASE_URL}/${type}/${headerMovieID}?api_key=${API_KEY}&language=${lang}`)
+             * .then(response => setHeaderMovie(response.data))
+             * .catch(error => console.error(error))
+             */
+            clientAPI(`${type}/${headerMovieID}`).then(response => setHeaderMovie(response.data))
         }
         movieHeader()
     }, [])
