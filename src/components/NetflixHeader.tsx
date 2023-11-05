@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { MovieHeader } from "../type/types";
-//import { imagePathOriginal } from "../utils/config";
 
 
 const NetflixHeader = ({ movie }: MovieHeader) => {

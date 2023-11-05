@@ -1,4 +1,5 @@
-import { createTheme } from "@mui/material";
+import { Alert, createTheme } from "@mui/material";
+import { styled } from '@mui/material/styles';
 
 export const theme = createTheme({
     palette: {
@@ -12,18 +13,7 @@ export const theme = createTheme({
     },
 })
 
-/**
- declare module '@mui/material/styles' {
-    interface PaletteColor {
-        darker?: string;
-    }
-
-    interface SimplePaletteColorOptions {
-        darker?: string;
-    }
-}
-
-
-
-
- */
+/** MUI */
+export const CustumizedAlert = styled(Alert)`
+    padding-left: 40px;
+`

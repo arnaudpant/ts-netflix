@@ -5,7 +5,8 @@ export default {
 	theme: {
 	extend: {
 		backgroundImage: {
-			'error-boundary': "url(/errorBoundary.jpeg)"
+			'error-boundary': "url(/errorBoundary.jpeg)",
+			'watermarked' : "url(/Netflix.svg)"
 		}
 	},
 	},
