@@ -39,7 +39,7 @@ const NetflixApp = () => {
     return (
         <div className="bg-[#111] relative">
             <NetflixAppBar />
-            <NetflixHeader movie={headerMovie?.data} />
+            <NetflixHeader movie={headerMovie.data} />
             <NetflixRow title="Netflix films" wideImage={true} />
             <NetflixRow title="Netflix séries" wideImage={false} />
             {

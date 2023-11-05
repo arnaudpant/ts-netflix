@@ -29,7 +29,7 @@ export function useFetchData () {
     const execute = useCallback((promise: any) => {
         dispatch({type: 'fetching'})
         promise
-        .then((status: any )=> dispatch({type: 'done', payload: status}))
+        .then((data: any )=> dispatch({type: 'done', payload: data}))
         .catch((error: any) => dispatch({type: 'error', error: error}))
     }, [])
     return { data, error, status, execute }
