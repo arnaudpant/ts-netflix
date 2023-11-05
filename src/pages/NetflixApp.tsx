@@ -1,5 +1,6 @@
 /** HOOKS */
 import { useEffect, useState } from "react";
+import { useFetchData } from "../hooks/useFetchData";
 /** COMPONENTS */
 import NetflixHeader from "../components/NetflixHeader";
 import NetflixAppBar from "../components/NetflixAppBar";
@@ -17,8 +18,9 @@ import { styled } from '@mui/material/styles';
 
 const NetflixApp = () => {
 
-    const [headerMovie, setHeaderMovie] = useState<any>()
-    const [statusAPI, setStatusAPI] = useState<'idle' | 'fetching' | 'done' | 'error'>('idle')
+    // const [headerMovie, setHeaderMovie] = useState<any>()
+    const { data: headerMovie, status: statusAPI, error, execute } = useFetchData()
+    // const [statusAPI, setStatusAPI] = useState<'idle' | 'fetching' | 'done' | 'error'>('idle')
 
     /** MUI */
     const CustumizedAlert = styled(Alert)`
@@ -26,40 +28,26 @@ const NetflixApp = () => {
     `
 
     /** TYPE DE FILM OU SERIE */
-    const [type] = useState<string>(getRandomType())
+    const [type] = useState<string>(getRandomType()) 
     const headerMovieID: number = getRandomMovieOrSerie(type)
 
     /** APPEL API POUR */
     useEffect(() => {
-        setStatusAPI('fetching')
-        const movieHeader = async () => {
-            clientAPI(`${type}/${headerMovieID}`)
-                .then(response => {
-                    setHeaderMovie(response.data)
-                    setStatusAPI('done')
-                })
-                .catch(error => {
-                    console.log(error)
-                    setStatusAPI('error')
-                })
-        }
-        movieHeader()
+        execute( clientAPI(`${type}/${headerMovieID}`) )
     }, [])
-
-
 
     return (
         <div className="bg-[#111] relative">
             <NetflixAppBar />
-            <NetflixHeader movie={headerMovie} />
+            <NetflixHeader movie={headerMovie?.data} />
             <NetflixRow title="Netflix films" wideImage={true} />
             <NetflixRow title="Netflix séries" wideImage={false} />
             {
                 statusAPI === 'error' && (
                     <div className="absolute top-20 left-0 w-full">
                         <CustumizedAlert severity="error" variant="filled">
-                            <AlertTitle>Warning</AlertTitle>
-                            Une erreur avec la base de donnée est survenue
+                            <AlertTitle>ERREUR !</AlertTitle>
+                            Détail: {error?.message}
                         </CustumizedAlert>
                     </div>
                 )
