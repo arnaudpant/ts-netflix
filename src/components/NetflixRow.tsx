@@ -66,7 +66,7 @@ const NetflixRow = ({ title, wideImage, type = TYPE_MOVIE, param, filter = "popu
         return `${IMAGE_URL_ORIGINAL}${image}`
     }
 
-    // const watermarkClass = watermark ? "watermarked" : "hidden"
+    const watermarkClass = watermark ? "watermarked" : "hidden"
 
     if (status === 'fetching' || status === 'idle') {
         return (
@@ -97,8 +97,10 @@ const NetflixRow = ({ title, wideImage, type = TYPE_MOVIE, param, filter = "popu
 
                     {
                         data.data.results.map((movie: any) => (
-                            <div className={clsx(wideImage ? "max-w-[250px]" : " max-w-[150px]", 'shrink-0 mr-5' )} key={movie.id}>
+                            <div className={clsx(wideImage ? "max-w-[250px]" : " max-w-[150px]", 'relative shrink-0 mr-5' )} key={movie.id}>
                                 <img src={`${buildImagePath(movie)}`} alt={`${movie.original_title}`} className="vignettes cursor-pointer object-contain hover:scale-110" />
+                                <div className={watermarkClass}>
+                                </div>
                             </div>
 
                         ))
