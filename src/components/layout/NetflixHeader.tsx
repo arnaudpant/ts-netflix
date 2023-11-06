@@ -1,15 +1,15 @@
 /** HOOKS */
 import { useState, useEffect } from "react";
 /** TYPES */
-import { MovieHeader } from "../type/types";
+
 /** COMPONENTS */
-import HeaderSkeleton from "./skeletons/HeaderSkeleton";
-import { useFetchData } from "../hooks/useFetchData";
-import { clientAPI } from "../api/apiMovieDB";
-import { getRandomType } from "../utils/helpers";
-import { CustumizedAlert } from "../theme/theme";
+import HeaderSkeleton from "../skeletons/HeaderSkeleton";
+import { useFetchData } from "../../hooks/useFetchData";
+import { clientAPI } from "../../api/apiMovieDB";
+import { getRandomType } from "../../utils/helpers";
+import { CustumizedAlert } from "../../theme/theme";
 import { AlertTitle } from "@mui/material";
-import { IMAGE_URL_ORIGINAL } from "../utils/config";
+import { IMAGE_URL_ORIGINAL } from "../../utils/config";
 
 const NetflixHeader = () => {
 
@@ -25,13 +25,13 @@ const NetflixHeader = () => {
 
     if (status === 'fetching' || status === 'idle') {
         return (
-            <HeaderSkeleton />
+                <HeaderSkeleton />
         )
     }
 
     if (status === 'error') {
         return (
-            <div className="absolute top-20 left-0 w-full">
+            <div className="absolute top-20 left-0 w-full ">
                 <CustumizedAlert severity="error" variant="filled">
                     <AlertTitle>ERREUR !</AlertTitle>
                     Détail: {error?.message}
@@ -40,10 +40,8 @@ const NetflixHeader = () => {
         )
     }
 
-    console.log(data.data.results[numberMovie])
     return (
-        <header className="relative h-[448px] text-white overflow-hidden">
-
+        <header className=" relative h-[448px] text-white overflow-hidden">
             {
                 <>
                     {/* IMAGE DE FOND */}
@@ -51,13 +49,13 @@ const NetflixHeader = () => {
                         <img src={`${IMAGE_URL_ORIGINAL}${data.data.results[numberMovie].backdrop_path}`} className="object-cover object-center h-[448px] w-full" />
                     </div>
 
-
-                    <div className="relative h-[190px] ml-[30px] pt-[140px] z-20">
+                    <div className="absolute bottom-0 max-h-80  ml-[30px] z-20">
                         <h1 className="text-5xl font-bold pb-1">
                             {
-                                    data.data.results[numberMovie].title ? `${data.data.results[numberMovie].title}` : data.data.results[numberMovie].name
+                                data.data.results[numberMovie].title ? `${data.data.results[numberMovie].title}` : data.data.results[numberMovie].name
                             }
                         </h1>
+                        
                         <div className="mt-1">
                             <button className="px-8 mr-4 py-2 cursor-pointer outline-none border-none text-lg font-bold hover:opacity-70 rounded bg-[#e6e6e6] text-[#000]">Lecture</button>
                             <button className="px-8 mr-4 py-2 cursor-pointer outline-none border-none text-lg font-bold hover:opacity-70 rounded bg-slate-400 text-[#fff]">Ajouter a ma liste</button>

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { styled } from '@mui/material/styles';
 import { AppBar, Toolbar, Typography } from "@mui/material";
 
-const NetflixAppBar = () => {
+export const NetflixAppBar = () => {
     const [appBarStyle, setAppBarStyle] = useState(
         {
             background: 'transparent',
