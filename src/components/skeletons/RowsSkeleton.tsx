@@ -10,7 +10,7 @@ const RowsSkeleton = ({ wideImage, nbVignettes = 6, title }: Props) => {
 
     for (let i = 0; i < nbVignettes; i++) {
         listeSkeletons.push(
-            <div className='mr-5'>
+            <div className='mr-5' key={i}>
                 <Skeleton variant="rectangular" width={wideImage ? 400 : 166} height={wideImage ? 225 : 250} />
             </div>
         )

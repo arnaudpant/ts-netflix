@@ -35,7 +35,7 @@ const NetflixApp = () => {
     return (
         <div className="bg-[#111] relative">
             <NetflixAppBar />
-            <NetflixHeader movie={headerMovie?.data} />
+            <NetflixHeader />
             <NetflixRow title="Netflix films" wideImage={true} watermark={true} type={TYPE_MOVIE} filter="trending" />
             <NetflixRow title="Netflix séries" wideImage={false} watermark={true} type={TYPE_TV} filter="trending"  />
             <NetflixRow title="Les mieux notés" wideImage={true} watermark={false} type={TYPE_MOVIE} filter="toprated" />
