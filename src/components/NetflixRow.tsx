@@ -6,9 +6,11 @@ import { useFetchData } from "../hooks/useFetchData";
 import { IMAGE_URL_ORIGINAL, TYPE_MOVIE, TYPE_TV } from "../utils/config";
 /** API */
 import { clientAPI } from "../api/apiMovieDB";
-import { CircularProgress, AlertTitle } from "@mui/material";
+import { AlertTitle } from "@mui/material";
 import { CustumizedAlert } from "../theme/theme";
 import clsx from "clsx";
+/** MUI */
+import RowsSkeleton from "./skeletons/RowsSkeleton";
 
 
 
@@ -70,12 +72,7 @@ const NetflixRow = ({ title, wideImage, type = TYPE_MOVIE, param, filter = "popu
 
     if (status === 'fetching' || status === 'idle') {
         return (
-            <div className="text-white ml-5">
-                <h2>{title}</h2>
-                <div className="h-[250px] w-full flex justify-center">
-                    <CircularProgress color="success" size={80} />
-                </div>
-            </div>
+            <RowsSkeleton wideImage={wideImage} title={title} />
         )
     }
     if (status === 'error') {
@@ -90,26 +87,22 @@ const NetflixRow = ({ title, wideImage, type = TYPE_MOVIE, param, filter = "popu
     }
 
     return (
-        <>
-            <div className="text-white ml-5 mt-2">
-                <h2 className="text-xl font-semibold">{title}</h2>
-                <div className="flex overflow-y-hidden overflow-x-scroll p-5">
 
-                    {
-                        data.data.results.map((movie: any) => (
-                            <div className={clsx(wideImage ? "max-w-[250px]" : " max-w-[150px]", 'relative shrink-0 mr-5' )} key={movie.id}>
-                                <img src={`${buildImagePath(movie)}`} alt={`${movie.original_title}`} className="vignettes cursor-pointer object-contain hover:scale-110" />
-                                <div className={watermarkClass}>
-                                </div>
+        <div className="text-white ml-5 mt-2">
+            <h2 className="text-xl font-semibold">{title}</h2>
+            <div className="flex overflow-y-hidden overflow-x-scroll p-5">
+                {
+                    data.data.results.map((movie: any) => (
+                        <div className={clsx(wideImage ? "max-w-[400px]" : " max-w-[166px]", 'relative shrink-0 mr-5')} key={movie.id}>
+                            <img src={`${buildImagePath(movie)}`} alt={`${movie.original_title}`} className="vignettes cursor-pointer object-contain hover:scale-110" />
+                            <div className={watermarkClass}>
                             </div>
-
-                        ))
-                    }
-
-
-                </div>
+                        </div>
+                    ))
+                }
             </div>
-        </>
+        </div>
+
     );
 };
 

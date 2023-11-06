@@ -53,7 +53,7 @@ const NetflixApp = () => {
             }
             {
                 statusAPI === 'fetching' && (
-                    <div className="absolute top-14 left-0 w-full flex justify-center z-10">
+                    <div className="absolute top-20 left-0 w-full flex justify-center z-10">
                         <CircularProgress color="success" size={80} />
                     </div>
                 )
