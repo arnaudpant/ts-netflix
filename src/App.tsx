@@ -1,8 +1,7 @@
 /** HOOKS */
 /** PAGES */
 import NetflixApp from "./pages/NetflixApp"
-import NefflixByTVID from "./pages/NefflixByTVID"
-import NetflixByMovieID from "./pages/NetflixByMovieID"
+import NetflixByID from "./pages/NetflixByID"
 import NetflixSeries from "./pages/NetflixSeries"
 import NetflixNews from "./pages/NetflixNews"
 import NetflixMovies from "./pages/NetflixMovies"
@@ -25,8 +24,8 @@ function App() {
         <ErrorBoundary FallbackComponent={ErrorFallBack} onReset={() => { }}>
           <Routes>
             <Route path="/" element={<NetflixApp />} />
-            <Route path="/tv/:tvId" element={<NefflixByTVID />} />
-            <Route path="/movie/:tvId" element={<NetflixByMovieID />} />
+            <Route path="/tv/:tvId" element={<NetflixByID />} />
+            <Route path="/movie/:movieId" element={<NetflixByID />} />
             <Route path="/series" element={<NetflixSeries />} />
             <Route path="/movies" element={<NetflixMovies />} />
             <Route path="/news" element={<NetflixNews />} />

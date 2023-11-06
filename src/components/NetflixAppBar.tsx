@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 /** MUI */
 import { styled } from '@mui/material/styles';
 import { AppBar, Toolbar, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 
 export const NetflixAppBar = () => {
     const [appBarStyle, setAppBarStyle] = useState(
@@ -45,11 +46,11 @@ export const NetflixAppBar = () => {
         <AppBarStyle>
             <Toolbar  >
                 <img src="/vignettes/netflix-logo.png" alt="logo Netflix" className="h-5" color="secondary" />
-                <a href="#" className="m-2"><Typography variant="h6">Accueil</Typography></a>
-                <a href="#" className="m-2"><Typography variant="h6">Séries</Typography></a>
-                <a href="#" className="m-2"><Typography variant="h6">Films</Typography></a>
-                <a href="#" className="m-2"><Typography variant="h6">Nouveautés</Typography></a>
-                <a href="#" className="m-2"><Typography variant="h6">Ma liste</Typography></a>
+                <Link to="/" className="m-2"><Typography variant="h6">Accueil</Typography></Link>
+                <Link to="/series" className="m-2"><Typography variant="h6">Séries</Typography></Link>
+                <Link to="/movies" className="m-2"><Typography variant="h6">Films</Typography></Link>
+                <Link to="/news" className="m-2"><Typography variant="h6">Nouveautés</Typography></Link>
+                <Link to="/" className="m-2"><Typography variant="h6">Ma liste</Typography></Link>
                 <img src="/avatar/avatar-default2.svg" alt="logo Netflix" className="h-8 ml-auto" />
             </Toolbar>
         </AppBarStyle>

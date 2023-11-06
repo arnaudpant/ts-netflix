@@ -11,6 +11,7 @@ import clsx from "clsx";
 import { CustumizedAlert } from "../theme/theme";
 import { AlertTitle } from "@mui/material";
 import RowsSkeleton from "./skeletons/RowsSkeleton";
+import { Link } from "react-router-dom";
 
 
 
@@ -94,9 +95,10 @@ const NetflixRow = ({ title, wideImage, type = TYPE_MOVIE, param, filter = "popu
                 {
                     data.data.results.map((movie: any) => (
                         <div className={clsx(wideImage ? "max-w-[400px]" : " max-w-[166px]", 'relative shrink-0 mr-5')} key={movie.id}>
-                            <img src={`${buildImagePath(movie)}`} alt={`${movie.original_title}`} className="vignettes cursor-pointer object-contain hover:scale-110" />
-                            <div className={watermarkClass}>
-                            </div>
+                            <Link to={`/${type}/${movie.id}`}>
+                                <img src={`${buildImagePath(movie)}`} alt={`${movie.original_title}`} className="vignettes cursor-pointer object-contain hover:scale-110" />
+                                <div className={watermarkClass}></div>
+                            </Link>
                         </div>
                     ))
                 }

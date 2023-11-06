@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+    scroll-behavior: smooth;
+}
+
 .synopsis {
     line-height: normal;
     font-weight: 400;
