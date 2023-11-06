@@ -50,7 +50,7 @@ const NetflixHeader = () => {
                     </div>
 
                     <div className="absolute bottom-0 max-h-80  ml-[30px] z-20">
-                        <h1 className="text-5xl font-bold pb-1">
+                        <h1 className="title-header text-5xl font-bold pb-1">
                             {
                                 data.data.results[numberMovie].title ? `${data.data.results[numberMovie].title}` : data.data.results[numberMovie].name
                             }
