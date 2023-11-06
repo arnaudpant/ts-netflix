@@ -3,6 +3,8 @@ import NetflixApp from "./pages/NetflixApp"
 import { theme } from "./theme/theme"
 import { ErrorBoundary } from "react-error-boundary"
 import ErrorFallBack from "./error-boundary/ErrorFallBack"
+import { BrowserRouter, Route, Routes } from "react-router-dom"
+import Error404 from "./pages/Error404"
 
 
 
@@ -10,11 +12,17 @@ function App() {
 
 
   return (
-    <ThemeProvider theme={theme}>
-      <ErrorBoundary FallbackComponent={ErrorFallBack} onReset={()=>{}}>
-        <NetflixApp />
-      </ErrorBoundary>
-    </ThemeProvider>
+    <BrowserRouter>
+      <ThemeProvider theme={theme}>
+        <ErrorBoundary FallbackComponent={ErrorFallBack} onReset={() => { }}>
+          <Routes>
+            <Route path="/" element={<NetflixApp />} />
+            <Route path="/*" element={<Error404 />} />
+          </Routes>
+          
+        </ErrorBoundary>
+      </ThemeProvider>
+    </BrowserRouter>
   )
 }
 
