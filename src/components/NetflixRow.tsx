@@ -8,6 +8,7 @@ import { IMAGE_URL_ORIGINAL, TYPE_MOVIE, TYPE_TV } from "../utils/config";
 import { clientAPI } from "../api/apiMovieDB";
 import { CircularProgress, AlertTitle } from "@mui/material";
 import { CustumizedAlert } from "../theme/theme";
+import clsx from "clsx";
 
 
 
@@ -65,7 +66,7 @@ const NetflixRow = ({ title, wideImage, type = TYPE_MOVIE, param, filter = "popu
         return `${IMAGE_URL_ORIGINAL}${image}`
     }
 
-    const watermarkClass = watermark ? "watermarked" : "hidden"
+    // const watermarkClass = watermark ? "watermarked" : "hidden"
 
     if (status === 'fetching' || status === 'idle') {
         return (
@@ -93,15 +94,17 @@ const NetflixRow = ({ title, wideImage, type = TYPE_MOVIE, param, filter = "popu
             <div className="text-white ml-5 mt-2">
                 <h2 className="text-xl font-semibold">{title}</h2>
                 <div className="flex overflow-y-hidden overflow-x-scroll p-5">
+
                     {
                         data.data.results.map((movie: any) => (
-                            <>
-                                <img key={movie.id} src={`${buildImagePath(movie)}`} alt={`${movie.original_title}`} className="vignettes cursor-pointer object-contain w-full max-h-[250px] mr-5 hover:scale-110" />
-                                <div className={watermarkClass}></div>
-                            </>
+                            <div className={clsx(wideImage ? "max-w-[250px]" : " max-w-[150px]", 'shrink-0 mr-5' )} key={movie.id}>
+                                <img src={`${buildImagePath(movie)}`} alt={`${movie.original_title}`} className="vignettes cursor-pointer object-contain hover:scale-110" />
+                            </div>
 
                         ))
                     }
+
+
                 </div>
             </div>
         </>

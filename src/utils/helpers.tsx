@@ -23,3 +23,7 @@ export function getRandomSerieId (): number {
 export function getRandomMovieOrSerie (type = TYPE_MOVIE): number {
     return type === TYPE_TV ? getRandomSerieId() : getRandomMovieId()
 }
+
+export function sleep (tempo: number): void {
+    new Promise(resolve => setTimeout(resolve, tempo))
+}
