@@ -6,10 +6,10 @@ import { useFetchData } from "../hooks/useFetchData";
 import { IMAGE_URL_ORIGINAL, TYPE_MOVIE, TYPE_TV } from "../utils/config";
 /** API */
 import { clientAPI } from "../api/apiMovieDB";
-import { AlertTitle } from "@mui/material";
-import { CustumizedAlert } from "../theme/theme";
 import clsx from "clsx";
 /** MUI */
+import { CustumizedAlert } from "../theme/theme";
+import { AlertTitle } from "@mui/material";
 import RowsSkeleton from "./skeletons/RowsSkeleton";
 
 

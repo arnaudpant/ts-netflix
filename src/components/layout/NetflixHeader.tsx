@@ -1,22 +1,23 @@
 /** HOOKS */
 import { useState, useEffect } from "react";
 /** TYPES */
-
 /** COMPONENTS */
 import HeaderSkeleton from "../skeletons/HeaderSkeleton";
 import { useFetchData } from "../../hooks/useFetchData";
 import { clientAPI } from "../../api/apiMovieDB";
-import { getRandomType } from "../../utils/helpers";
 import { CustumizedAlert } from "../../theme/theme";
 import { AlertTitle } from "@mui/material";
 import { IMAGE_URL_ORIGINAL } from "../../utils/config";
 
-const NetflixHeader = () => {
+type Props = {
+    type: string
+}
+
+const NetflixHeader = ({type}: Props) => {
 
     const { data, status, error, execute } = useFetchData()
 
     /** TYPE DE FILM OU SERIE */
-    const [type] = useState<string>(getRandomType())
     const [numberMovie, setNumberMovie] = useState<number>(0)
     useEffect(() => {
         execute(clientAPI(`${type}/top_rated`))

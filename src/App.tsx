@@ -1,20 +1,23 @@
-import { ThemeProvider } from "@mui/material"
+/** HOOKS */
+/** PAGES */
 import NetflixApp from "./pages/NetflixApp"
-import { theme } from "./theme/theme"
-import { ErrorBoundary } from "react-error-boundary"
-import ErrorFallBack from "./error-boundary/ErrorFallBack"
-import { BrowserRouter, Route, Routes } from "react-router-dom"
-import Error404 from "./pages/Error404"
 import NefflixByTVID from "./pages/NefflixByTVID"
 import NetflixByMovieID from "./pages/NetflixByMovieID"
 import NetflixSeries from "./pages/NetflixSeries"
-import NetflixMovies from "./pages/NetflixMovies"
 import NetflixNews from "./pages/NetflixNews"
-
-
+import NetflixMovies from "./pages/NetflixMovies"
+import Error404 from "./pages/Error404"
+/** COMPONENTS */
+/** UTILS */
+/** API */
+import { BrowserRouter, Route, Routes } from "react-router-dom"
+import ErrorFallBack from "./error-boundary/ErrorFallBack"
+import { ErrorBoundary } from "react-error-boundary"
+/** MUI */
+import { ThemeProvider } from "@mui/material"
+import { theme } from "./theme/theme"
 
 function App() {
-
 
   return (
     <BrowserRouter>
@@ -23,7 +26,7 @@ function App() {
           <Routes>
             <Route path="/" element={<NetflixApp />} />
             <Route path="/tv/:tvId" element={<NefflixByTVID />} />
-            <Route path="/tv/:movieId" element={<NetflixByMovieID />} />
+            <Route path="/movie/:tvId" element={<NetflixByMovieID />} />
             <Route path="/series" element={<NetflixSeries />} />
             <Route path="/movies" element={<NetflixMovies />} />
             <Route path="/news" element={<NetflixNews />} />
