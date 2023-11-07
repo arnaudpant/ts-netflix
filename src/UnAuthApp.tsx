@@ -11,7 +11,7 @@ export type FormInformationType = {
 function UnauthApp() {
 
     const [username, setUsername] = useState<string>('')
-    const [newUser, setNewUser] = useState<boolean>(true)
+    const [newUser, setNewUser] = useState(true)
 
     return (
         <>
@@ -25,10 +25,13 @@ function UnauthApp() {
                 <div className='h-10 w-40'>
                     <img src="/vignettes/netflix-logo.png" alt="logo Netflix" className='h-full w-full' />
                 </div>
-                <Button variant="contained" color="error" onClick={() => setNewUser(!newUser)}>S'identifier</Button>
+                {
+                    newUser ? (<Button variant="contained" color="error" onClick={() => setNewUser(!newUser)}>S'identifier</Button>) : (<div></div>)
+                }
+                
             </div>
 
-            <div className='absolute top-0 bottom-0  flex flex-col justify-center mx-8 lg:mx-36'>
+            <div className='absolute top-0 bottom-0 left-0 right-0  flex flex-col justify-center items-center mx-8 lg:mx-36'>
                 {
                     newUser ? (
                         <>
@@ -44,11 +47,11 @@ function UnauthApp() {
 
                     ) :
                         (
-                            <FormConnexion />
-                    )
+                            <div className='mx-auto mt-4'>
+                                <FormConnexion setNewUser={setNewUser} />
+                            </div>
+                        )
                 }
-
-
             </div>
         </>
     )

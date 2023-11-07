@@ -1,71 +1,54 @@
-import { Button, Checkbox, FormControlLabel, FormGroup, TextField, Typography } from "@mui/material";
+import { Button, TextField } from "@mui/material";
+import axios from "axios";
 import { useState } from "react";
+import useSignIn from "react-auth-kit/hooks/useSignIn";
 
 
-const FormConnexion = () => {
-    const create = false
-    const label = create ? 'Inscrivez vous' : 'Connexion'
-    const [checked, setChecked] = useState(false)
+type Props = {
+    setNewUser: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+const FormConnexion = ({ setNewUser }: Props) => {
+
+    const handleIdent = (): void => setNewUser(true)
+    const signIn = useSignIn()
+    const [formData, setFormData] = useState({ email: '', password: '' })
+
+    const onSubmit = (e) => {
+        e.preventDefault()
+       
+    }
 
     return (
-        <form className='flex flex-col min-w-[330px] m-1' noValidate autoComplete="off">
-            <TextField
-                id="filled-basic"
-                label="Email ou numéro de téléphone"
-                variant="filled"
-                color="secondary"
-                style={{ opacity: '1' }}
-            />
-            <TextField
-                id="filled-basic"
-                type="password"
-                label="Mot de passe"
-                variant="filled"
-            />
-            {create ? (
-                <>
-                    <Button
-                        style={{ margin: '20px 0 5px 0' }}
-                        variant="contained"
-                        color="secondary"
-                    >
-                        {label}
-                    </Button>
-                    <small>* Consultez nos CGV</small>
-                    <small>This page is protected by Google reCAPTCHA</small>
-                </>
-            ) : (
-                <>
-                    <Button
-                        style={{ margin: '20px 0 5px 0' }}
-                        variant="contained"
-                        color="secondary"
-                    >
-                        {label}
-                    </Button>
-                    <div>
-                        {' '}
-                        <FormGroup row>
-                            <FormControlLabel
-                                control={
-                                    <Checkbox
-                                        name="checkedA"
-                                        checked={checked}
-                                        onChange={() => setChecked(!checked)}
-                                        color="primary"
-                                    />
-                                }
-                                label={
-                                    <Typography component={'span'} style={{ fontSize: '0.8rem' }}>
-                                        Se souvenir de moi
-                                    </Typography>
-                                }
-                            />
-                        </FormGroup>
-                    </div>
-                </>
-            )}
-        </form>
+        <div className="bg-black pt-16 px-20 pb-10 mb-20">
+            <form className='flex flex-col max-w-[314px] m-1 gap-4' noValidate autoComplete="off">
+                <TextField
+                    id="filled-basic"
+                    label="Email ou numéro de téléphone"
+                    variant="outlined"
+                    color="primary"
+                    style={{ opacity: '1' }}
+                />
+                <TextField
+                    id="filled-basic"
+                    type="password"
+                    label="Mot de passe"
+                    variant="outlined"
+                />
+                <Button
+                    style={{ margin: '20px 0 5px 0', padding: '16px' }}
+                    variant="contained"
+                    color="error"
+                    onClick={onSubmit}
+                >
+                    S'identifier
+                </Button>
+                <p className="text-gray-400 text-[16px]">Première visite sur Netflix ? <span className="text-white cursor-pointer" onClick={handleIdent}>Inscrivez-vous</span></p>
+                <p className="text-gray-400 text-sm">Cette page est protégée par Google reCAPTCHA pour nous assurer que vous n'êtes pas un robot. </p>
+
+            </form>
+
+        </div>
     );
 };
 
