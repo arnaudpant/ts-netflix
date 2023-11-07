@@ -1,12 +1,12 @@
 import { AUTH_URL, localStorageTokenKey } from '../utils/config'
 
-type PropsUser = {
-    username: string,
-    password: string
-}
-type Props = {
-    user: any,
-}
+// type PropsUser = {
+//     username: string,
+//     password: string
+// }
+// type Props = {
+//     user: any,
+// }
 
 
 async function clientApiNetflix(endpoint: string, data: any) {
@@ -31,16 +31,16 @@ async function getToken() {
     return window.localStorage.getItem(localStorageTokenKey)
 }
 
-function storeToken({ user }: Props) {
+function storeToken({ user }) {
     window.localStorage.setItem(localStorageTokenKey, user.token)
     return user
 }
 
-async function login({ username, password }: PropsUser) {
+async function login({ username, password }) {
     return clientApiNetflix('login', { username, password }).then(storeToken)
 }
 
-async function register({ username, password }: PropsUser) {
+async function register({ username, password }) {
     return clientApiNetflix('register', { username, password }).then(storeToken)
 }
 

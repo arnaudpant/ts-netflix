@@ -1,39 +1,32 @@
 /** HOOKS */
+import { useState } from "react"
 /** PAGES */
-import NetflixApp from "./pages/NetflixApp"
-import NetflixByID from "./pages/NetflixByID"
-import NetflixSeries from "./pages/NetflixSeries"
-import NetflixNews from "./pages/NetflixNews"
-import NetflixMovies from "./pages/NetflixMovies"
-import Error404 from "./pages/Error404"
 /** COMPONENTS */
+import AuthApp from "./AuthApp"
+import { UnauthApp } from "./UnAuthApp"
 /** UTILS */
 /** API */
-import { BrowserRouter, Route, Routes } from "react-router-dom"
-import ErrorFallBack from "./error-boundary/ErrorFallBack"
-import { ErrorBoundary } from "react-error-boundary"
+import AuthProvider from 'react-auth-kit'
 /** MUI */
 import { ThemeProvider } from "@mui/material"
 import { theme } from "./theme/theme"
+/** AUTH */
 
 function App() {
 
+
+
   return (
-    <BrowserRouter>
+
+    <AuthProvider authType={'localstorage'} authName={'_auth'} >
       <ThemeProvider theme={theme}>
-        <ErrorBoundary FallbackComponent={ErrorFallBack} onReset={() => { }}>
-          <Routes>
-            <Route path="/" element={<NetflixApp />} />
-            <Route path="/tv/:tvId" element={<NetflixByID />} />
-            <Route path="/movie/:movieId" element={<NetflixByID />} />
-            <Route path="/series" element={<NetflixSeries />} />
-            <Route path="/movies" element={<NetflixMovies />} />
-            <Route path="/news" element={<NetflixNews />} />
-            <Route path="/*" element={<Error404 />} />
-          </Routes>
-        </ErrorBoundary>
+        {
+          // authUser ? (<AuthApp logout={logout} />) : (<UnauthApp login={login} register={register} />)
+        }
+      <UnauthApp />
       </ThemeProvider>
-    </BrowserRouter>
+    </AuthProvider>
+
   )
 }
 

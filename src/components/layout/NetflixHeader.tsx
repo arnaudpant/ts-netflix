@@ -19,6 +19,7 @@ const NetflixHeader = ({type}: Props) => {
 
     /** TYPE DE FILM OU SERIE */
     const [numberMovie, setNumberMovie] = useState<number>(0)
+    
     useEffect(() => {
         execute(clientAPI(`${type}/top_rated`))
         setNumberMovie(Math.floor(Math.random() * 10))

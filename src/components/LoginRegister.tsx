@@ -17,15 +17,13 @@ import Typography from '@mui/material/Typography'
 import Alert from '@mui/material/Alert'
 import CircularProgress from '@mui/material/CircularProgress'
 
-type FormLoginType = {
-    create: boolean,
-    login: any,
-    register: any,
-    logout: any
-}
 
 
-const FormLogin = ({ create = false, login, register, logout }: FormLoginType) => {
+/**
+ *  FORMULAIRE CONNEXION
+ */
+const FormLogin = ({ create = false, login, register }) => {
+
     const [checked, setChecked] = useState(false)
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
@@ -121,7 +119,9 @@ function PopupLogin({
     const label = create ? 'Inscrivez vous' : 'Connexion'
     const spinner =
         status === 'fetching ' ? <CircularProgress color="secondary" /> : <></>
-    return (
+    
+    
+        return (
         <>
             <Dialog
                 className='opacity-90'

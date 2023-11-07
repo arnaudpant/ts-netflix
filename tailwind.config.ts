@@ -6,7 +6,8 @@ export default {
 	extend: {
 		backgroundImage: {
 			'error-boundary': "url(/errorBoundary.jpeg)",
-			'watermarked' : "url(/Netflix.svg)"
+			'watermarked' : "url(/Netflix.svg)",
+			'unAuthBg' : "url(/vignettes/posters.jpg)",
 		}
 	},
 	},
