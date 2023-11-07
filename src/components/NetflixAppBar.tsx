@@ -6,6 +6,7 @@ import { AppBar, Toolbar, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 
 export const NetflixAppBar = () => {
+    // Style personnalisé AppBar
     const [appBarStyle, setAppBarStyle] = useState(
         {
             background: 'transparent',
