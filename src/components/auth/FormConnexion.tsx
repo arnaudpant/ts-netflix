@@ -2,7 +2,7 @@ import { Button, Checkbox, FormControlLabel, FormGroup, TextField, Typography } 
 import { useState } from "react";
 
 
-const FormConexion = () => {
+const FormConnexion = () => {
     const create = false
     const label = create ? 'Inscrivez vous' : 'Connexion'
     const [checked, setChecked] = useState(false)
@@ -69,4 +69,4 @@ const FormConexion = () => {
     );
 };
 
-export default FormConexion;
+export default FormConnexion;

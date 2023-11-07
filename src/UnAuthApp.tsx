@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import FormInscription from './components/auth/FormInscription';
 import { Button } from '@mui/material'
-import FormConexion from './components/auth/FormConexion';
+import FormConnexion from './components/auth/FormConnexion';
 
 export type FormInformationType = {
     username: string,
@@ -12,12 +12,11 @@ function UnauthApp() {
 
     const [username, setUsername] = useState<string>('')
     const [newUser, setNewUser] = useState<boolean>(true)
-    console.log(newUser)
 
     return (
         <>
             {/* Fond ecran */}
-            <div className='absolute bg-unAuthBg bg-cover top-0 left-0 bottom-0 right-0 overflow-auto'></div>
+            <div className='absolute bg-unAuthBg bg-cover top-0 left-0 bottom-0 right-0 overflow-auto blur-[1px]'></div>
             {/* Degrade noir */}
             <div className='absolute bg-gradient-to-b from-black to-transparent top-0 left-0 bottom-1/3 right-0'></div>
 
@@ -30,18 +29,26 @@ function UnauthApp() {
             </div>
 
             <div className='absolute top-0 bottom-0  flex flex-col justify-center mx-8 lg:mx-36'>
-                <div>
-                    <h1 className='text-white text-center text-3xl font-bold lg:text-5xl title-header'>Les plus gros succès français et internationaux. Le tout dès 5,99€</h1>
-                    <h2 className='text-white text-center text-xl lg:text-2xl mt-6 title-header'>Abonnez-vous aujourd'hui. Annulez á tout moment.</h2>
-                    <h2 className='text-white text-center text-xl lg:text-2xl mt-6 title-header'>Prêt à regarder Netflix ? Saisissez votre adresse e-mail pour vous abonner ou réactiver votre abonnement.</h2>
-                </div>
-                <div className='mx-auto mt-4'>
-                    {
-                        newUser ? (<FormInscription username={username} setUsername={setUsername} />) 
-                        : (<FormConexion />)
-                    }
-                    
-                </div>
+                {
+                    newUser ? (
+                        <>
+                            <div>
+                                <h1 className='text-white text-center text-3xl font-bold lg:text-5xl title-header'>Les plus gros succès français et internationaux. Le tout dès 5,99€</h1>
+                                <h2 className='text-white text-center text-xl lg:text-2xl mt-6 title-header'>Abonnez-vous aujourd'hui. Annulez á tout moment.</h2>
+                                <h2 className='text-white text-center text-xl lg:text-2xl mt-6 title-header'>Prêt à regarder Netflix ? Saisissez votre adresse e-mail pour vous abonner ou réactiver votre abonnement.</h2>
+                            </div>
+                            <div className='mx-auto mt-4'>
+                                <FormInscription username={username} setUsername={setUsername} />
+                            </div>
+                        </>
+
+                    ) :
+                        (
+                            <FormConnexion />
+                    )
+                }
+
+
             </div>
         </>
     )
