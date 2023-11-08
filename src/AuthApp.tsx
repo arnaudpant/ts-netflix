@@ -15,6 +15,7 @@ import { ErrorBoundary } from "react-error-boundary"
 /** MUI */
 import { ThemeProvider } from "@mui/material"
 import { theme } from "./theme/theme"
+import Inscription from "./pages/Inscription"
 
 function AuthApp() {
 
@@ -29,6 +30,7 @@ function AuthApp() {
             <Route path="/series" element={<NetflixSeries />} />
             <Route path="/movies" element={<NetflixMovies />} />
             <Route path="/news" element={<NetflixNews />} />
+            <Route path="/inscription" element={<Inscription />} />
             <Route path="/*" element={<Error404 />} />
           </Routes>
         </ErrorBoundary>
