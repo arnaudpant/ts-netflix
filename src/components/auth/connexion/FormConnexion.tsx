@@ -10,14 +10,13 @@ type Props = {
 
 const FormConnexion = ({ setNewUser }: Props) => {
 
-    /**
-     * Retour a la page d'accueil
-     */
     const handleIdent = (): void => setNewUser(true)
-
+    const [errorMessage, setErrorMessage] = useState(false)
     const [formData, setFormData] = useState({ email: '', password: '' })
+    
     const onSubmit = async (e: { preventDefault: () => void; }) => {
         e.preventDefault()
+        setErrorMessage(false)
         const emailForm: string = formData.email
         const passwordForm: string = formData.password
         console.log('infos users', emailForm, passwordForm)
@@ -27,6 +26,7 @@ const FormConnexion = ({ setNewUser }: Props) => {
         }
         catch(error) {
             console.log("catch",error)
+            setErrorMessage(true)
         }
     }
 
@@ -51,6 +51,10 @@ const FormConnexion = ({ setNewUser }: Props) => {
                     value={formData.password}
                     onChange={(e) => setFormData({...formData, password: e.target.value})}
                 />
+                {
+                    errorMessage && (<p className="text-red-400 text-sm">Email ou mot de passe non valide</p>)
+                }
+                
                 <Button
                     style={{ margin: '20px 0 5px 0', padding: '16px' }}
                     variant="contained"

@@ -10,9 +10,11 @@ interface Props {
 const PageInscription = ({ emailInput }: Props) => {
 
     const [password, setPassword] = useState<string>('')
+    const [errorMessage, setErrorMessage] = useState(false)
 
     const onSubmit = async (e: { preventDefault: () => void; }) => {
         e.preventDefault()
+        setErrorMessage(false)
         const emailForm: string = emailInput
         const passwordForm: string = password
 
@@ -21,6 +23,7 @@ const PageInscription = ({ emailInput }: Props) => {
         }
         catch(error) {
             console.log("catch",error)
+            setErrorMessage(true)
         }
     }
 
@@ -45,6 +48,9 @@ const PageInscription = ({ emailInput }: Props) => {
                 <p className="font-bold pb-3">{emailInput}</p>
                 <form className="flex flex-col">
                     <input type='password' className=' h-14 bg-transparent border-2 rounded text-sm pl-2 text-gray-400' placeholder='Saississez votre mot de passe' onChange={e => setPassword(e.target.value)} />
+                    {
+                    errorMessage && (<p className="text-red-400 text-sm">Le mot de passe doit faire 6 caractères minimum</p>)
+                }
                     <p className="text-blue-500 my-5">Mot de passe oublié ?</p>
                     <button type='submit' className='px-4 h-16 text-white text-2xl bg-red-600 rounded' onClick={onSubmit}>Suivant</button>
                 </form>
