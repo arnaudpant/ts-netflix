@@ -15,7 +15,7 @@ const [emailInput, setEmailInput] = useState<string>("")
         <>
             {
                 boxInscriptionToShow ? 
-                (<PageInscription />) : 
+                (<PageInscription emailInput={emailInput} />) : 
                 (<PageAcceuil setBoxInscriptionToShow={setBoxInscriptionToShow} boxInscriptionToShow={boxInscriptionToShow} emailInput={emailInput} setEmailInput={setEmailInput} />) 
             }
         </>

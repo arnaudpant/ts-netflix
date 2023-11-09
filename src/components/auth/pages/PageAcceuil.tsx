@@ -4,7 +4,6 @@ import FormConnexion from '../connexion/FormConnexion';
 import { Dispatch, SetStateAction } from "react";
 
 interface Props {
-
     boxInscriptionToShow: boolean
     setBoxInscriptionToShow?: Dispatch<SetStateAction<boolean>>
     emailInput: string
