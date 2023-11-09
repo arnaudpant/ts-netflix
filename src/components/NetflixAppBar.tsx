@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { styled } from '@mui/material/styles';
 import { AppBar, Toolbar, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase/firebase.config";
 
 export const NetflixAppBar = () => {
     // Style personnalisé AppBar
@@ -13,6 +15,10 @@ export const NetflixAppBar = () => {
             boxShadow: 'none',
         }
     )
+
+    const logOut = async () => {
+        await signOut(auth)
+    }
 
     useEffect(() => {
         const handleScroll = (event: any): void => {
@@ -52,7 +58,9 @@ export const NetflixAppBar = () => {
                 <Link to="/movies" className="m-2"><Typography variant="h6">Films</Typography></Link>
                 <Link to="/news" className="m-2"><Typography variant="h6">Nouveautés</Typography></Link>
                 <Link to="/" className="m-2"><Typography variant="h6">Ma liste</Typography></Link>
-                <img src="/avatar/avatar-default2.svg" alt="logo Netflix" className="h-8 ml-auto" />
+                <div className="h-8 w-8 ml-auto cursor-pointer" onClick={logOut}>
+                    <img src="/avatar/avatar-default2.svg" alt="logo Netflix"/>
+                </div>
             </Toolbar>
         </AppBarStyle>
 

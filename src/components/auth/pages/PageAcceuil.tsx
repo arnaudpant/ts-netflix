@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Button } from '@mui/material'
 import FormConnexion from '../connexion/FormConnexion';
 import { Dispatch, SetStateAction } from "react";
+import clsx from 'clsx';
 
 interface Props {
     boxInscriptionToShow: boolean
@@ -18,12 +19,17 @@ export type FormInformationType = {
 
 
 
-const PageAcceuil = ({ setBoxInscriptionToShow, setEmailInput }: Props) => {
+const PageAcceuil = ({ setBoxInscriptionToShow, setEmailInput, emailInput }: Props) => {
     const [newUser, setNewUser] = useState<boolean>(true)
+    const [errorInput, setErrorInput] = useState(false)
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-        if (setBoxInscriptionToShow) {
+        if(emailInput === "") {
+            setErrorInput(true)
+            return
+        }
+        if (setBoxInscriptionToShow && !errorInput) {
             setBoxInscriptionToShow(true)
         }
     }
@@ -59,6 +65,7 @@ const PageAcceuil = ({ setBoxInscriptionToShow, setEmailInput }: Props) => {
                                     <input type='email' className='w-60 h-14 bg-transparent border-2 rounded text-sm pl-2 text-white' placeholder='Adresse e-mail' onChange={e => setEmailInput(e.target.value)} />
                                     <button type='submit' className='px-4 text-white text-xl bg-red-600 rounded'>Commencer</button>
                                 </form>
+                                <p className={clsx(errorInput ? "block" : "hidden", 'text-gray-200')}>Veuillez entrer un email</p>
                             </div>
                         </>
 

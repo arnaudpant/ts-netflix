@@ -1,5 +1,4 @@
 import { Button, TextField } from "@mui/material";
-//import axios from "axios";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
 import { auth } from "../../../firebase/firebase.config";
@@ -16,10 +15,7 @@ const FormConnexion = ({ setNewUser }: Props) => {
      */
     const handleIdent = (): void => setNewUser(true)
 
-
     const [formData, setFormData] = useState({ email: '', password: '' })
-
-
     const onSubmit = async (e: { preventDefault: () => void; }) => {
         e.preventDefault()
         const emailForm: string = formData.email
@@ -27,8 +23,7 @@ const FormConnexion = ({ setNewUser }: Props) => {
         console.log('infos users', emailForm, passwordForm)
 
         try {
-            const userCredential = await signInWithEmailAndPassword(auth, emailForm, passwordForm)
-            console.log('user',userCredential.user)
+            await signInWithEmailAndPassword(auth, emailForm, passwordForm)
         }
         catch(error) {
             console.log("catch",error)
