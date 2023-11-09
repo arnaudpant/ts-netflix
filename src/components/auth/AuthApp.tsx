@@ -1,21 +1,21 @@
 /** HOOKS */
 /** PAGES */
-import NetflixApp from "./pages/NetflixApp"
-import NetflixByID from "./pages/NetflixByID"
-import NetflixSeries from "./pages/NetflixSeries"
-import NetflixNews from "./pages/NetflixNews"
-import NetflixMovies from "./pages/NetflixMovies"
-import Error404 from "./pages/Error404"
+import NetflixApp from "../../pages/NetflixApp"
+import NetflixByID from "../../pages/NetflixByID"
+import NetflixSeries from "../../pages/NetflixSeries"
+import NetflixNews from "../../pages/NetflixNews"
+import NetflixMovies from "../../pages/NetflixMovies"
+import Error404 from "../../pages/Error404"
 /** COMPONENTS */
 /** UTILS */
 /** API */
 import { BrowserRouter, Route, Routes } from "react-router-dom"
-import ErrorFallBack from "./error-boundary/ErrorFallBack"
+import ErrorFallBack from "../../error-boundary/ErrorFallBack"
 import { ErrorBoundary } from "react-error-boundary"
 /** MUI */
 import { ThemeProvider } from "@mui/material"
-import { theme } from "./theme/theme"
-import Inscription from "./pages/Inscription"
+import { theme } from "../../theme/theme"
+import Inscription from "../../pages/Inscription"
 
 function AuthApp() {
 

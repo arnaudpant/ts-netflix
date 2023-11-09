@@ -1,7 +1,7 @@
 /** HOOKS */
 /** PAGES */
 /** COMPONENTS */
-import { UnauthApp } from "./UnAuthApp"
+import { UnauthApp } from "./components/auth/UnAuthApp"
 /** UTILS */
 /** API */
 /** MUI */

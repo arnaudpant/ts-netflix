@@ -1,6 +1,15 @@
 import { useState } from 'react';
 import { Button } from '@mui/material'
-import FormConnexion from './components/auth/FormConnexion';
+import FormConnexion from '../connexion/FormConnexion';
+import { Dispatch, SetStateAction } from "react";
+
+interface Props {
+
+    boxInscriptionToShow: boolean
+    setBoxInscriptionToShow?: Dispatch<SetStateAction<boolean>>
+    emailInput: string
+    setEmailInput: Dispatch<SetStateAction<string>>
+}
 
 
 export type FormInformationType = {
@@ -8,11 +17,17 @@ export type FormInformationType = {
     setUsername: any
 }
 
-function UnauthApp() {
 
-    const [username, setUsername] = useState<string>('')
-    const [newUser, setNewUser] = useState(true)
 
+const PageAcceuil = ({ setBoxInscriptionToShow, setEmailInput }: Props) => {
+    const [newUser, setNewUser] = useState<boolean>(true)
+
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault()
+        if (setBoxInscriptionToShow) {
+            setBoxInscriptionToShow(true)
+        }
+    }
 
     return (
         <>
@@ -40,9 +55,11 @@ function UnauthApp() {
                                 <h2 className='text-white text-center text-xl lg:text-2xl mt-6 title-header'>Abonnez-vous aujourd'hui. Annulez à tout moment.</h2>
                                 <h2 className='text-white text-center text-xl lg:text-2xl mt-6 title-header'>Prêt à regarder Netflix ? Saisissez votre adresse e-mail pour vous abonner ou réactiver votre abonnement.</h2>
                             </div>
-                            <div className='flex flex-row gap-4 mt-5'>
-                                <input className='w-60 h-14 bg-transparent border-2 rounded' />
-                               
+                            <div className=''>
+                                <form className='flex flex-row gap-4 mt-5' onSubmit={handleSubmit}>
+                                    <input type='email' className='w-60 h-14 bg-transparent border-2 rounded text-sm pl-2 text-white' placeholder='Adresse e-mail' onChange={e => setEmailInput(e.target.value)} />
+                                    <button type='submit' className='px-4 text-white text-xl bg-red-600 rounded'>Commencer</button>
+                                </form>
                             </div>
                         </>
 
@@ -55,7 +72,7 @@ function UnauthApp() {
                 }
             </div>
         </>
-    )
-}
+    );
+};
 
-export { UnauthApp }
+export default PageAcceuil;
