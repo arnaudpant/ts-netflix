@@ -9,9 +9,6 @@ import { CustumizedAlert } from "../../theme/theme";
 import { AlertTitle } from "@mui/material";
 import { IMAGE_URL_ORIGINAL } from "../../utils/config";
 /** FIRESTORE */
-import { getDocs, collection, addDoc } from "firebase/firestore";
-import { auth, db } from "../../firebase/firebase.config";
-import { movieInListOrNot } from "../../api/firestoreAPI";
 import useFirebase from "../../hooks/useFirebase";
 import { getRandomType } from "../../utils/helpers";
 
@@ -116,14 +113,14 @@ const NetflixHeader = () => {
      */
 
     async function addMovieHeaderToFirestore() {
-        if(afficheShowHeader){
+        if (afficheShowHeader) {
             const movieForFirestore: AfficheShow = {
                 id: afficheShowHeader.id,
-                type: afficheShowHeader?.type,
-                title: afficheShowHeader?.title,
-                overview: afficheShowHeader?.overview,
-                backdrop_path: afficheShowHeader?.backdrop_path,
-                poster_path: afficheShowHeader?.poster_path
+                type: afficheShowHeader.type,
+                title: afficheShowHeader.title,
+                overview: afficheShowHeader.overview,
+                backdrop_path: afficheShowHeader.backdrop_path,
+                poster_path: afficheShowHeader.poster_path
             }
             addAfficheShowHeaderToFavoris(movieForFirestore)
         }
@@ -179,7 +176,7 @@ const NetflixHeader = () => {
 
                             <div className="h-[200px] overflow-y-scroll">
                                 <h2 className="synopsis text-[#fff] font-normal max-w-[640px]">{
-                                    `${data.data.results[numberMovie].overview}`
+                                    `${movies[numberMovie].overview}`
                                 }</h2>
                             </div>
 
