@@ -1,7 +1,7 @@
 import { addDoc, collection, getDocs } from "firebase/firestore";
 import { useState } from "react";
 import { db } from "../firebase/firebase.config";
-
+import { AfficheShow } from "../components/layout/NetflixHeader";
 
 
 const useFirebase = () => {
