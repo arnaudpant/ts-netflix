@@ -9,7 +9,7 @@ import { CustumizedAlert } from "../../theme/theme";
 import { AlertTitle } from "@mui/material";
 import { IMAGE_URL_ORIGINAL } from "../../utils/config";
 /** FIRESTORE */
-import { doc, getDocs, setDoc, collection, addDoc } from "firebase/firestore";
+import { getDocs, collection, addDoc } from "firebase/firestore";
 import { auth, db } from "../../firebase/firebase.config";
 
 type Props = {
@@ -35,6 +35,7 @@ const NetflixHeader = ({ type }: Props) => {
 
     /** FAVORIS */
     const [afficheShowHeader, setAfficheShowHeader] = useState<AfficheShow | null>(null)
+    const [presentInFvoris, setPresentInfavoris] = useState<boolean>(false)
 
     useEffect(() => {
         execute(clientAPI(`${type}/top_rated`))
@@ -48,7 +49,7 @@ const NetflixHeader = ({ type }: Props) => {
          * 1: recuperation du film en header
          */
         if (auth.currentUser && data) {
-            if(data.data.results[numberMovie].title) {
+            if (data.data.results[numberMovie].title) {
                 setAfficheShowHeader(
                     {
                         type: type,
@@ -70,29 +71,26 @@ const NetflixHeader = ({ type }: Props) => {
                     })
             }
         }
-
-        /** LECTURE DB */
-        async function readDocuments(){
-            const mySnapshot = await getDocs(collection(db, "users"))
-            let listFilmsInFavoris: number[] = []
-            mySnapshot.forEach((doc) => {  
-                listFilmsInFavoris.push(doc.data().id)
-                // console.log(doc.data().id)
-                // console.log(`${doc.id} => ${doc.data()}`)
-            });
-            if(afficheShowHeader) {
-                if(listFilmsInFavoris.includes(afficheShowHeader.id)){
-                    console.log("Film dans les favoris")
-            }else {
-                console.log("Film PAS dans les favoris")
-            }
-
-            }
-        }
-
         readDocuments()
     }, [data])
 
+    /** LECTURE DB */
+    async function readDocuments() {
+        const mySnapshot = await getDocs(collection(db, "users"))
+        let listFilmsInFavoris: number[] = []
+        mySnapshot.forEach((doc) => {
+            listFilmsInFavoris.push(doc.data().id)
+            // console.log(doc.data().id)
+            // console.log(`${doc.id} => ${doc.data()}`)
+        });
+        if (afficheShowHeader) {
+            if (listFilmsInFavoris.includes(afficheShowHeader.id)) {
+                setPresentInfavoris(true)
+            } else {
+                setPresentInfavoris(false)
+            }
+        }
+    }
     /**
      * AJOUT FILM DANS BASE DE DONNEES FIRESTORE
      */
@@ -106,11 +104,12 @@ const NetflixHeader = ({ type }: Props) => {
                 overview: afficheShowHeader?.overview,
                 backdrop_path: afficheShowHeader?.backdrop_path,
                 poster_path: afficheShowHeader?.poster_path
-            } );
-            console.log("Document written with ID: ", docRef.id);
+            });
+            // console.log("Document written with ID: ", docRef.id);
         } catch (e) {
             console.error("Error adding document: ", e);
         }
+        readDocuments()
     }
 
 
@@ -152,7 +151,13 @@ const NetflixHeader = ({ type }: Props) => {
 
                         <div className="mt-1">
                             <button className="px-8 mr-4 py-2 cursor-pointer outline-none border-none text-lg font-bold hover:opacity-70 rounded bg-[#e6e6e6] text-[#000]">Lecture</button>
-                            <button onClick={addAfficheShowHeaderToFavoris} className="px-8 mr-4 py-2 cursor-pointer outline-none border-none text-lg font-bold hover:opacity-70 rounded bg-slate-400 text-[#fff]">Ajouter a ma liste</button>
+                            {
+                                presentInFvoris ? (
+                                    <button onClick={addAfficheShowHeaderToFavoris} className="px-8 mr-4 py-2 cursor-pointer outline-none border-none text-lg font-bold hover:opacity-70 rounded bg-red-400 text-[#fff]">Supprimer de ma liste</button>
+                                ) :
+                                    (<button onClick={addAfficheShowHeaderToFavoris} className="px-8 mr-4 py-2 cursor-pointer outline-none border-none text-lg font-bold hover:opacity-70 rounded bg-slate-400 text-[#fff]">Ajouter a ma liste</button>)
+                            }
+
                         </div>
 
                         <div className="h-[200px] overflow-y-scroll">
