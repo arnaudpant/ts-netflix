@@ -10,7 +10,6 @@ type Props = {
 
 const NetflixHeaderId = ({movie}: Props) => {
 
-
     return (
         <header className=" relative h-[448px] text-white overflow-hidden">
             { movie ? (

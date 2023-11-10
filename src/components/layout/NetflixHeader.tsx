@@ -13,7 +13,7 @@ import { getDocs, collection, addDoc } from "firebase/firestore";
 import { auth, db } from "../../firebase/firebase.config";
 
 type Props = {
-    type: string
+    type: string,
 }
 
 type AfficheShow = {
@@ -46,7 +46,8 @@ const NetflixHeader = ({ type }: Props) => {
 
     useEffect(() => {
         /**
-         * 1: recuperation du film en header
+         * Recuperation du film dans le header
+         * 1: Sauf si /movie/id
          */
         if (auth.currentUser && data) {
             if (data.data.results[numberMovie].title) {
@@ -97,7 +98,7 @@ const NetflixHeader = ({ type }: Props) => {
 
     async function addAfficheShowHeaderToFavoris() {
         try {
-            const docRef = await addDoc(collection(db, "users"), {
+            await addDoc(collection(db, "users"), {
                 id: afficheShowHeader?.id,
                 type: afficheShowHeader?.type,
                 title: afficheShowHeader?.title,
@@ -111,7 +112,6 @@ const NetflixHeader = ({ type }: Props) => {
         }
         readDocuments()
     }
-
 
 
     /** FIN TESTS */
@@ -134,44 +134,49 @@ const NetflixHeader = ({ type }: Props) => {
     }
 
     return (
-        <header className=" relative h-[448px] text-white overflow-hidden">
-            {
-                <>
-                    {/* IMAGE DE FOND */}
-                    <div className="absolute top-0 h-[448px] w-full z-0 ">
-                        <img src={`${IMAGE_URL_ORIGINAL}${data.data.results[numberMovie].backdrop_path}`} className="object-cover object-center h-[448px] w-full" />
-                    </div>
+        <header className="relative h-[448px] text-white overflow-hidden">
+            {type ?
+                (
+                    <>
 
-                    <div className="absolute bottom-0 max-h-80  ml-[30px] z-20">
-                        <h1 className="title-header text-5xl font-bold pb-1">
-                            {
-                                data.data.results[numberMovie].title ? `${data.data.results[numberMovie].title}` : data.data.results[numberMovie].name
-                            }
-                        </h1>
+                        {/* IMAGE DE FOND */}
+                        <div className="absolute top-0 h-[448px] w-full z-0 ">
+                            <img src={`${IMAGE_URL_ORIGINAL}${data.data.results[numberMovie].backdrop_path}`} className="object-cover object-center h-[448px] w-full" />
+                        </div>
 
-                        <div className="mt-1">
-                            <button className="px-8 mr-4 py-2 cursor-pointer outline-none border-none text-lg font-bold hover:opacity-70 rounded bg-[#e6e6e6] text-[#000]">Lecture</button>
-                            {
-                                presentInFvoris ? (
-                                    <button onClick={addAfficheShowHeaderToFavoris} className="px-8 mr-4 py-2 cursor-pointer outline-none border-none text-lg font-bold hover:opacity-70 rounded bg-red-400 text-[#fff]">Supprimer de ma liste</button>
-                                ) :
-                                    (<button onClick={addAfficheShowHeaderToFavoris} className="px-8 mr-4 py-2 cursor-pointer outline-none border-none text-lg font-bold hover:opacity-70 rounded bg-slate-400 text-[#fff]">Ajouter a ma liste</button>)
-                            }
+                        <div className="absolute bottom-0 max-h-80  ml-[30px] z-20">
+                            <h1 className="title-header text-5xl font-bold pb-1">
+                                {
+                                    data.data.results[numberMovie].title ? `${data.data.results[numberMovie].title}` : data.data.results[numberMovie].name
+                                }
+                            </h1>
+
+                            <div className="mt-1">
+                                <button className="px-8 mr-4 py-2 cursor-pointer outline-none border-none text-lg font-bold hover:opacity-70 rounded bg-[#e6e6e6] text-[#000]">Lecture</button>
+                                {
+                                    presentInFvoris ? (
+                                        <button onClick={addAfficheShowHeaderToFavoris} className="px-8 mr-4 py-2 cursor-pointer outline-none border-none text-lg font-bold hover:opacity-70 rounded bg-red-400 text-[#fff]">Supprimer de ma liste</button>
+                                    ) :
+                                        (<button onClick={addAfficheShowHeaderToFavoris} className="px-8 mr-4 py-2 cursor-pointer outline-none border-none text-lg font-bold hover:opacity-70 rounded bg-slate-400 text-[#fff]">Ajouter a ma liste</button>)
+                                }
+
+                            </div>
+
+                            <div className="h-[200px] overflow-y-scroll">
+                                <h2 className="synopsis text-[#fff] font-normal max-w-[640px]">{
+                                    `${data.data.results[numberMovie].overview}`
+                                }</h2>
+                            </div>
 
                         </div>
 
-                        <div className="h-[200px] overflow-y-scroll">
-                            <h2 className="synopsis text-[#fff] font-normal max-w-[640px]">{
-                                `${data.data.results[numberMovie].overview}`
-                            }</h2>
-                        </div>
 
-                    </div>
-
-
-                </>
-
-
+                    </>
+                )
+                :
+                (
+                    <HeaderSkeleton />
+                )
             }
 
 
