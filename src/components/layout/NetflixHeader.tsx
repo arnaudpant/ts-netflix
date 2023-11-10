@@ -32,17 +32,14 @@ const NetflixHeader = ({ type }: Props) => {
     /** TYPE DE FILM OU SERIE */
     const [numberMovie, setNumberMovie] = useState<number>(0)
 
+
     /** FAVORIS */
     const [afficheShowHeader, setAfficheShowHeader] = useState<AfficheShow | null>(null)
-    let listeFavoris: any
 
     useEffect(() => {
         execute(clientAPI(`${type}/top_rated`))
         setNumberMovie(Math.floor(Math.random() * 10))
     }, [])
-
-    // const documentRef = doc(db, "favoris", auth.currentUser.uid)
-    // console.log('auth.currentUser.uid', documentRef)
 
     /** TESTS */
 
@@ -72,13 +69,33 @@ const NetflixHeader = ({ type }: Props) => {
                         poster_path: data.data.results[numberMovie].poster_path
                     })
             }
-            console.log(data.data.results[numberMovie])
         }
+
+        /** LECTURE DB */
+        async function readDocuments(){
+            const mySnapshot = await getDocs(collection(db, "users"))
+            let listFilmsInFavoris: number[] = []
+            mySnapshot.forEach((doc) => {  
+                listFilmsInFavoris.push(doc.data().id)
+                // console.log(doc.data().id)
+                // console.log(`${doc.id} => ${doc.data()}`)
+            });
+            if(afficheShowHeader) {
+                if(listFilmsInFavoris.includes(afficheShowHeader.id)){
+                    console.log("Film dans les favoris")
+            }else {
+                console.log("Film PAS dans les favoris")
+            }
+
+            }
+        }
+
+        readDocuments()
     }, [data])
 
-    if (auth.currentUser) {
-        listeFavoris = doc(db, 'listeFavoris', 'test')
-    }
+    /**
+     * AJOUT FILM DANS BASE DE DONNEES FIRESTORE
+     */
 
     async function addAfficheShowHeaderToFavoris() {
         try {
