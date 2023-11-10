@@ -62,6 +62,10 @@ const NetflixHeader = () => {
         isMovieInFavoris()
 }, [movies])
 
+useEffect(() => {
+    isMovieInFavoris()
+}, [listFavoris])
+
 
     /**
      * Affichage title ou name en fonction film ou serie
@@ -94,13 +98,6 @@ const NetflixHeader = () => {
     }
 
 
-
-
-
-
-
-
-
     /** MOVIE DANS LES FAVORIS ? */
     async function isMovieInFavoris() {
         await getMovieInFavoris()
@@ -112,8 +109,10 @@ const NetflixHeader = () => {
             }
         }
     }
+
+
     /**
-     * AJOUT FILM DANS BASE DE DONNEES FIRESTORE
+     * ENVOI MOVIE DANS BASE DE DONNEES FIRESTORE
      */
 
     async function addAfficheShowHeaderToFavoris() {
@@ -129,18 +128,14 @@ const NetflixHeader = () => {
         } catch (e) {
             console.error("Error adding document: ", e);
         }
-        //isMovieInFavoris()
     }
 
-    // console.log(listFavoris)
-    /** FIN TESTS */
-
+    /** SKELETON */
     if (status === 'fetching' || status === 'idle') {
         return (
             <HeaderSkeleton />
         )
     }
-
     if (status === 'error') {
         return (
             <div className="absolute top-20 left-0 w-full ">
@@ -152,6 +147,7 @@ const NetflixHeader = () => {
         )
     }
 
+    
     return (
         <header className="relative h-[448px] text-white overflow-hidden">
             {type ?
@@ -166,7 +162,7 @@ const NetflixHeader = () => {
                         <div className="absolute bottom-0 max-h-80  ml-[30px] z-20">
                             <h1 className="title-header text-5xl font-bold pb-1">
                                 {
-                                    data.data.results[numberMovie].title ? `${movies[numberMovie].title}` : movies.results[numberMovie].name
+                                    data.data.results[numberMovie].title ? `${movies[numberMovie].title}` : movies[numberMovie].name
                                 }
                             </h1>
 
