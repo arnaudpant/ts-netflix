@@ -1,6 +1,7 @@
-import { collection, getDocs } from "firebase/firestore";
+import { addDoc, collection, getDocs } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { db } from "../firebase/firebase.config";
+import { AfficheShow } from "../components/layout/NetflixHeader";
 
 
 const useFirebase = () => {
@@ -18,11 +19,27 @@ const useFirebase = () => {
         setListFavoris(listFilmsInFavoris)
     }
 
+    async function addAfficheShowHeaderToFavoris(movieForFirestore: AfficheShow) {
+        try {
+            await addDoc(collection(db, "users"), {
+                id: movieForFirestore?.id,
+                type: movieForFirestore?.type,
+                title: movieForFirestore?.title,
+                overview: movieForFirestore?.overview,
+                backdrop_path: movieForFirestore?.backdrop_path,
+                poster_path: movieForFirestore?.poster_path
+            });
+        } catch (e) {
+            console.error("Error adding document: ", e);
+        }
+    }
 
     return (
-        { listFavoris, getMovieInFavoris }
+        { listFavoris, getMovieInFavoris, addAfficheShowHeaderToFavoris }
     );
 };
+
+
 
 export default useFirebase;
 

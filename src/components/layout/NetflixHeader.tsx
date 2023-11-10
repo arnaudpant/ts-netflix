@@ -15,7 +15,7 @@ import { movieInListOrNot } from "../../api/firestoreAPI";
 import useFirebase from "../../hooks/useFirebase";
 import { getRandomType } from "../../utils/helpers";
 
-type AfficheShow = {
+export type AfficheShow = {
     type: string,
     id: number,
     title: string,
@@ -28,7 +28,7 @@ const NetflixHeader = () => {
 
     const [type] = useState<string>(getRandomType())
     const { data, status, error, execute } = useFetchData()
-    const { listFavoris, getMovieInFavoris } = useFirebase()
+    const { listFavoris, getMovieInFavoris, addAfficheShowHeaderToFavoris } = useFirebase()
     let movies: any | undefined
 
 
@@ -41,37 +41,37 @@ const NetflixHeader = () => {
     const [presentInFavoris, setPresentInfavoris] = useState<boolean>(false)
 
     /** AFFICHAGE ALEATOIRE D'UN MOVIE DANS LE HEADER */
-    
-    if(data) {
+
+    if (data) {
         movies = data.data.results
     }
-    
+
     /**
      * 1: APPEL API 
      * 2: Index aleatoire pour movie entre 1 et 10
      */
     useEffect(() => {
-            execute(clientAPI(`${type}/top_rated`))
-            setNumberMovie(Math.floor(Math.random() * 10))
+        execute(clientAPI(`${type}/top_rated`))
+        setNumberMovie(Math.floor(Math.random() * 10))
     }, [])
-    
+
 
     /** Movie dans les favoris ou non ? */
     useEffect(() => {
         movieOrTvInHeader()
         isMovieInFavoris()
-}, [movies])
+    }, [movies])
 
-useEffect(() => {
-    isMovieInFavoris()
-}, [listFavoris])
+    useEffect(() => {
+        isMovieInFavoris()
+    }, [listFavoris])
 
 
     /**
      * Affichage title ou name en fonction film ou serie
      */
     async function movieOrTvInHeader() {
-        if(movies !== undefined){
+        if (movies !== undefined) {
             if (movies[numberMovie].title) {
                 setAfficheShowHeader(
                     {
@@ -83,7 +83,7 @@ useEffect(() => {
                         poster_path: movies[numberMovie].poster_path
                     })
             }
-            if(movies[numberMovie].name) {
+            if (movies[numberMovie].name) {
                 setAfficheShowHeader(
                     {
                         type: type,
@@ -115,19 +115,19 @@ useEffect(() => {
      * ENVOI MOVIE DANS BASE DE DONNEES FIRESTORE
      */
 
-    async function addAfficheShowHeaderToFavoris() {
-        try {
-            await addDoc(collection(db, "users"), {
-                id: afficheShowHeader?.id,
+    async function addMovieHeaderToFirestore() {
+        if(afficheShowHeader){
+            const movieForFirestore: AfficheShow = {
+                id: afficheShowHeader.id,
                 type: afficheShowHeader?.type,
                 title: afficheShowHeader?.title,
                 overview: afficheShowHeader?.overview,
                 backdrop_path: afficheShowHeader?.backdrop_path,
                 poster_path: afficheShowHeader?.poster_path
-            });
-        } catch (e) {
-            console.error("Error adding document: ", e);
+            }
+            addAfficheShowHeaderToFavoris(movieForFirestore)
         }
+
     }
 
     /** SKELETON */
@@ -147,7 +147,7 @@ useEffect(() => {
         )
     }
 
-    
+
     return (
         <header className="relative h-[448px] text-white overflow-hidden">
             {type ?
@@ -170,9 +170,9 @@ useEffect(() => {
                                 <button className="px-8 mr-4 py-2 cursor-pointer outline-none border-none text-lg font-bold hover:opacity-70 rounded bg-[#e6e6e6] text-[#000]">Lecture</button>
                                 {
                                     presentInFavoris ? (
-                                        <button onClick={addAfficheShowHeaderToFavoris} className="px-8 mr-4 py-2 cursor-pointer outline-none border-none text-lg font-bold hover:opacity-70 rounded bg-red-400 text-[#fff]">Supprimer de ma liste</button>
+                                        <button onClick={addMovieHeaderToFirestore} className="px-8 mr-4 py-2 cursor-pointer outline-none border-none text-lg font-bold hover:opacity-70 rounded bg-red-400 text-[#fff]">Supprimer de ma liste</button>
                                     ) :
-                                        (<button onClick={addAfficheShowHeaderToFavoris} className="px-8 mr-4 py-2 cursor-pointer outline-none border-none text-lg font-bold hover:opacity-70 rounded bg-slate-400 text-[#fff]">Ajouter a ma liste</button>)
+                                        (<button onClick={addMovieHeaderToFirestore} className="px-8 mr-4 py-2 cursor-pointer outline-none border-none text-lg font-bold hover:opacity-70 rounded bg-slate-400 text-[#fff]">Ajouter a ma liste</button>)
                                 }
 
                             </div>
