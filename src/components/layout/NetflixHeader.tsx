@@ -11,6 +11,8 @@ import { IMAGE_URL_ORIGINAL } from "../../utils/config";
 /** FIRESTORE */
 import { getDocs, collection, addDoc } from "firebase/firestore";
 import { auth, db } from "../../firebase/firebase.config";
+import { movieInListOrNot } from "../../api/firestoreAPI";
+import useFirebase from "../../hooks/useFirebase";
 
 type Props = {
     type: string,
@@ -28,6 +30,7 @@ type AfficheShow = {
 const NetflixHeader = ({ type }: Props) => {
 
     const { data, status, error, execute } = useFetchData()
+    const {listFavoris, getMovieInFavoris } = useFirebase()
 
     /** TYPE DE FILM OU SERIE */
     const [numberMovie, setNumberMovie] = useState<number>(0)
@@ -35,7 +38,7 @@ const NetflixHeader = ({ type }: Props) => {
 
     /** FAVORIS */
     const [afficheShowHeader, setAfficheShowHeader] = useState<AfficheShow | null>(null)
-    const [presentInFvoris, setPresentInfavoris] = useState<boolean>(false)
+    const [presentInFavoris, setPresentInfavoris] = useState<boolean>(false)
 
     useEffect(() => {
         execute(clientAPI(`${type}/top_rated`))
@@ -46,9 +49,11 @@ const NetflixHeader = ({ type }: Props) => {
 
     useEffect(() => {
         /**
-         * Recuperation du film dans le header
-         * 1: Sauf si /movie/id
+         * Recuperation du film affiché dans le header
+         * 1: Si Movie
+         * 2: Si TV
          */
+        // 1
         if (auth.currentUser && data) {
             if (data.data.results[numberMovie].title) {
                 setAfficheShowHeader(
@@ -60,7 +65,9 @@ const NetflixHeader = ({ type }: Props) => {
                         backdrop_path: data.data.results[numberMovie].backdrop_path,
                         poster_path: data.data.results[numberMovie].poster_path
                     })
-            } else {
+            } 
+            // 2
+            else {
                 setAfficheShowHeader(
                     {
                         type: type,
@@ -72,25 +79,21 @@ const NetflixHeader = ({ type }: Props) => {
                     })
             }
         }
-        readDocuments()
+        /** MaJ Liste des favoris */
+        
+        isMovieInFavoris()
     }, [data])
 
-    /** LECTURE DB */
-    async function readDocuments() {
-        const mySnapshot = await getDocs(collection(db, "users"))
-        let listFilmsInFavoris: number[] = []
-        mySnapshot.forEach((doc) => {
-            listFilmsInFavoris.push(doc.data().id)
-            // console.log(doc.data().id)
-            // console.log(`${doc.id} => ${doc.data()}`)
-        });
+    /** MOVIE DANS LES FAVORIS ? */
+    async function isMovieInFavoris() {
         if (afficheShowHeader) {
-            if (listFilmsInFavoris.includes(afficheShowHeader.id)) {
+            if (listFavoris.includes(afficheShowHeader.id)) {
                 setPresentInfavoris(true)
             } else {
                 setPresentInfavoris(false)
             }
         }
+        getMovieInFavoris()
     }
     /**
      * AJOUT FILM DANS BASE DE DONNEES FIRESTORE
@@ -106,14 +109,13 @@ const NetflixHeader = ({ type }: Props) => {
                 backdrop_path: afficheShowHeader?.backdrop_path,
                 poster_path: afficheShowHeader?.poster_path
             });
-            // console.log("Document written with ID: ", docRef.id);
         } catch (e) {
             console.error("Error adding document: ", e);
         }
-        readDocuments()
+        isMovieInFavoris()
     }
 
-
+    // console.log(listFavoris)
     /** FIN TESTS */
 
     if (status === 'fetching' || status === 'idle') {
@@ -154,7 +156,7 @@ const NetflixHeader = ({ type }: Props) => {
                             <div className="mt-1">
                                 <button className="px-8 mr-4 py-2 cursor-pointer outline-none border-none text-lg font-bold hover:opacity-70 rounded bg-[#e6e6e6] text-[#000]">Lecture</button>
                                 {
-                                    presentInFvoris ? (
+                                    presentInFavoris ? (
                                         <button onClick={addAfficheShowHeaderToFavoris} className="px-8 mr-4 py-2 cursor-pointer outline-none border-none text-lg font-bold hover:opacity-70 rounded bg-red-400 text-[#fff]">Supprimer de ma liste</button>
                                     ) :
                                         (<button onClick={addAfficheShowHeaderToFavoris} className="px-8 mr-4 py-2 cursor-pointer outline-none border-none text-lg font-bold hover:opacity-70 rounded bg-slate-400 text-[#fff]">Ajouter a ma liste</button>)
