@@ -19,7 +19,6 @@ const FormConnexion = ({ setNewUser }: Props) => {
         setErrorMessage(false)
         const emailForm: string = formData.email
         const passwordForm: string = formData.password
-        console.log('infos users', emailForm, passwordForm)
 
         try {
             await signInWithEmailAndPassword(auth, emailForm, passwordForm)
