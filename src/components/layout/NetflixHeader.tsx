@@ -13,10 +13,7 @@ import { getDocs, collection, addDoc } from "firebase/firestore";
 import { auth, db } from "../../firebase/firebase.config";
 import { movieInListOrNot } from "../../api/firestoreAPI";
 import useFirebase from "../../hooks/useFirebase";
-
-type Props = {
-    type: string,
-}
+import { getRandomType } from "../../utils/helpers";
 
 type AfficheShow = {
     type: string,
@@ -27,10 +24,13 @@ type AfficheShow = {
     poster_path: string
 }
 
-const NetflixHeader = ({ type }: Props) => {
+const NetflixHeader = () => {
 
+    const [type] = useState<string>(getRandomType())
     const { data, status, error, execute } = useFetchData()
-    const {listFavoris, getMovieInFavoris } = useFirebase()
+    const { listFavoris, getMovieInFavoris } = useFirebase()
+    let movies: any | undefined
+
 
     /** TYPE DE FILM OU SERIE */
     const [numberMovie, setNumberMovie] = useState<number>(0)
@@ -40,52 +40,70 @@ const NetflixHeader = ({ type }: Props) => {
     const [afficheShowHeader, setAfficheShowHeader] = useState<AfficheShow | null>(null)
     const [presentInFavoris, setPresentInfavoris] = useState<boolean>(false)
 
+    /** AFFICHAGE ALEATOIRE D'UN MOVIE DANS LE HEADER */
+    
+    if(data) {
+        movies = data.data.results
+    }
+    
+    /**
+     * 1: APPEL API 
+     * 2: Index aleatoire pour movie entre 1 et 10
+     */
     useEffect(() => {
-        execute(clientAPI(`${type}/top_rated`))
-        setNumberMovie(Math.floor(Math.random() * 10))
+            execute(clientAPI(`${type}/top_rated`))
+            setNumberMovie(Math.floor(Math.random() * 10))
     }, [])
+    
 
-    /** TESTS */
-
+    /** Movie dans les favoris ou non ? */
     useEffect(() => {
-        /**
-         * Recuperation du film affiché dans le header
-         * 1: Si Movie
-         * 2: Si TV
-         */
-        // 1
-        if (auth.currentUser && data) {
-            if (data.data.results[numberMovie].title) {
+        movieOrTvInHeader()
+        isMovieInFavoris()
+}, [movies])
+
+
+    /**
+     * Affichage title ou name en fonction film ou serie
+     */
+    async function movieOrTvInHeader() {
+        if(movies !== undefined){
+            if (movies[numberMovie].title) {
                 setAfficheShowHeader(
                     {
                         type: type,
-                        id: data.data.results[numberMovie].id,
-                        title: data.data.results[numberMovie].title,
-                        overview: data.data.results[numberMovie].overview,
-                        backdrop_path: data.data.results[numberMovie].backdrop_path,
-                        poster_path: data.data.results[numberMovie].poster_path
+                        id: movies[numberMovie].id,
+                        title: movies[numberMovie].title,
+                        overview: movies[numberMovie].overview,
+                        backdrop_path: movies[numberMovie].backdrop_path,
+                        poster_path: movies[numberMovie].poster_path
                     })
-            } 
-            // 2
-            else {
+            }
+            if(movies[numberMovie].name) {
                 setAfficheShowHeader(
                     {
                         type: type,
-                        id: data.data.results[numberMovie].id,
-                        title: data.data.results[numberMovie].name,
-                        overview: data.data.results[numberMovie].overview,
-                        backdrop_path: data.data.results[numberMovie].backdrop_path,
-                        poster_path: data.data.results[numberMovie].poster_path
+                        id: movies[numberMovie].id,
+                        title: movies[numberMovie].name,
+                        overview: movies[numberMovie].overview,
+                        backdrop_path: movies[numberMovie].backdrop_path,
+                        poster_path: movies[numberMovie].poster_path
                     })
             }
         }
-        /** MaJ Liste des favoris */
-        
-        isMovieInFavoris()
-    }, [data])
+    }
+
+
+
+
+
+
+
+
 
     /** MOVIE DANS LES FAVORIS ? */
     async function isMovieInFavoris() {
+        await getMovieInFavoris()
         if (afficheShowHeader) {
             if (listFavoris.includes(afficheShowHeader.id)) {
                 setPresentInfavoris(true)
@@ -93,7 +111,6 @@ const NetflixHeader = ({ type }: Props) => {
                 setPresentInfavoris(false)
             }
         }
-        getMovieInFavoris()
     }
     /**
      * AJOUT FILM DANS BASE DE DONNEES FIRESTORE
@@ -112,7 +129,7 @@ const NetflixHeader = ({ type }: Props) => {
         } catch (e) {
             console.error("Error adding document: ", e);
         }
-        isMovieInFavoris()
+        //isMovieInFavoris()
     }
 
     // console.log(listFavoris)
@@ -143,13 +160,13 @@ const NetflixHeader = ({ type }: Props) => {
 
                         {/* IMAGE DE FOND */}
                         <div className="absolute top-0 h-[448px] w-full z-0 ">
-                            <img src={`${IMAGE_URL_ORIGINAL}${data.data.results[numberMovie].backdrop_path}`} className="object-cover object-center h-[448px] w-full" />
+                            <img src={`${IMAGE_URL_ORIGINAL}${movies[numberMovie].backdrop_path}`} className="object-cover object-center h-[448px] w-full" />
                         </div>
 
                         <div className="absolute bottom-0 max-h-80  ml-[30px] z-20">
                             <h1 className="title-header text-5xl font-bold pb-1">
                                 {
-                                    data.data.results[numberMovie].title ? `${data.data.results[numberMovie].title}` : data.data.results[numberMovie].name
+                                    data.data.results[numberMovie].title ? `${movies[numberMovie].title}` : movies.results[numberMovie].name
                                 }
                             </h1>
 

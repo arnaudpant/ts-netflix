@@ -18,10 +18,6 @@ const useFirebase = () => {
         setListFavoris(listFilmsInFavoris)
     }
 
-    useEffect(() => {
-        getMovieInFavoris()
-    }, [])
-
 
     return (
         { listFavoris, getMovieInFavoris }
