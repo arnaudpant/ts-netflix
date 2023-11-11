@@ -9,16 +9,15 @@ import { CustumizedAlert } from "../../theme/theme";
 import { AlertTitle } from "@mui/material";
 import { IMAGE_URL_ORIGINAL } from "../../utils/config";
 /** FIRESTORE */
-
 import { getRandomType } from "../../utils/helpers";
 import { AfficheShow } from "../../type/types";
 import useFirestore from "../../hooks/useFirestore";
+import { auth, db } from "../../firebase/firebase.config";
+import { collection, getDocs } from "firebase/firestore";
 
 
 
 const NetflixHeader = () => {
-
-
 
     /** TYPE DE FILM OU SERIE ALEATOIRE */
     const [randomMovie, setRandomMovie] = useState<number>(0)
@@ -95,6 +94,11 @@ const NetflixHeader = () => {
     }
 
 
+    /**
+     *             === FIRESTORE ===
+     */
+
+    
     /** MOVIE DANS LES FAVORIS ? */
     async function isMovieInFavoris() {
         await getMovieInFavoris()

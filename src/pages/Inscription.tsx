@@ -7,13 +7,14 @@ import { Link } from "react-router-dom";
 const Inscription = () => {
 
     const [formData, setFormData] = useState({ email: '', password: '' })
-    
+    //const data = {films: []}
 
     const onSubmit = async (e: any) => {
         e.preventDefault()
         await createUser()
     }
     
+
     const createUser = async () => {
         const emailForm: string = formData.email
         const passwordForm: string = formData.password

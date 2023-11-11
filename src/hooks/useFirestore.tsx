@@ -1,32 +1,13 @@
-import { collection, doc, getDocs, setDoc } from "firebase/firestore";
+import { collection, doc, getDocs, setDoc, updateDoc } from "firebase/firestore";
 import { useState } from "react";
 import { auth, db } from "../firebase/firebase.config";
 import { AfficheShow } from "../type/types";
-import { FirebaseError } from "firebase/app";
+
 
 
 const useFirestore = () => {
     const [listFavoris, setListFavoris] = useState<number[]>([])
     const authUser = auth.currentUser?.uid 
-
-    /** CREATE USER DOCUMENT */
-    const FirestoreCreateDocument = async (collectionName: string, authId: string, data: object) => {
-        try {
-            const documentRef = doc(db, collectionName, authId);
-            await setDoc(documentRef, data);
-            return {
-                data: true
-            }
-        } catch (error) {
-            const firebaseError = error as FirebaseError
-            return {  
-                error: {
-                    code: firebaseError.code,
-                    message: firebaseError.message
-                }
-            }
-        }
-    }
 
 
     /**
@@ -47,17 +28,21 @@ const useFirestore = () => {
      * ADD MOVIE IN FAVORIS
      */
     async function addAfficheShowHeaderToFavoris(movieForFirestore: AfficheShow) {
+        const data = {films: [
+            {
+                id: movieForFirestore.id,
+                type: movieForFirestore.type,
+                title: movieForFirestore.title,
+                name: movieForFirestore.name,
+                overview: movieForFirestore.overview,
+                backdrop_path: movieForFirestore.backdrop_path,
+                poster_path: movieForFirestore.poster_path
+            }
+        ]}
+        
         try {
             if(authUser){
-                await setDoc(doc(db, "users", authUser), {
-                    id: movieForFirestore.id,
-                    type: movieForFirestore.type,
-                    title: movieForFirestore.title,
-                    name: movieForFirestore.name,
-                    overview: movieForFirestore.overview,
-                    backdrop_path: movieForFirestore.backdrop_path,
-                    poster_path: movieForFirestore.poster_path
-                });
+                await updateDoc(doc(db, "users", authUser), data);
             }
         } catch (e) {
             console.error("Error adding document: ", e);
@@ -66,7 +51,7 @@ const useFirestore = () => {
 
 
     return (
-        { listFavoris, getMovieInFavoris, addAfficheShowHeaderToFavoris, FirestoreCreateDocument }
+        { listFavoris, getMovieInFavoris, addAfficheShowHeaderToFavoris }
     );
 };
 

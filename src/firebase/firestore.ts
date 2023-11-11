@@ -4,9 +4,9 @@ import { db } from "./firebase.config";
 
 
 
-export const FirestoreCreateDocument = async (collectionName: string, documentId: string, data: object) => {
+export const FirestoreCreateDocument = async (collectionName: string, email: string, data: any[]) => {
     try {
-        const documentRef = doc(db, collectionName, documentId);
+        const documentRef = doc(db, collectionName, email);
         await setDoc(documentRef, data);
         return {
             data: true
