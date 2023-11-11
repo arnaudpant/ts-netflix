@@ -26,19 +26,18 @@ const NetflixHeader = () => {
     const [type] = useState<string>(getRandomType())
     const { data, status, error, execute } = useFetchData()
     const { listFavoris, getMovieInFavoris, addAfficheShowHeaderToFavoris } = useFirebase()
-    let movies: any | undefined
-
-
+    
+    
     /** TYPE DE FILM OU SERIE */
-    const [numberMovie, setNumberMovie] = useState<number>(0)
-
-
+    const [randomMovie, setRandomMovie] = useState<number>(0)
+    
+    
     /** FAVORIS */
     const [afficheShowHeader, setAfficheShowHeader] = useState<AfficheShow | null>(null)
     const [presentInFavoris, setPresentInfavoris] = useState<boolean>(false)
-
+    
     /** AFFICHAGE ALEATOIRE D'UN MOVIE DANS LE HEADER */
-
+    let movies: any | undefined
     if (data) {
         movies = data.data.results
     }
@@ -49,7 +48,7 @@ const NetflixHeader = () => {
      */
     useEffect(() => {
         execute(clientAPI(`${type}/top_rated`))
-        setNumberMovie(Math.floor(Math.random() * 10))
+        setRandomMovie(Math.floor(Math.random() * 10))
     }, [])
 
 
@@ -69,26 +68,26 @@ const NetflixHeader = () => {
      */
     async function movieOrTvInHeader() {
         if (movies !== undefined) {
-            if (movies[numberMovie].title) {
+            if (movies[randomMovie].title) {
                 setAfficheShowHeader(
                     {
                         type: type,
-                        id: movies[numberMovie].id,
-                        title: movies[numberMovie].title,
-                        overview: movies[numberMovie].overview,
-                        backdrop_path: movies[numberMovie].backdrop_path,
-                        poster_path: movies[numberMovie].poster_path
+                        id: movies[randomMovie].id,
+                        title: movies[randomMovie].title,
+                        overview: movies[randomMovie].overview,
+                        backdrop_path: movies[randomMovie].backdrop_path,
+                        poster_path: movies[randomMovie].poster_path
                     })
             }
-            if (movies[numberMovie].name) {
+            if (movies[randomMovie].name) {
                 setAfficheShowHeader(
                     {
                         type: type,
-                        id: movies[numberMovie].id,
-                        title: movies[numberMovie].name,
-                        overview: movies[numberMovie].overview,
-                        backdrop_path: movies[numberMovie].backdrop_path,
-                        poster_path: movies[numberMovie].poster_path
+                        id: movies[randomMovie].id,
+                        title: movies[randomMovie].name,
+                        overview: movies[randomMovie].overview,
+                        backdrop_path: movies[randomMovie].backdrop_path,
+                        poster_path: movies[randomMovie].poster_path
                     })
             }
         }
@@ -153,13 +152,13 @@ const NetflixHeader = () => {
 
                         {/* IMAGE DE FOND */}
                         <div className="absolute top-0 h-[448px] w-full z-0 ">
-                            <img src={`${IMAGE_URL_ORIGINAL}${movies[numberMovie].backdrop_path}`} className="object-cover object-center h-[448px] w-full" />
+                            <img src={`${IMAGE_URL_ORIGINAL}${movies[randomMovie].backdrop_path}`} className="object-cover object-center h-[448px] w-full" />
                         </div>
 
                         <div className="absolute bottom-0 max-h-80  ml-[30px] z-20">
                             <h1 className="title-header text-5xl font-bold pb-1">
                                 {
-                                    data.data.results[numberMovie].title ? `${movies[numberMovie].title}` : movies[numberMovie].name
+                                    data.data.results[randomMovie].title ? `${movies[randomMovie].title}` : movies[randomMovie].name
                                 }
                             </h1>
 
@@ -176,7 +175,7 @@ const NetflixHeader = () => {
 
                             <div className="h-[200px] overflow-y-scroll">
                                 <h2 className="synopsis text-[#fff] font-normal max-w-[640px]">{
-                                    `${movies[numberMovie].overview}`
+                                    `${movies[randomMovie].overview}`
                                 }</h2>
                             </div>
 
