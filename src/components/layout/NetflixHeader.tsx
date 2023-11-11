@@ -9,7 +9,7 @@ import { CustumizedAlert } from "../../theme/theme";
 import { AlertTitle } from "@mui/material";
 import { IMAGE_URL_ORIGINAL } from "../../utils/config";
 /** FIRESTORE */
-import useFirebase from "../../hooks/useFirebase";
+import useFirestore from "../../hooks/useFirestore";
 import { getRandomType } from "../../utils/helpers";
 import { AfficheShow } from "../../type/types";
 
@@ -22,7 +22,7 @@ const NetflixHeader = () => {
     const [type] = useState<string>(getRandomType())
 
     const { data, status, error, execute } = useFetchData()
-    const { listFavoris, getMovieInFavoris, addAfficheShowHeaderToFavoris } = useFirebase()
+    const { listFavoris, getMovieInFavoris, addAfficheShowHeaderToFavoris } = useFirestore()
 
     /** FAVORIS */
     const [afficheShowHeader, setAfficheShowHeader] = useState<AfficheShow | null>(null)
@@ -32,7 +32,7 @@ const NetflixHeader = () => {
     let movies: any | undefined
     if (data) {
         movies = data.data.results[randomMovie]
-        console.log(movies.id)
+       // console.log(movies.id)
     }
 
     /**
@@ -42,6 +42,7 @@ const NetflixHeader = () => {
     useEffect(() => {
         execute(clientAPI(`${type}/top_rated`))
         setRandomMovie(Math.floor(Math.random() * 20))
+        getMovieInFavoris()
     }, [])
 
 
@@ -49,7 +50,6 @@ const NetflixHeader = () => {
     /** FILM OU SERIE ? */
     useEffect(() => {
         movieOrTvInHeader()
-        isMovieInFavoris()
     }, [movies])
 
     /** FILM OU SERIE ? */
@@ -61,6 +61,7 @@ const NetflixHeader = () => {
     /**
      * Affichage title ou name en fonction film ou serie
      */
+    //TODO: Refactorer
     async function movieOrTvInHeader() {
         if (movies !== undefined) {
             if (movies.title) {
@@ -101,7 +102,6 @@ const NetflixHeader = () => {
                 setPresentInfavoris(false)
             }
         }
-        console.log('Refresh liste')
     }
 
 
@@ -110,6 +110,7 @@ const NetflixHeader = () => {
      */
 
     async function addMovieHeaderToFirestore() {
+        
         if (afficheShowHeader) {
             if (listFavoris.includes(afficheShowHeader.id)) {
                 return
@@ -159,7 +160,7 @@ const NetflixHeader = () => {
         )
     }
 
-    console.log(listFavoris)
+    console.log('render')
 
     return (
         <header className="relative h-[448px] text-white overflow-hidden">
