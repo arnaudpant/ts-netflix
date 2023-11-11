@@ -29,7 +29,7 @@ const NetflixHeader = () => {
     const [presentInFavoris, setPresentInfavoris] = useState<boolean>(false)
 
     /** AFFICHAGE ALEATOIRE D'UN MOVIE DANS LE HEADER */
-    let movies: ""
+    let movies: any | undefined
     if (data) {
         movies = data.data.results
     }
