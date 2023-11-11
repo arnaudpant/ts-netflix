@@ -1,5 +1,4 @@
 import { Button, TextField } from "@mui/material";
-//import axios from "axios";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
 import { auth } from "../firebase/firebase.config";
@@ -8,9 +7,14 @@ import { Link } from "react-router-dom";
 const Inscription = () => {
 
     const [formData, setFormData] = useState({ email: '', password: '' })
+    
 
     const onSubmit = async (e: any) => {
         e.preventDefault()
+        await createUser()
+    }
+    
+    const createUser = async () => {
         const emailForm: string = formData.email
         const passwordForm: string = formData.password
 
