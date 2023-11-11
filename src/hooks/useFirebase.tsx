@@ -17,7 +17,9 @@ const useFirebase = () => {
         mySnapshot.forEach((doc) => {
             listFilmsInFavoris.push(doc.data().id)
         });
-        setListFavoris(listFilmsInFavoris)
+        if (listFavoris.length !== listFilmsInFavoris.length){
+            setListFavoris(listFilmsInFavoris)
+        }
     }
 
     async function addAfficheShowHeaderToFavoris(movieForFirestore: AfficheShow) {
@@ -26,6 +28,7 @@ const useFirebase = () => {
                 id: movieForFirestore.id,
                 type: movieForFirestore.type,
                 title: movieForFirestore.title,
+                name: movieForFirestore.name,
                 overview: movieForFirestore.overview,
                 backdrop_path: movieForFirestore.backdrop_path,
                 poster_path: movieForFirestore.poster_path

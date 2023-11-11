@@ -10,6 +10,7 @@ export type MovieHeader = {
 export type AfficheShow = {
     type: string,
     id: number,
+    name: string,
     title: string,
     overview: string,
     backdrop_path: string,
