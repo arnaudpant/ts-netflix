@@ -110,12 +110,16 @@ const NetflixHeader = () => {
      */
 
     async function addMovieHeaderToFirestore() {
-        
         if (afficheShowHeader) {
             if (listFavoris.includes(afficheShowHeader.id)) {
                 return
             }
         }
+       
+        // if(listFavoris.length > 0) {
+
+        // }
+
         if (afficheShowHeader?.title) {
             const movieForFirestore: AfficheShow = {
                 id: afficheShowHeader.id,
