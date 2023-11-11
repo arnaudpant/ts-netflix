@@ -11,57 +11,48 @@ import { IMAGE_URL_ORIGINAL } from "../../utils/config";
 /** FIRESTORE */
 import useFirebase from "../../hooks/useFirebase";
 import { getRandomType } from "../../utils/helpers";
+import { AfficheShow } from "../../type/types";
 
-export type AfficheShow = {
-    type: string,
-    id: number,
-    title: string,
-    overview: string,
-    backdrop_path: string,
-    poster_path: string
-}
+
 
 const NetflixHeader = () => {
 
+    /** TYPE DE FILM OU SERIE ALEATOIRE */
+    const [randomMovie, setRandomMovie] = useState<number>(0)
     const [type] = useState<string>(getRandomType())
+
     const { data, status, error, execute } = useFetchData()
     const { listFavoris, getMovieInFavoris, addAfficheShowHeaderToFavoris } = useFirebase()
-    
-    
-    /** TYPE DE FILM OU SERIE */
-    const [randomMovie, setRandomMovie] = useState<number>(0)
-    
-    
+
     /** FAVORIS */
     const [afficheShowHeader, setAfficheShowHeader] = useState<AfficheShow | null>(null)
     const [presentInFavoris, setPresentInfavoris] = useState<boolean>(false)
-    
+
     /** AFFICHAGE ALEATOIRE D'UN MOVIE DANS LE HEADER */
-    let movies: any | undefined
+    let movies: ""
     if (data) {
         movies = data.data.results
     }
 
     /**
-     * 1: APPEL API 
-     * 2: Index aleatoire pour movie entre 1 et 10
-     */
+     * 1: APPEL API FILMS MIEUX NOTES
+     * 2: Index aleatoire pour movie entre 1 et 20
+    */
     useEffect(() => {
         execute(clientAPI(`${type}/top_rated`))
-        setRandomMovie(Math.floor(Math.random() * 10))
+        setRandomMovie(Math.floor(Math.random() * 20))
     }, [])
+
 
 
     /** Movie dans les favoris ou non ? */
     useEffect(() => {
         movieOrTvInHeader()
         isMovieInFavoris()
+
     }, [movies])
 
-    useEffect(() => {
-        isMovieInFavoris()
-    }, [listFavoris])
-
+    console.log(movies)
 
     /**
      * Affichage title ou name en fonction film ou serie
@@ -143,6 +134,7 @@ const NetflixHeader = () => {
         )
     }
 
+    // console.log(listFavoris)
 
     return (
         <header className="relative h-[448px] text-white overflow-hidden">

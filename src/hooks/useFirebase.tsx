@@ -1,7 +1,8 @@
 import { addDoc, collection, getDocs } from "firebase/firestore";
 import { useState } from "react";
 import { db } from "../firebase/firebase.config";
-import { AfficheShow } from "../components/layout/NetflixHeader";
+import { AfficheShow } from "../type/types";
+
 
 
 const useFirebase = () => {
@@ -34,8 +35,24 @@ const useFirebase = () => {
         }
     }
 
+     const movieInListOrNot = async (afficheShowHeader: number) => {
+        const mySnapshot = await getDocs(collection(db, "users"))
+            let listFilmsInFavoris: number[] = []
+    
+            mySnapshot.forEach((doc) => {
+                listFilmsInFavoris.push(doc.data().id)
+            });
+            if (afficheShowHeader) {
+                if (listFilmsInFavoris.includes(afficheShowHeader)) {
+                    return true
+                } else {
+                    return false
+                }
+            }
+    }
+
     return (
-        { listFavoris, getMovieInFavoris, addAfficheShowHeaderToFavoris }
+        { listFavoris, getMovieInFavoris, addAfficheShowHeaderToFavoris, movieInListOrNot }
     );
 };
 
