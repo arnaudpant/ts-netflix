@@ -31,7 +31,8 @@ const NetflixHeader = () => {
     /** AFFICHAGE ALEATOIRE D'UN MOVIE DANS LE HEADER */
     let movies: any | undefined
     if (data) {
-        movies = data.data.results
+        movies = data.data.results[randomMovie]
+        console.log(movies)
     }
 
     /**
@@ -49,36 +50,34 @@ const NetflixHeader = () => {
     useEffect(() => {
         movieOrTvInHeader()
         isMovieInFavoris()
-
     }, [movies])
 
-    console.log(movies)
 
     /**
      * Affichage title ou name en fonction film ou serie
      */
     async function movieOrTvInHeader() {
         if (movies !== undefined) {
-            if (movies[randomMovie].title) {
+            if (movies.title) {
                 setAfficheShowHeader(
                     {
                         type: type,
-                        id: movies[randomMovie].id,
-                        title: movies[randomMovie].title,
-                        overview: movies[randomMovie].overview,
-                        backdrop_path: movies[randomMovie].backdrop_path,
-                        poster_path: movies[randomMovie].poster_path
+                        id: movies.id,
+                        title: movies.title,
+                        overview: movies.overview,
+                        backdrop_path: movies.backdrop_path,
+                        poster_path: movies.poster_path
                     })
             }
-            if (movies[randomMovie].name) {
+            if (movies.name) {
                 setAfficheShowHeader(
                     {
                         type: type,
-                        id: movies[randomMovie].id,
-                        title: movies[randomMovie].name,
-                        overview: movies[randomMovie].overview,
-                        backdrop_path: movies[randomMovie].backdrop_path,
-                        poster_path: movies[randomMovie].poster_path
+                        id: movies.id,
+                        title: movies.name,
+                        overview: movies.overview,
+                        backdrop_path: movies.backdrop_path,
+                        poster_path: movies.poster_path
                     })
             }
         }
@@ -144,13 +143,13 @@ const NetflixHeader = () => {
 
                         {/* IMAGE DE FOND */}
                         <div className="absolute top-0 h-[448px] w-full z-0 ">
-                            <img src={`${IMAGE_URL_ORIGINAL}${movies[randomMovie].backdrop_path}`} className="object-cover object-center h-[448px] w-full" />
+                            <img src={`${IMAGE_URL_ORIGINAL}${movies.backdrop_path}`} className="object-cover object-center h-[448px] w-full" />
                         </div>
 
                         <div className="absolute bottom-0 max-h-80  ml-[30px] z-20">
                             <h1 className="title-header text-5xl font-bold pb-1">
                                 {
-                                    data.data.results[randomMovie].title ? `${movies[randomMovie].title}` : movies[randomMovie].name
+                                    data.data.results[randomMovie].title ? `${movies.title}` : movies[randomMovie].name
                                 }
                             </h1>
 
@@ -167,7 +166,7 @@ const NetflixHeader = () => {
 
                             <div className="h-[200px] overflow-y-scroll">
                                 <h2 className="synopsis text-[#fff] font-normal max-w-[640px]">{
-                                    `${movies[randomMovie].overview}`
+                                    `${movies.overview}`
                                 }</h2>
                             </div>
 
