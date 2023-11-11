@@ -1,5 +1,5 @@
 /** HOOKS */
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useFetchData } from "../hooks/useFetchData";
 /** COMPONENTS */
 /** UTILS */
@@ -24,24 +24,27 @@ type Props = {
     watermark: boolean
 }
 
-const NetflixRow = ({ title, wideImage, type = TYPE_MOVIE, param, filter = "populaire", watermark }: Props) => {
+const NetflixRow = ({ title, wideImage, type = TYPE_MOVIE, param, filter = "latest", watermark }: Props) => {
 
     const { data, status, error, execute } = useFetchData()
+    const [moviesArr, setMoviesArr] = useState([])
 
-
-    const endpointPopular = `${type}/popular`
     const endpointLatest = `${type}/latest`
     const endpointTopRated = `${type}/top_rated`
     const endpointGenre = `discover/${type}/?with_genres=${param}`
     const endpointTrending = `trending/${type}/day`
 
+    useEffect(() => {
+        if(data) {
+            setMoviesArr(data.data.results)
+        }
+
+    }, [data])
+
 
     let endpoint: string
 
     switch (filter) {
-        case 'populaire':
-            endpoint = endpointPopular
-            break
         case 'latest':
             endpoint = endpointLatest
             break
@@ -93,14 +96,14 @@ const NetflixRow = ({ title, wideImage, type = TYPE_MOVIE, param, filter = "popu
             <h2 className="text-xl font-semibold">{title}</h2>
             <div className="flex overflow-y-hidden overflow-x-scroll p-5">
                 {
-                    data.data.results.map((movie: any) => (
+                    moviesArr.length > 0 ? (moviesArr.map((movie: any) => (
                         <div className={clsx(wideImage ? "max-w-[400px]" : " max-w-[166px]", 'relative shrink-0 mr-5')} key={movie.id}>
                             <Link to={`/${type}/${movie.id}`}>
                                 <img src={`${buildImagePath(movie)}`} alt={`${movie.original_title}`} className="vignettes cursor-pointer object-contain hover:scale-110" />
                                 <div className={watermarkClass}></div>
                             </Link>
                         </div>
-                    ))
+                    ))) : ("")
                 }
             </div>
         </div>

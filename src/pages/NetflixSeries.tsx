@@ -8,10 +8,9 @@ const NetflixSeries = () => {
     return (
         <div className="bg-[#111] relative">
             <NetflixAppBar />
-            <NetflixHeader type={TYPE_TV} />
+            <NetflixHeader />
             <NetflixRow title="Séries tendances Netflix" wideImage={true} watermark={true} type={TYPE_TV} filter="trending" />
             <NetflixRow title="Séries les mieux notées" wideImage={true} watermark={false} type={TYPE_TV} filter="toprated"  />
-            <NetflixRow title="Les séries populaires" wideImage={true} watermark={false} type={TYPE_TV} filter="populaire" />
             <NetflixRow title="Les documentaires" wideImage={true} watermark={false} type={TYPE_TV} filter="genre" param="99" />
             <NetflixRow title="Les séries criminelles" wideImage={true} watermark={false} type={TYPE_TV} filter="genre" param="80" />
         </div>

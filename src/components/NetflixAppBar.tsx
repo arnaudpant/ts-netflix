@@ -53,10 +53,9 @@ export const NetflixAppBar = () => {
         <AppBarStyle>
             <Toolbar  >
                 <img src="/vignettes/netflix-logo.png" alt="logo Netflix" className="h-5" color="secondary" />
-                <Link to="/" className="m-2"><Typography variant="h6">Accueil</Typography></Link>
+                <Link to="/" className="ml-5 mr-2"><Typography variant="h6">Accueil</Typography></Link>
                 <Link to="/series" className="m-2"><Typography variant="h6">Séries</Typography></Link>
                 <Link to="/movies" className="m-2"><Typography variant="h6">Films</Typography></Link>
-                <Link to="/news" className="m-2"><Typography variant="h6">Nouveautés</Typography></Link>
                 <Link to="/" className="m-2"><Typography variant="h6">Ma liste</Typography></Link>
                 <div className="h-8 w-8 ml-auto cursor-pointer" onClick={logOut}>
                     <img src="/avatar/avatar-default2.svg" alt="logo Netflix"/>

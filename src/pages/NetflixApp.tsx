@@ -1,4 +1,3 @@
-/** HOOKS */
 /** COMPONENTS */
 import NetflixHeader from "../components/layout/NetflixHeader";
 import NetflixAppBar from "../components/NetflixAppBar";
@@ -6,8 +5,7 @@ import NetflixRow from "../components/NetflixRow";
 import NetflixFooter from "../components/layout/NetflixFooter";
 /** UTILS */
 import { TYPE_MOVIE, TYPE_TV } from "../utils/config";
-/** API */
-/** MUI */
+
 
 
 

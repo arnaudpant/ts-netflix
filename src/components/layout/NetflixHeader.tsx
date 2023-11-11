@@ -9,13 +9,16 @@ import { CustumizedAlert } from "../../theme/theme";
 import { AlertTitle } from "@mui/material";
 import { IMAGE_URL_ORIGINAL } from "../../utils/config";
 /** FIRESTORE */
-import useFirestore from "../../hooks/useFirestore";
+
 import { getRandomType } from "../../utils/helpers";
 import { AfficheShow } from "../../type/types";
+import useFirestore from "../../hooks/useFirestore";
 
 
 
 const NetflixHeader = () => {
+
+
 
     /** TYPE DE FILM OU SERIE ALEATOIRE */
     const [randomMovie, setRandomMovie] = useState<number>(0)
@@ -32,7 +35,7 @@ const NetflixHeader = () => {
     let movies: any | undefined
     if (data) {
         movies = data.data.results[randomMovie]
-       // console.log(movies.id)
+        // console.log(movies.id)
     }
 
     /**
@@ -115,11 +118,7 @@ const NetflixHeader = () => {
                 return
             }
         }
-       
-        if(listFavoris.length === 0) {
-            
 
-        }
 
         if (afficheShowHeader?.title) {
             const movieForFirestore: AfficheShow = {

@@ -1,4 +1,4 @@
-import { collection, doc, getDocs, setDoc, updateDoc } from "firebase/firestore";
+import { collection, doc, getDocs, setDoc } from "firebase/firestore";
 import { useState } from "react";
 import { auth, db } from "../firebase/firebase.config";
 import { AfficheShow } from "../type/types";
@@ -28,24 +28,6 @@ const useFirestore = () => {
         }
     }
 
-    /** UPDATE DOCUMENT */
-    const FirestoreUpdateDocument = async (collectionName: string, documentId: string, data: object) => {
-        try {
-            const documentRef = doc(db, collectionName, documentId);
-            await updateDoc(documentRef, data);
-            return {
-                data: true
-            }
-        } catch (error) {
-            const firebaseError = error as FirebaseError
-            return {  
-                error: {
-                    code: firebaseError.code,
-                    message: firebaseError.message
-                }
-            }
-        }
-    }
 
     /**
      * GET LIST FAVORIS
@@ -83,24 +65,8 @@ const useFirestore = () => {
     }
 
 
-    // const movieInListOrNot = async (afficheShowHeader: number) => {
-    //     const mySnapshot = await getDocs(collection(db, "users"))
-    //     let listFilmsInFavoris: number[] = []
-
-    //     mySnapshot.forEach((doc) => {
-    //         listFilmsInFavoris.push(doc.data().id)
-    //     });
-    //     if (afficheShowHeader) {
-    //         if (listFilmsInFavoris.includes(afficheShowHeader)) {
-    //             return true
-    //         } else {
-    //             return false
-    //         }
-    //     }
-    // }
-
     return (
-        { listFavoris, getMovieInFavoris, addAfficheShowHeaderToFavoris, FirestoreCreateDocument, FirestoreUpdateDocument }
+        { listFavoris, getMovieInFavoris, addAfficheShowHeaderToFavoris, FirestoreCreateDocument }
     );
 };
 
