@@ -116,9 +116,10 @@ const NetflixHeader = () => {
             }
         }
        
-        // if(listFavoris.length > 0) {
+        if(listFavoris.length === 0) {
+            
 
-        // }
+        }
 
         if (afficheShowHeader?.title) {
             const movieForFirestore: AfficheShow = {
