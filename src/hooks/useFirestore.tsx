@@ -30,7 +30,14 @@ const useFirestore = () => {
 
         await getFilmsFavorisData()
 
-        if (listFavoris.length > 0) {
+        if (listFavoris.length === 0) {
+            return
+            // let listFilmsInFavoris: any[] = []
+            // listFilmsInFavoris.push( films.films.id)
+            // setListFavoris(listFilmsInFavoris)
+        }
+
+        if (listFavoris) {
             if (films) {
                 let listFilmsInFavoris: any[] = []
                 films.films.map((film: AfficheShow) =>
@@ -42,11 +49,6 @@ const useFirestore = () => {
             } else {
                 console.log("ERROR getMovieInFavoris")
             }
-        }
-        if (listFavoris.length === 0) {
-            let listFilmsInFavoris: any[] = []
-            listFilmsInFavoris.push( films.films.id)
-            setListFavoris(listFilmsInFavoris)
         }
 
     }
