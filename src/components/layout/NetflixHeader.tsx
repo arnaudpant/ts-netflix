@@ -11,9 +11,8 @@ import { IMAGE_URL_ORIGINAL } from "../../utils/config";
 /** FIRESTORE */
 import { getRandomType } from "../../utils/helpers";
 import { AfficheShow } from "../../type/types";
-import useFirestore from "../../hooks/useFirestore";
-import { auth, db } from "../../firebase/firebase.config";
-import { collection, getDocs } from "firebase/firestore";
+import useFirestore from "../../hooks/useFirestore"
+
 
 
 
