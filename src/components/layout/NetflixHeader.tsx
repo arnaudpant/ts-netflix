@@ -23,7 +23,7 @@ const NetflixHeader = () => {
     const [type] = useState<string>(getRandomType())
 
     const { data, status, error, execute } = useFetchData()
-    const { listFavoris, putMovieInFavoris, addAfficheShowHeaderToFavoris } = useFirestore()
+    const { listFavoris, putMovieInFavoris, addAfficheShowHeaderToFavoris, removeAfficheShowHeaderToFavoris } = useFirestore()
 
     /** FAVORIS */
     const [afficheShowHeader, setAfficheShowHeader] = useState<AfficheShow | null>(null)
@@ -120,8 +120,6 @@ const NetflixHeader = () => {
                 return
             }
         }
-
-
         if (afficheShowHeader?.title) {
             const movieForFirestore: AfficheShow = {
                 id: afficheShowHeader.id,
@@ -147,6 +145,12 @@ const NetflixHeader = () => {
             addAfficheShowHeaderToFavoris(movieForFirestore)
         }
         await isMovieInFavoris()
+    }
+
+    async function removeMovieHeaderToFirestore() {
+        if (afficheShowHeader){
+            removeAfficheShowHeaderToFavoris(afficheShowHeader.id)
+        } 
     }
 
     console.log("listFavoris", listFavoris)
@@ -192,7 +196,7 @@ const NetflixHeader = () => {
                                 <button className="px-8 mr-4 py-2 cursor-pointer outline-none border-none text-lg font-bold hover:opacity-70 rounded bg-[#e6e6e6] text-[#000]">Lecture</button>
                                 {
                                     presentInFavoris ? (
-                                        <button className="px-8 mr-4 py-2 cursor-pointer outline-none border-none text-lg font-bold hover:opacity-70 rounded bg-red-400 text-[#fff]">Supprimer de ma liste</button>
+                                        <button onClick={removeMovieHeaderToFirestore} className="px-8 mr-4 py-2 cursor-pointer outline-none border-none text-lg font-bold hover:opacity-70 rounded bg-red-400 text-[#fff]">Supprimer de ma liste</button>
                                     ) :
                                         (<button onClick={addMovieHeaderToFirestore} className="px-8 mr-4 py-2 cursor-pointer outline-none border-none text-lg font-bold hover:opacity-70 rounded bg-slate-400 text-[#fff]">Ajouter a ma liste</button>)
                                 }

@@ -30,19 +30,13 @@ const useFirestore = () => {
 
         await getFilmsFavorisData()
 
-        if (listFavoris.length === 0) {
-            return
-            // let listFilmsInFavoris: any[] = []
-            // listFilmsInFavoris.push( films.films.id)
-            // setListFavoris(listFilmsInFavoris)
-        }
 
         if (listFavoris) {
             if (films) {
                 let listFilmsInFavoris: any[] = []
                 films.films.map((film: AfficheShow) =>
                     listFilmsInFavoris.push(film.id)
-                    )
+                )
                 if (listFavoris.length !== listFilmsInFavoris.length) {
                     setListFavoris(listFilmsInFavoris)
                 }
@@ -60,10 +54,10 @@ const useFirestore = () => {
         /** SI FILM DAND LA LISTE DES FAVORIS */
         await getFilmsFavorisData()
         if (films && listFavoris.length > 0) {
-            if(listFavoris.includes(movieForFirestore.id)){
+            if (listFavoris.includes(movieForFirestore.id)) {
                 return
             }
-        } 
+        }
 
         /** INITIALISATION NOUVEAU FILM */
         const newFilm: AfficheShow = {
@@ -78,15 +72,15 @@ const useFirestore = () => {
 
         /** GET LIST FILMS */
         if (authUser) {
-            let tempObjectWithFilms: any 
+            let tempObjectWithFilms: any
             const docSnap = await getDoc(docRef);
             if (docSnap.exists()) {
                 tempObjectWithFilms = docSnap.data() // { films: [] }
             } else {
                 console.log("No such document!");
             }
-            if(tempObjectWithFilms.films){
-                tempObjectWithFilms.films = [...tempObjectWithFilms.films , newFilm]
+            if (tempObjectWithFilms.films) {
+                tempObjectWithFilms.films = [...tempObjectWithFilms.films, newFilm]
             }
             await setDoc(docRef, tempObjectWithFilms)
         }
@@ -95,8 +89,37 @@ const useFirestore = () => {
         setListFavoris([...listFavoris, movieForFirestore.id])
     }
 
+    async function removeAfficheShowHeaderToFavoris(id: number) {
+        //     /** GET LIST FILMS */
+        if (authUser) {
+            let dataFilms: any
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                dataFilms = docSnap.data() // { films: [] }
+            } else {
+                console.log("No such document!");
+            }
+
+            if (dataFilms) {
+                const tempdataFilms = dataFilms.films
+                const ObjectWithoutFilmRemove = tempdataFilms
+                    .filter((film: AfficheShow) => film.id !== id)
+                //.map((film:AfficheShow)  => film.id)
+
+                console.log('tempObjectWithoutFilmRemove', ObjectWithoutFilmRemove)
+                dataFilms.films = [...ObjectWithoutFilmRemove]
+                await setDoc(docRef, dataFilms)
+            }
+            /** MAJ LISTE FAVORIS */
+            const tempNewListFavoris = listFavoris.filter((film) => {
+                film !== id
+            })
+            setListFavoris(tempNewListFavoris)
+        }
+    }
+
     return (
-        { listFavoris, putMovieInFavoris, addAfficheShowHeaderToFavoris }
+        { listFavoris, putMovieInFavoris, addAfficheShowHeaderToFavoris, removeAfficheShowHeaderToFavoris }
     );
 };
 
