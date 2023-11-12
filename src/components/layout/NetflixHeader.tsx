@@ -23,7 +23,7 @@ const NetflixHeader = () => {
     const [type] = useState<string>(getRandomType())
 
     const { data, status, error, execute } = useFetchData()
-    const { listFavoris, getMovieInFavoris, addAfficheShowHeaderToFavoris } = useFirestore()
+    const { listFavoris, putMovieInFavoris, addAfficheShowHeaderToFavoris } = useFirestore()
 
     /** FAVORIS */
     const [afficheShowHeader, setAfficheShowHeader] = useState<AfficheShow | null>(null)
@@ -43,7 +43,7 @@ const NetflixHeader = () => {
     useEffect(() => {
         execute(clientAPI(`${type}/top_rated`))
         setRandomMovie(Math.floor(Math.random() * 20))
-        getMovieInFavoris()
+        putMovieInFavoris()
     }, [])
 
 
@@ -100,7 +100,7 @@ const NetflixHeader = () => {
     
     /** MOVIE DANS LES FAVORIS ? */
     async function isMovieInFavoris() {
-        await getMovieInFavoris()
+        await putMovieInFavoris()
         if (afficheShowHeader) {
             if (listFavoris.includes(afficheShowHeader.id)) {
                 setPresentInfavoris(true)
@@ -109,7 +109,6 @@ const NetflixHeader = () => {
             }
         }
     }
-
 
     /**
      * ENVOI MOVIE DANS BASE DE DONNEES FIRESTORE
@@ -149,6 +148,8 @@ const NetflixHeader = () => {
         }
         await isMovieInFavoris()
     }
+
+    console.log("listFavoris", listFavoris)
 
     /** SKELETON */
     if (status === 'fetching' || status === 'idle') {

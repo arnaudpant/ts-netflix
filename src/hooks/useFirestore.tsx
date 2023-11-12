@@ -1,4 +1,4 @@
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
 import { useState } from "react";
 import { auth, db } from "../firebase/firebase.config";
 import { AfficheShow } from "../type/types";
@@ -9,22 +9,33 @@ const useFirestore = () => {
     const [listFavoris, setListFavoris] = useState<number[]>([])
     const authUser: string | undefined = auth.currentUser?.uid
 
+    /** 
+     * GET FILMS FAVORIS
+    */
+    let docRef: any
+    let films: any
+    if (authUser) {
+        docRef = doc(db, "users", authUser);
+    }
+    async function getFilmsFavorisData() {
+        const docSnap = await getDoc(docRef);
+        films = docSnap.data() // [{}, {}, ...]
+    }
+
 
     /**
-     * GET LIST FAVORIS
+     * PUT FILMS IN FAVORIS
      */
-    async function getMovieInFavoris() {
+    async function putMovieInFavoris() {
 
-        if (authUser) {
-            const docRef = doc(db, "users", authUser);
-            const docSnap = await getDoc(docRef);
-            const films = docSnap.data()
+        await getFilmsFavorisData()
 
+        if (listFavoris.length > 0) {
             if (films) {
                 let listFilmsInFavoris: any[] = []
                 films.films.map((film: AfficheShow) =>
                     listFilmsInFavoris.push(film.id)
-                )
+                    )
                 if (listFavoris.length !== listFilmsInFavoris.length) {
                     setListFavoris(listFilmsInFavoris)
                 }
@@ -32,39 +43,58 @@ const useFirestore = () => {
                 console.log("ERROR getMovieInFavoris")
             }
         }
+        if (listFavoris.length === 0) {
+            let listFilmsInFavoris: any[] = []
+            listFilmsInFavoris.push( films.films.id)
+            setListFavoris(listFilmsInFavoris)
+        }
+
     }
     /**
      * ADD MOVIE IN FAVORIS
      */
     async function addAfficheShowHeaderToFavoris(movieForFirestore: AfficheShow) {
 
-
-        const data = {
-            films: [
-                {
-                    id: movieForFirestore.id,
-                    type: movieForFirestore.type,
-                    title: movieForFirestore.title,
-                    name: movieForFirestore.name,
-                    overview: movieForFirestore.overview,
-                    backdrop_path: movieForFirestore.backdrop_path,
-                    poster_path: movieForFirestore.poster_path
-                }
-            ]
-        }
-
-        try {
-            if (authUser) {
-                await updateDoc(doc(db, "users", authUser), data);
+        /** SI FILM DAND LA LISTE DES FAVORIS */
+        await getFilmsFavorisData()
+        if (films && listFavoris.length > 0) {
+            if(listFavoris.includes(movieForFirestore.id)){
+                return
             }
-        } catch (e) {
-            console.error("Error adding document: ", e);
+        } 
+
+        /** INITIALISATION NOUVEAU FILM */
+        const newFilm: AfficheShow = {
+            type: movieForFirestore.type,
+            id: movieForFirestore.id,
+            name: movieForFirestore.name,
+            title: movieForFirestore.title,
+            overview: movieForFirestore.overview,
+            backdrop_path: movieForFirestore.backdrop_path,
+            poster_path: movieForFirestore.poster_path
         }
+
+        /** GET LIST FILMS */
+        if (authUser) {
+            let tempObjectWithFilms: any 
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                tempObjectWithFilms = docSnap.data() // { films: [] }
+            } else {
+                console.log("No such document!");
+            }
+            if(tempObjectWithFilms.films){
+                tempObjectWithFilms.films = [...tempObjectWithFilms.films , newFilm]
+            }
+            await setDoc(docRef, tempObjectWithFilms)
+        }
+
+        /** MAJ LISTE FAVORIS */
+        setListFavoris([...listFavoris, movieForFirestore.id])
     }
 
-
     return (
-        { listFavoris, getMovieInFavoris, addAfficheShowHeaderToFavoris }
+        { listFavoris, putMovieInFavoris, addAfficheShowHeaderToFavoris }
     );
 };
 
