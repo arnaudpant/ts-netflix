@@ -30,7 +30,8 @@ const useFirestore = () => {
 
         await getFilmsFavorisData()
 
-        if (listFavoris.length > 0) {
+
+        if (listFavoris) {
             if (films) {
                 let listFilmsInFavoris: any[] = []
                 films.films.map((film: AfficheShow) =>
@@ -42,11 +43,6 @@ const useFirestore = () => {
             } else {
                 console.log("ERROR getMovieInFavoris")
             }
-        }
-        if (listFavoris.length === 0) {
-            let listFilmsInFavoris: any[] = []
-            listFilmsInFavoris.push(films.films.id)
-            setListFavoris(listFilmsInFavoris)
         }
 
     }
@@ -90,37 +86,37 @@ const useFirestore = () => {
         }
 
         /** MAJ LISTE FAVORIS */
-        //setListFavoris([...listFavoris, movieForFirestore.id])
+        setListFavoris([...listFavoris, movieForFirestore.id])
     }
 
-     async function removeAfficheShowHeaderToFavoris(id: number) {
-    //     /** GET LIST FILMS */
-    //     if (authUser) {
-    //         let tempObjectWithFilms: any
-    //         const docSnap = await getDoc(docRef);
-    //         if (docSnap.exists()) {
-    //             tempObjectWithFilms = docSnap.data() // { films: [] }
-    //         } else {
-    //             console.log("No such document!");
-    //         }
-            
-    //         // if (tempObjectWithFilms.films) {
-                
-    //         //     console.log('tempObjectWithFilms.films', tempObjectWithFilms.films)
-    //         //     const tempObjectWithoutFilmRemove = tempObjectWithFilms.films.filter((film: AfficheShow) => {
-    //         //         film.id !== id
-    //         //     })
-    //         //     tempObjectWithFilms.films = tempObjectWithoutFilmRemove
-    //         //     console.log(tempObjectWithFilms.films)
-    //         //    // await setDoc(docRef, tempObjectWithFilms)
-    //         // }
-    //         /** MAJ LISTE FAVORIS */
-    //         // const tempNewListFavoris = listFavoris.filter((film) => {
-    //         //     film !== id
-    //         // })
-    //         // setListFavoris(tempNewListFavoris)
-    //     }
-     }
+    async function removeAfficheShowHeaderToFavoris(id: number) {
+        //     /** GET LIST FILMS */
+        if (authUser) {
+            let dataFilms: any
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                dataFilms = docSnap.data() // { films: [] }
+            } else {
+                console.log("No such document!");
+            }
+
+            if (dataFilms) {
+                const tempdataFilms = dataFilms.films
+                const ObjectWithoutFilmRemove = tempdataFilms
+                    .filter((film: AfficheShow) => film.id !== id)
+                //.map((film:AfficheShow)  => film.id)
+
+                console.log('tempObjectWithoutFilmRemove', ObjectWithoutFilmRemove)
+                dataFilms.films = [...ObjectWithoutFilmRemove]
+                await setDoc(docRef, dataFilms)
+            }
+            /** MAJ LISTE FAVORIS */
+            const tempNewListFavoris = listFavoris.filter((film) => {
+                film !== id
+            })
+            setListFavoris(tempNewListFavoris)
+        }
+    }
 
     return (
         { listFavoris, putMovieInFavoris, addAfficheShowHeaderToFavoris, removeAfficheShowHeaderToFavoris }

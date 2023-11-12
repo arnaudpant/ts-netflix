@@ -147,13 +147,13 @@ const NetflixHeader = () => {
         await isMovieInFavoris()
     }
 
-    // async function removeMovieHeaderToFirestore() {
-    //     if (afficheShowHeader){
-    //         removeAfficheShowHeaderToFavoris(afficheShowHeader.id)
-    //     } 
-    // }
+    async function removeMovieHeaderToFirestore() {
+        if (afficheShowHeader){
+            removeAfficheShowHeaderToFavoris(afficheShowHeader.id)
+        } 
+    }
 
-    //console.log("listFavoris", listFavoris)
+    console.log("listFavoris", listFavoris)
 
     /** SKELETON */
     if (status === 'fetching' || status === 'idle') {
