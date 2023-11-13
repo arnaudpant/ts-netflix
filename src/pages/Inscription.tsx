@@ -1,8 +1,9 @@
 import { Button, TextField } from "@mui/material";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
-import { auth } from "../firebase/firebase.config";
+import { auth, db } from "../firebase/firebase.config";
 import { Link } from "react-router-dom";
+import { doc, setDoc } from "firebase/firestore";
 
 const Inscription = () => {
 
@@ -13,7 +14,7 @@ const Inscription = () => {
         e.preventDefault()
         await createUser()
     }
-    
+
 
     const createUser = async () => {
         const emailForm: string = formData.email
@@ -26,6 +27,7 @@ const Inscription = () => {
         catch (error) {
             console.log("catch", error)
         }
+        
     }
 
     return (

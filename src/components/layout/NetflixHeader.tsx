@@ -153,7 +153,7 @@ const NetflixHeader = () => {
         } 
     }
 
-    console.log("listFavoris", listFavoris)
+    //console.log("listFavoris", listFavoris)
 
     /** SKELETON */
     if (status === 'fetching' || status === 'idle') {

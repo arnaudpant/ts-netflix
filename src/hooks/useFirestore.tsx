@@ -27,10 +27,7 @@ const useFirestore = () => {
      * PUT FILMS IN FAVORIS
      */
     async function putMovieInFavoris() {
-
         await getFilmsFavorisData()
-
-
         if (listFavoris) {
             if (films) {
                 let listFilmsInFavoris: any[] = []
@@ -41,7 +38,12 @@ const useFirestore = () => {
                     setListFavoris(listFilmsInFavoris)
                 }
             } else {
-                console.log("ERROR getMovieInFavoris")
+                if(authUser){
+                    setDoc(doc(db, "users", authUser), {
+                        films: []
+                    });
+                }
+                console.log("ERROR putMovieInFavoris")
             }
         }
 
