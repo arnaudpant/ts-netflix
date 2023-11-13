@@ -1,9 +1,8 @@
 import { Button, TextField } from "@mui/material";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
-import { auth, db } from "../firebase/firebase.config";
+import { auth } from "../firebase/firebase.config";
 import { Link } from "react-router-dom";
-import { doc, setDoc } from "firebase/firestore";
 
 const Inscription = () => {
 
@@ -25,7 +24,7 @@ const Inscription = () => {
             console.log('New user', userCredential.user)
         }
         catch (error) {
-            console.log("catch", error)
+            console.log("ERROR CREATEUSER", error)
         }
         
     }

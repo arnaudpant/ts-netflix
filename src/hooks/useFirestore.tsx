@@ -2,59 +2,84 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 import { useState } from "react";
 import { auth, db } from "../firebase/firebase.config";
 import { AfficheShow } from "../type/types";
+import { FirebaseError } from "firebase/app";
 
 
 
 const useFirestore = () => {
     const [listFavoris, setListFavoris] = useState<number[]>([])
+    const [statusFirestore, setStatusFirestore] = useState<'idle' | 'done' | 'remove' | 'error'>('idle')
+
     const authUser: string | undefined = auth.currentUser?.uid
+    let docRef: any
+    let films: any
+
+    if (authUser) {
+        docRef = doc(db, "users", authUser);
+    }
 
     /** 
      * GET FILMS FAVORIS
     */
-    let docRef: any
-    let films: any
-    if (authUser) {
-        docRef = doc(db, "users", authUser);
-    }
     async function getFilmsFavorisData() {
-        const docSnap = await getDoc(docRef);
-        films = docSnap.data() // [{}, {}, ...]
+        try {
+            const docSnap = await getDoc(docRef);
+            films = docSnap.data() // [{}, {}, ...]
+        } catch (error) {
+            const firebaseError = error as FirebaseError
+            return {
+                errorFirestore: {
+                    code: firebaseError.code,
+                    message: firebaseError.message
+                }
+            }
+        }
     }
 
 
     /**
-     * PUT FILMS IN FAVORIS
+     * PUT MOVIE ID IN FAVORIS OR CREATE FILMS[] IN FIRESTORE
      */
     async function putMovieInFavoris() {
         await getFilmsFavorisData()
-        if (listFavoris) {
-            if (films) {
-                let listFilmsInFavoris: any[] = []
-                films.films.map((film: AfficheShow) =>
-                    listFilmsInFavoris.push(film.id)
-                )
-                if (listFavoris.length !== listFilmsInFavoris.length) {
-                    setListFavoris(listFilmsInFavoris)
+        try {
+            if (listFavoris) {
+                if (films) {
+                    let listFilmsInFavoris: any[] = []
+                    films.films.map((film: AfficheShow) =>
+                        listFilmsInFavoris.push(film.id)
+                    )
+                    if (listFavoris.length !== listFilmsInFavoris.length) {
+                        setListFavoris(listFilmsInFavoris)
+                    }
+                } else {
+                    if (authUser) {
+                        setDoc(doc(db, "users", authUser), {
+                            films: []
+                        });
+                    }
                 }
-            } else {
-                if(authUser){
-                    setDoc(doc(db, "users", authUser), {
-                        films: []
-                    });
+            }
+        } catch (error) {
+            const firebaseError = error as FirebaseError
+            return {
+                errorFirestore: {
+                    code: firebaseError.code,
+                    message: firebaseError.message
                 }
-                console.log("ERROR putMovieInFavoris")
             }
         }
 
     }
     /**
-     * ADD MOVIE IN FAVORIS
+     * ADD MOVIE IN FILMS TO FIRESTORE
      */
     async function addAfficheShowHeaderToFavoris(movieForFirestore: AfficheShow) {
+        setStatusFirestore('idle')
+
+        await getFilmsFavorisData()
 
         /** SI FILM DAND LA LISTE DES FAVORIS */
-        await getFilmsFavorisData()
         if (films && listFavoris.length > 0) {
             if (listFavoris.includes(movieForFirestore.id)) {
                 return
@@ -73,55 +98,83 @@ const useFirestore = () => {
         }
 
         /** GET LIST FILMS */
-        if (authUser) {
-            let tempObjectWithFilms: any
-            const docSnap = await getDoc(docRef);
-            if (docSnap.exists()) {
-                tempObjectWithFilms = docSnap.data() // { films: [] }
-            } else {
-                console.log("No such document!");
+        try {
+            if (authUser) {
+                let tempObjectWithFilms: any
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    tempObjectWithFilms = docSnap.data() // { films: [] }
+                } else {
+                    console.log("No such document!");
+                }
+                if (tempObjectWithFilms.films) {
+                    tempObjectWithFilms.films = [...tempObjectWithFilms.films, newFilm]
+                }
+                await setDoc(docRef, tempObjectWithFilms)
+                setStatusFirestore('done')
             }
-            if (tempObjectWithFilms.films) {
-                tempObjectWithFilms.films = [...tempObjectWithFilms.films, newFilm]
+        } catch (error) {
+            setStatusFirestore('error')
+            const firebaseError = error as FirebaseError
+            return {
+                errorFirestore: {
+                    code: firebaseError.code,
+                    message: firebaseError.message
+                }
             }
-            await setDoc(docRef, tempObjectWithFilms)
         }
 
         /** MAJ LISTE FAVORIS */
         setListFavoris([...listFavoris, movieForFirestore.id])
     }
 
+
+    /**
+     * REMOVE MOVIE IN FILMS TO FIRESTORE AND MAJ LISTE FAVORIS
+     */
     async function removeAfficheShowHeaderToFavoris(id: number) {
-        //     /** GET LIST FILMS */
-        if (authUser) {
-            let dataFilms: any
-            const docSnap = await getDoc(docRef);
-            if (docSnap.exists()) {
-                dataFilms = docSnap.data() // { films: [] }
-            } else {
-                console.log("No such document!");
+        setStatusFirestore('idle')
+        try {
+            if (authUser) {
+                let dataFilms: any
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    dataFilms = docSnap.data() // { films: [] }
+                } else {
+                    console.log("No such document!");
+                }
+
+                if (dataFilms) {
+                    const tempdataFilms = dataFilms.films
+                    const ObjectWithoutFilmRemove = tempdataFilms
+                        .filter((film: AfficheShow) => film.id !== id)
+                    dataFilms.films = [...ObjectWithoutFilmRemove]
+                    await setDoc(docRef, dataFilms)
+                }
+                
+                /** MAJ LISTE FAVORIS */
+                const tempNewListFavoris = listFavoris.filter((film) => {
+                    film !== id
+                })
+                setListFavoris(tempNewListFavoris)
+                setStatusFirestore('remove')
             }
 
-            if (dataFilms) {
-                const tempdataFilms = dataFilms.films
-                const ObjectWithoutFilmRemove = tempdataFilms
-                    .filter((film: AfficheShow) => film.id !== id)
-                //.map((film:AfficheShow)  => film.id)
-
-                console.log('tempObjectWithoutFilmRemove', ObjectWithoutFilmRemove)
-                dataFilms.films = [...ObjectWithoutFilmRemove]
-                await setDoc(docRef, dataFilms)
+        } catch (error) {
+            setStatusFirestore('error')
+            const firebaseError = error as FirebaseError
+            return {
+                errorFirestore: {
+                    code: firebaseError.code,
+                    message: firebaseError.message
+                }
             }
-            /** MAJ LISTE FAVORIS */
-            const tempNewListFavoris = listFavoris.filter((film) => {
-                film !== id
-            })
-            setListFavoris(tempNewListFavoris)
         }
+
     }
 
     return (
-        { listFavoris, putMovieInFavoris, addAfficheShowHeaderToFavoris, removeAfficheShowHeaderToFavoris }
+        { listFavoris, putMovieInFavoris, addAfficheShowHeaderToFavoris, removeAfficheShowHeaderToFavoris, statusFirestore }
     );
 };
 
