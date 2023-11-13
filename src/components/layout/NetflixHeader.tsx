@@ -1,5 +1,6 @@
 /** HOOKS */
 import { useState, useEffect } from "react";
+import useFirestore from "../../hooks/useFirestore"
 /** TYPES */
 /** COMPONENTS */
 import HeaderSkeleton from "../skeletons/HeaderSkeleton";
@@ -11,7 +12,6 @@ import { IMAGE_URL_ORIGINAL } from "../../utils/config";
 /** FIRESTORE */
 import { getRandomType } from "../../utils/helpers";
 import { AfficheShow } from "../../type/types";
-import useFirestore from "../../hooks/useFirestore"
 /** MUI */
 import Snackbar from "@mui/material/Snackbar";
 import { Alert } from '@mui/material';
@@ -36,12 +36,12 @@ const NetflixHeader = () => {
     let movies: any | undefined
     if (data) {
         movies = data.data.results[randomMovie]
-        // console.log(movies.id)
     }
 
     /**
      * 1: APPEL API FILMS MIEUX NOTES
      * 2: Index aleatoire pour movie entre 1 et 20
+     * 3: GET liste des ID de films dans les favoris
     */
     useEffect(() => {
         execute(clientAPI(`${type}/top_rated`))
@@ -56,7 +56,7 @@ const NetflixHeader = () => {
         movieOrTvInHeader()
     }, [movies])
 
-    /** FILM OU SERIE ? */
+    /** FILM OU SERIE DANS LES FAVORIS ? */
     useEffect(() => {
         isMovieInFavoris()
     }, [listFavoris])
@@ -204,7 +204,6 @@ const NetflixHeader = () => {
                                     ) :
                                         (<button onClick={addMovieHeaderToFirestore} className="px-8 mr-4 py-2 cursor-pointer outline-none border-none text-lg font-bold hover:opacity-70 rounded bg-slate-400 text-[#fff]">Ajouter a ma liste</button>)
                                 }
-
                             </div>
 
                             <div className="h-[200px] overflow-y-scroll">
@@ -223,7 +222,6 @@ const NetflixHeader = () => {
                     <HeaderSkeleton />
                 )
             }
-
             {
                 statusFirestore === 'done' ? (
                     <Snackbar open={snackBarOpen} autoHideDuration={3000} onClose={() => { setSnackBarOpen(false) }}>
