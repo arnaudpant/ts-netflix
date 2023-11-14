@@ -33,7 +33,7 @@ const NetflixByID = () => {
         })
     }, [location.pathname, tvId, movieId, type])
 
-
+    console.log('data', data)
     return (
         <div className="bg-[#111] relative">
             <NetflixAppBar />

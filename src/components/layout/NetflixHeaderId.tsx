@@ -43,16 +43,16 @@ const NetflixHeaderId = ({ movie }: Props) => {
     async function movieOrTvInHeader() {
         try {
             if (movie) {
-                if (movie.data.type === TYPE_MOVIE) {
+                if (movie.type === TYPE_MOVIE) {
                     setAfficheShowHeader(
                         {
                             type: TYPE_MOVIE,
-                            id: movie.data.id,
-                            title: movie.data.title,
+                            id: movie.id,
+                            title: movie.title,
                             name: "",
-                            overview: movie.data.overview,
-                            backdrop_path: movie.data.backdrop_path,
-                            poster_path: movie.data.poster_path
+                            overview: movie.overview,
+                            backdrop_path: movie.backdrop_path,
+                            poster_path: movie.poster_path
                         })
                     }
                     if (movie.name) {
