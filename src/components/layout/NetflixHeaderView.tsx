@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { AfficheShow } from "../../type/types";
 import { IMAGE_URL_ORIGINAL } from "../../utils/config";
 import HeaderSkeleton from "../skeletons/HeaderSkeleton";
@@ -13,13 +12,8 @@ type Props = {
 
 
 const NetflixHeaderView = ({ movie, removeMovieHeaderToFirestore, addMovieHeaderToFirestore, presentInFavoris }: Props) => {
-    // useEffect(() => {
-        
-    //     console.log("view", movie)
-        
-    // }, [movie])
-    
-    
+
+
     return (
         <header className="relative h-[448px] text-white overflow-hidden">
             {movie ?

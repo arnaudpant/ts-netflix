@@ -49,7 +49,7 @@ const NetflixByID = () => {
             )
         }
     },[data])
-    //console.log('render', movieForNetflixHeader)
+
     return (
         <div className="bg-[#111] relative">
             <NetflixAppBar />

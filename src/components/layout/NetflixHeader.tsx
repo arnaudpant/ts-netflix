@@ -93,7 +93,6 @@ const NetflixHeader = ({ movieForNetflixHeader }: Props) => {
                         backdrop_path: movies.backdrop_path,
                         poster_path: movies.poster_path
                     })
-                    console.log('1')
             }
             if (movies.name) {
                 setAfficheShowHeader(
@@ -106,34 +105,31 @@ const NetflixHeader = ({ movieForNetflixHeader }: Props) => {
                         backdrop_path: movies.backdrop_path,
                         poster_path: movies.poster_path
                     })
-                    console.log('2')
             }
-            if (movieForNetflixHeader && movieForNetflixHeader.title) {
-                setAfficheShowHeader(
-                    {
-                        type: movieForNetflixHeader.type,
-                        id: movieForNetflixHeader.id,
-                        title: movieForNetflixHeader.title,
-                        name: "",
-                        overview: movieForNetflixHeader.overview,
-                        backdrop_path: movieForNetflixHeader.backdrop_path,
-                        poster_path: movieForNetflixHeader.poster_path
-                    })
-                    console.log('3')
-            }
-            if (movieForNetflixHeader && movieForNetflixHeader.name) {
-                setAfficheShowHeader(
-                    {
-                        type: movieForNetflixHeader.type,
-                        id: movieForNetflixHeader.id,
-                        title: "",
-                        name: movieForNetflixHeader.name,
-                        overview: movieForNetflixHeader.overview,
-                        backdrop_path: movieForNetflixHeader.backdrop_path,
-                        poster_path: movieForNetflixHeader.poster_path
-                    })
-                    console.log('4')
-            }
+        }
+        if (movieForNetflixHeader && movieForNetflixHeader.title) {
+            setAfficheShowHeader(
+                {
+                    type: movieForNetflixHeader.type,
+                    id: movieForNetflixHeader.id,
+                    title: movieForNetflixHeader.title,
+                    name: "",
+                    overview: movieForNetflixHeader.overview,
+                    backdrop_path: movieForNetflixHeader.backdrop_path,
+                    poster_path: movieForNetflixHeader.poster_path
+                })
+        }
+        if (movieForNetflixHeader && movieForNetflixHeader.name) {
+            setAfficheShowHeader(
+                {
+                    type: movieForNetflixHeader.type,
+                    id: movieForNetflixHeader.id,
+                    title: "",
+                    name: movieForNetflixHeader.name,
+                    overview: movieForNetflixHeader.overview,
+                    backdrop_path: movieForNetflixHeader.backdrop_path,
+                    poster_path: movieForNetflixHeader.poster_path
+                })
         }
     }
 
@@ -221,7 +217,6 @@ const NetflixHeader = ({ movieForNetflixHeader }: Props) => {
         )
     }
 
-    console.log('render')
     return (
         <header className="relative h-[448px] text-white overflow-hidden">
             {
