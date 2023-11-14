@@ -17,9 +17,11 @@ import Snackbar from "@mui/material/Snackbar";
 import { Alert } from '@mui/material';
 import NetflixHeaderView from "./NetflixHeaderView";
 
+type Props = {
+    movieForNetflixHeader?: AfficheShow
+}
 
-
-const NetflixHeader = () => {
+const NetflixHeader = ({ movieForNetflixHeader }: Props) => {
 
     /** TYPE DE FILM OU SERIE ALEATOIRE */
     const [randomMovie, setRandomMovie] = useState<number>(0)
@@ -45,22 +47,34 @@ const NetflixHeader = () => {
      * 3: GET liste des ID de films dans les favoris
     */
     useEffect(() => {
-        execute(clientAPI(`${type}/top_rated`))
-        setRandomMovie(Math.floor(Math.random() * 20))
-        putMovieInFavoris()
+        if (!movieForNetflixHeader) {
+            execute(clientAPI(`${type}/top_rated`))
+            setRandomMovie(Math.floor(Math.random() * 20))
+            putMovieInFavoris()
+        }
     }, [])
-
 
 
     /** FILM OU SERIE ? */
     useEffect(() => {
-        movieOrTvInHeader()
+        if (!movieForNetflixHeader) {
+            movieOrTvInHeader()
+        }
     }, [movies])
 
     /** FILM OU SERIE DANS LES FAVORIS ? */
     useEffect(() => {
         isMovieInFavoris()
     }, [listFavoris])
+
+    /** FILM OU SERIE ID ? */
+    useEffect(() => {
+        if(movieForNetflixHeader){
+            movies = undefined
+            //putMovieInFavoris()
+            movieOrTvInHeader()
+        }
+    }, [movieForNetflixHeader])
 
 
     /**
@@ -79,6 +93,7 @@ const NetflixHeader = () => {
                         backdrop_path: movies.backdrop_path,
                         poster_path: movies.poster_path
                     })
+                    console.log('1')
             }
             if (movies.name) {
                 setAfficheShowHeader(
@@ -91,6 +106,33 @@ const NetflixHeader = () => {
                         backdrop_path: movies.backdrop_path,
                         poster_path: movies.poster_path
                     })
+                    console.log('2')
+            }
+            if (movieForNetflixHeader && movieForNetflixHeader.title) {
+                setAfficheShowHeader(
+                    {
+                        type: movieForNetflixHeader.type,
+                        id: movieForNetflixHeader.id,
+                        title: movieForNetflixHeader.title,
+                        name: "",
+                        overview: movieForNetflixHeader.overview,
+                        backdrop_path: movieForNetflixHeader.backdrop_path,
+                        poster_path: movieForNetflixHeader.poster_path
+                    })
+                    console.log('3')
+            }
+            if (movieForNetflixHeader && movieForNetflixHeader.name) {
+                setAfficheShowHeader(
+                    {
+                        type: movieForNetflixHeader.type,
+                        id: movieForNetflixHeader.id,
+                        title: "",
+                        name: movieForNetflixHeader.name,
+                        overview: movieForNetflixHeader.overview,
+                        backdrop_path: movieForNetflixHeader.backdrop_path,
+                        poster_path: movieForNetflixHeader.poster_path
+                    })
+                    console.log('4')
             }
         }
     }
@@ -161,10 +203,12 @@ const NetflixHeader = () => {
 
 
     /** SKELETON */
-    if (status === 'fetching' || status === 'idle') {
-        return (
-            <HeaderSkeleton />
-        )
+    if (!movieForNetflixHeader) {
+        if (status === 'fetching' || status === 'idle') {
+            return (
+                <HeaderSkeleton />
+            )
+        }
     }
     if (status === 'error') {
         return (
@@ -178,10 +222,12 @@ const NetflixHeader = () => {
     }
 
     console.log('render')
-
     return (
         <header className="relative h-[448px] text-white overflow-hidden">
-            <NetflixHeaderView type={type} movies={movies} removeMovieHeaderToFirestore={removeMovieHeaderToFirestore} addMovieHeaderToFirestore={addMovieHeaderToFirestore} presentInFavoris={presentInFavoris} />
+            {
+                afficheShowHeader && <NetflixHeaderView movie={afficheShowHeader} removeMovieHeaderToFirestore={removeMovieHeaderToFirestore} addMovieHeaderToFirestore={addMovieHeaderToFirestore} presentInFavoris={presentInFavoris} />
+            }
+
 
             {
                 statusFirestore === 'done' ? (

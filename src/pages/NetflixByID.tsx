@@ -5,7 +5,8 @@ import { useParams, useLocation } from "react-router-dom";
 import { TYPE_MOVIE, TYPE_TV } from "../utils/config";
 import { useFetchData } from "../hooks/useFetchData";
 import { clientAPI } from "../api/apiMovieDB";
-import NetflixHeaderId from "../components/layout/NetflixHeaderId";
+import { AfficheShow } from "../type/types";
+import NetflixHeader from "../components/layout/NetflixHeader";
 
 const NetflixByID = () => {
 
@@ -14,10 +15,11 @@ const NetflixByID = () => {
     const { tvId, movieId } = useParams()
     const location = useLocation()
 
-    const [type, setType] = useState(
+    const [type, setType] = useState<typeof TYPE_MOVIE | typeof TYPE_TV>(
         location.pathname.includes(TYPE_MOVIE) ? TYPE_MOVIE : TYPE_TV
     )
     const [id, setId] = useState(type === TYPE_MOVIE ? movieId : tvId)
+    const [movieForNetflixHeader, setMovieForNetflixHeader] = useState<AfficheShow | null>(null)
 
     useEffect(() => {
         execute(clientAPI(`${type}/${id}`))
@@ -33,11 +35,27 @@ const NetflixByID = () => {
         })
     }, [location.pathname, tvId, movieId, type])
 
-    console.log('data', data)
+    useEffect(()=> {
+        if (data) {
+            setMovieForNetflixHeader({
+                type: type,
+                id: data.data.id,
+                name: data.data.name,
+                title: data.data.title,
+                overview: data.data.overview,
+                backdrop_path: data.data.backdrop_path,
+                poster_path: data.data.poster_path
+            }
+            )
+        }
+    },[data])
+    //console.log('render', movieForNetflixHeader)
     return (
         <div className="bg-[#111] relative">
             <NetflixAppBar />
-            <NetflixHeaderId movie={data} />
+            {
+                movieForNetflixHeader && <NetflixHeader movieForNetflixHeader={movieForNetflixHeader} />
+            }
             <NetflixRow title="Films tendances Netflix" wideImage={true} watermark={true} type={TYPE_MOVIE} filter="trending" />
             <NetflixRow title="Séries tendances Netflix" wideImage={true} watermark={true} type={TYPE_TV} filter="trending" />
             <NetflixRow title="Les Films fantastiques" wideImage={true} watermark={false} type={TYPE_MOVIE} filter="genre" param="14" />
