@@ -13,7 +13,7 @@ const Inscription = () => {
         e.preventDefault()
         await createUser()
     }
-    
+
 
     const createUser = async () => {
         const emailForm: string = formData.email
@@ -24,8 +24,9 @@ const Inscription = () => {
             console.log('New user', userCredential.user)
         }
         catch (error) {
-            console.log("catch", error)
+            console.log("ERROR CREATEUSER", error)
         }
+        
     }
 
     return (

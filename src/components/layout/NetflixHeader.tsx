@@ -1,5 +1,6 @@
 /** HOOKS */
 import { useState, useEffect } from "react";
+import useFirestore from "../../hooks/useFirestore"
 /** TYPES */
 /** COMPONENTS */
 import HeaderSkeleton from "../skeletons/HeaderSkeleton";
@@ -11,8 +12,9 @@ import { IMAGE_URL_ORIGINAL } from "../../utils/config";
 /** FIRESTORE */
 import { getRandomType } from "../../utils/helpers";
 import { AfficheShow } from "../../type/types";
-import useFirestore from "../../hooks/useFirestore"
-
+/** MUI */
+import Snackbar from "@mui/material/Snackbar";
+import { Alert } from '@mui/material';
 
 
 
@@ -20,10 +22,11 @@ const NetflixHeader = () => {
 
     /** TYPE DE FILM OU SERIE ALEATOIRE */
     const [randomMovie, setRandomMovie] = useState<number>(0)
+    const [snackBarOpen, setSnackBarOpen] = useState(false)
     const [type] = useState<string>(getRandomType())
 
     const { data, status, error, execute } = useFetchData()
-    const { listFavoris, putMovieInFavoris, addAfficheShowHeaderToFavoris, removeAfficheShowHeaderToFavoris } = useFirestore()
+    const { listFavoris, putMovieInFavoris, addAfficheShowHeaderToFavoris, removeAfficheShowHeaderToFavoris, statusFirestore } = useFirestore()
 
     /** FAVORIS */
     const [afficheShowHeader, setAfficheShowHeader] = useState<AfficheShow | null>(null)
@@ -33,12 +36,12 @@ const NetflixHeader = () => {
     let movies: any | undefined
     if (data) {
         movies = data.data.results[randomMovie]
-        // console.log(movies.id)
     }
 
     /**
      * 1: APPEL API FILMS MIEUX NOTES
      * 2: Index aleatoire pour movie entre 1 et 20
+     * 3: GET liste des ID de films dans les favoris
     */
     useEffect(() => {
         execute(clientAPI(`${type}/top_rated`))
@@ -53,7 +56,7 @@ const NetflixHeader = () => {
         movieOrTvInHeader()
     }, [movies])
 
-    /** FILM OU SERIE ? */
+    /** FILM OU SERIE DANS LES FAVORIS ? */
     useEffect(() => {
         isMovieInFavoris()
     }, [listFavoris])
@@ -62,7 +65,6 @@ const NetflixHeader = () => {
     /**
      * Affichage title ou name en fonction film ou serie
      */
-    //TODO: Refactorer
     async function movieOrTvInHeader() {
         if (movies !== undefined) {
             if (movies.title) {
@@ -94,10 +96,8 @@ const NetflixHeader = () => {
 
 
     /**
-     *             === FIRESTORE ===
+     *  === FIRESTORE ===
      */
-
-    
     /** MOVIE DANS LES FAVORIS ? */
     async function isMovieInFavoris() {
         await putMovieInFavoris()
@@ -115,6 +115,7 @@ const NetflixHeader = () => {
      */
 
     async function addMovieHeaderToFirestore() {
+        setSnackBarOpen(false)
         if (afficheShowHeader) {
             if (listFavoris.includes(afficheShowHeader.id)) {
                 return
@@ -145,15 +146,18 @@ const NetflixHeader = () => {
             addAfficheShowHeaderToFavoris(movieForFirestore)
         }
         await isMovieInFavoris()
+        setSnackBarOpen(true)
     }
 
     async function removeMovieHeaderToFirestore() {
-        if (afficheShowHeader){
+        setSnackBarOpen(false)
+        if (afficheShowHeader) {
             removeAfficheShowHeaderToFavoris(afficheShowHeader.id)
-        } 
+        }
+        setSnackBarOpen(true)
     }
 
-    console.log("listFavoris", listFavoris)
+
 
     /** SKELETON */
     if (status === 'fetching' || status === 'idle') {
@@ -200,7 +204,6 @@ const NetflixHeader = () => {
                                     ) :
                                         (<button onClick={addMovieHeaderToFirestore} className="px-8 mr-4 py-2 cursor-pointer outline-none border-none text-lg font-bold hover:opacity-70 rounded bg-slate-400 text-[#fff]">Ajouter a ma liste</button>)
                                 }
-
                             </div>
 
                             <div className="h-[200px] overflow-y-scroll">
@@ -219,8 +222,33 @@ const NetflixHeader = () => {
                     <HeaderSkeleton />
                 )
             }
-
-
+            {
+                statusFirestore === 'done' ? (
+                    <Snackbar open={snackBarOpen} autoHideDuration={3000} onClose={() => { setSnackBarOpen(false) }}>
+                        <Alert onClose={() => { setSnackBarOpen(false) }} severity="success" sx={{ width: '100%' }}>
+                            Ajouté dans vos favoris !
+                        </Alert>
+                    </Snackbar>
+                ) : null
+            }
+            {
+                statusFirestore === 'error' ? (
+                    <Snackbar open={snackBarOpen} autoHideDuration={3000} onClose={() => { setSnackBarOpen(false) }}>
+                        <Alert onClose={() => { setSnackBarOpen(false) }} severity="error" sx={{ width: '100%' }}>
+                            Une erreur avec la liste de vos favoris est survenue !
+                        </Alert>
+                    </Snackbar>
+                ) : null
+            }
+            {
+                statusFirestore === 'remove' ? (
+                    <Snackbar open={snackBarOpen} autoHideDuration={3000} onClose={() => { setSnackBarOpen(false) }}>
+                        <Alert onClose={() => { setSnackBarOpen(false) }} severity="info" sx={{ width: '100%' }}>
+                            Supprimé de vos favoris !
+                        </Alert>
+                    </Snackbar>
+                ) : null
+            }
 
         </header>
     );
