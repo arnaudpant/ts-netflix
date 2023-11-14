@@ -1,3 +1,5 @@
+import { TYPE_MOVIE, TYPE_TV } from "../utils/config"
+
 export type MovieHeader = {
     movie: {
         backdrop_path: string,
@@ -8,7 +10,7 @@ export type MovieHeader = {
 }
 
 export type AfficheShow = {
-    type: string,
+    type: typeof TYPE_MOVIE | typeof TYPE_TV,
     id: number,
     name: string,
     title: string,
