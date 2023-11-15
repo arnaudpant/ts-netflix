@@ -1,15 +1,10 @@
 /** HOOKS */
-import { useEffect, useState } from "react";
-import { useFetchData } from "../hooks/useFetchData";
 /** COMPONENTS */
 /** UTILS */
-import { IMAGE_URL_ORIGINAL, TYPE_MOVIE, TYPE_TV } from "../utils/config";
+import { IMAGE_URL_ORIGINAL } from "../utils/config";
 /** API */
-import { clientAPI } from "../api/apiMovieDB";
 import clsx from "clsx";
 /** MUI */
-import { CustumizedAlert } from "../theme/theme";
-import { AlertTitle } from "@mui/material";
 import RowsSkeleton from "./skeletons/RowsSkeleton";
 import { Link } from "react-router-dom";
 import { AfficheShow } from "../type/types";
@@ -26,13 +21,12 @@ type Props = {
 const NetflixRowFav = ({ title, wideImage, watermark, listMoviesInFavoris }: Props) => {
 
 
-    const buildImagePath = (listMoviesInFavoris: any) => {
-        const image = wideImage ? listMoviesInFavoris?.backdrop_path : listMoviesInFavoris?.poster_path
+    const buildImagePath = (movie: AfficheShow) => {
+        const image = wideImage ? movie?.backdrop_path : movie?.poster_path
+
         return `${IMAGE_URL_ORIGINAL}${image}`
     }
-
     const watermarkClass = watermark ? "watermarked" : "hidden"
-
 
 
     return (
@@ -51,7 +45,7 @@ const NetflixRowFav = ({ title, wideImage, watermark, listMoviesInFavoris }: Pro
                                 <div className={watermarkClass}></div>
                             </Link>
                         </div>
-                    ))) : (null)
+                    ))) : (<RowsSkeleton wideImage={false} title={title} />)
                 }
             </div>
         </div>

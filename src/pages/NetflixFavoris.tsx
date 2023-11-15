@@ -8,6 +8,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "../firebase/firebase.config";
 import HeaderSkeleton from "../components/skeletons/HeaderSkeleton";
 import NetflixRowFav from "../components/NetflixRowFav";
+import RowsSkeleton from "../components/skeletons/RowsSkeleton";
 
 
 const NetflixFavoris = () => {
@@ -55,10 +56,10 @@ const NetflixFavoris = () => {
         <div className="bg-[#111] relative">
             <NetflixAppBar />
             {
-                afficheShowHeader ? (<NetflixHeader movieForNetflixHeader={afficheShowHeader} />) : (<HeaderSkeleton />)
+                afficheShowHeader ? (<NetflixHeader movieForNetflixHeader={afficheShowHeader} />) : (<NetflixHeader />)
             }
             {
-                listMoviesInFavoris && <NetflixRowFav title="Ma liste" wideImage={false} watermark={true} listMoviesInFavoris={listMoviesInFavoris} />
+                listMoviesInFavoris ? (<NetflixRowFav title="Ma liste" wideImage={false} watermark={true} listMoviesInFavoris={listMoviesInFavoris} />) : (<RowsSkeleton wideImage={false} title="Ma liste" />)
             }
             
             <NetflixRow title="Films tendances Netflix" wideImage={true} watermark={true} type={TYPE_MOVIE} filter="trending" />
