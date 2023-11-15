@@ -56,7 +56,7 @@ export const NetflixAppBar = () => {
                 <Link to="/" className="ml-5 mr-2"><Typography variant="h6">Accueil</Typography></Link>
                 <Link to="/series" className="m-2"><Typography variant="h6">Séries</Typography></Link>
                 <Link to="/movies" className="m-2"><Typography variant="h6">Films</Typography></Link>
-                <Link to="/" className="m-2"><Typography variant="h6">Ma liste</Typography></Link>
+                <Link to="/favoris" className="m-2"><Typography variant="h6">Ma liste</Typography></Link>
                 <div className="h-8 w-8 ml-auto cursor-pointer" onClick={logOut}>
                     <img src="/avatar/avatar-default2.svg" alt="logo Netflix"/>
                 </div>

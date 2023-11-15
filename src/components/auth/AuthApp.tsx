@@ -1,13 +1,11 @@
-/** HOOKS */
 /** PAGES */
 import NetflixApp from "../../pages/NetflixApp"
 import NetflixByID from "../../pages/NetflixByID"
 import NetflixSeries from "../../pages/NetflixSeries"
-import NetflixNews from "../../pages/NetflixNews"
 import NetflixMovies from "../../pages/NetflixMovies"
+import Inscription from "../../pages/Inscription"
 import Error404 from "../../pages/Error404"
-/** COMPONENTS */
-/** UTILS */
+import NetflixFavoris from "../../pages/NetflixFavoris"
 /** API */
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import ErrorFallBack from "../../error-boundary/ErrorFallBack"
@@ -15,7 +13,6 @@ import { ErrorBoundary } from "react-error-boundary"
 /** MUI */
 import { ThemeProvider } from "@mui/material"
 import { theme } from "../../theme/theme"
-import Inscription from "../../pages/Inscription"
 
 function AuthApp() {
 
@@ -29,7 +26,7 @@ function AuthApp() {
             <Route path="/movie/:movieId" element={<NetflixByID />} />
             <Route path="/series" element={<NetflixSeries />} />
             <Route path="/movies" element={<NetflixMovies />} />
-            <Route path="/news" element={<NetflixNews />} />
+            <Route path="/favoris" element={<NetflixFavoris />} />
             <Route path="/inscription" element={<Inscription />} />
             <Route path="/*" element={<Error404 />} />
           </Routes>

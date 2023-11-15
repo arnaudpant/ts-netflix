@@ -174,7 +174,7 @@ const useFirestore = () => {
     }
 
     return (
-        { listFavoris, putMovieInFavoris, addAfficheShowHeaderToFavoris, removeAfficheShowHeaderToFavoris, statusFirestore }
+        { listFavoris, putMovieInFavoris, addAfficheShowHeaderToFavoris, removeAfficheShowHeaderToFavoris, statusFirestore, getFilmsFavorisData }
     );
 };
 

@@ -28,6 +28,7 @@ const NetflixHeader = ({ movieForNetflixHeader }: Props) => {
     const [snackBarOpen, setSnackBarOpen] = useState(false)
     const [type] = useState<typeof TYPE_MOVIE | typeof TYPE_TV>(getRandomType())
 
+    /** API */
     const { data, status, error, execute } = useFetchData()
     const { listFavoris, putMovieInFavoris, addAfficheShowHeaderToFavoris, removeAfficheShowHeaderToFavoris, statusFirestore } = useFirestore()
 
