@@ -6,7 +6,6 @@ import { TYPE_MOVIE, TYPE_TV } from "../utils/config";
 import { FirebaseError } from "firebase/app";
 import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "../firebase/firebase.config";
-import HeaderSkeleton from "../components/skeletons/HeaderSkeleton";
 import NetflixRowFav from "../components/NetflixRowFav";
 import RowsSkeleton from "../components/skeletons/RowsSkeleton";
 

@@ -66,7 +66,7 @@ const NetflixHeader = ({ movieForNetflixHeader }: Props) => {
     /** FILM OU SERIE DANS LES FAVORIS ? */
     useEffect(() => {
         isMovieInFavoris()
-    }, [listFavoris])
+    }, [listFavoris, movieForNetflixHeader])
 
     /** FILM OU SERIE ID ? */
     useEffect(() => {
@@ -216,6 +216,8 @@ const NetflixHeader = ({ movieForNetflixHeader }: Props) => {
             </div>
         )
     }
+
+    console.log('render')
 
     return (
         <header className="relative h-[448px] text-white overflow-hidden">
