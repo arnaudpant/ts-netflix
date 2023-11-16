@@ -1,17 +1,22 @@
+/** HOOKS */
 import { useEffect, useState } from "react";
+/** COMPONENTS */
 import NetflixAppBar from "../components/NetflixAppBar";
 import NetflixRow from "../components/NetflixRow";
-import { useParams, useLocation } from "react-router-dom";
-import { TYPE_MOVIE, TYPE_TV } from "../utils/config";
-import { useFetchData } from "../hooks/useFetchData";
-import { clientAPI } from "../api/apiMovieDB";
-import { AfficheShow } from "../type/types";
 import NetflixHeader from "../components/layout/NetflixHeader";
 import HeaderSkeleton from "../components/skeletons/HeaderSkeleton";
+//import { useFetchData } from "../hooks/useFetchData";
+/** TYPES */
+import { TYPE_MOVIE, TYPE_TV } from "../utils/config";
+import { AfficheShow } from "../type/types";
+/** API */
+import { useQuery } from "react-query";
+import { clientAPI } from "../api/apiMovieDB";
+import { useParams, useLocation } from "react-router-dom";
 
 const NetflixByID = () => {
 
-    const { data, execute } = useFetchData()
+    // const { data, execute } = useFetchData()
 
     const { tvId, movieId } = useParams()
     const location = useLocation()
@@ -22,9 +27,14 @@ const NetflixByID = () => {
     const [id, setId] = useState(type === TYPE_MOVIE ? movieId : tvId)
     const [movieForNetflixHeader, setMovieForNetflixHeader] = useState<AfficheShow | null>(null)
 
-    useEffect(() => {
-        execute(clientAPI(`${type}/${id}`))
-    }, [execute, type, id])
+
+    const { data } = useQuery(`${type}/${id}`, () => 
+        clientAPI(`${type}/${id}`)
+    )
+
+    // useEffect(() => {
+    //     execute(clientAPI(`${type}/${id}`))
+    // }, [execute, type, id])
 
     useEffect(() => {
         const newType = location.pathname.includes(TYPE_MOVIE) ? TYPE_MOVIE : TYPE_TV
@@ -35,8 +45,11 @@ const NetflixByID = () => {
             behavior: 'smooth'
         })
     }, [location.pathname, tvId, movieId, type])
+    if(data){
 
-    useEffect(()=> {
+    }
+
+    useEffect(() => {
         if (data) {
             setMovieForNetflixHeader({
                 type: type,
@@ -49,7 +62,7 @@ const NetflixByID = () => {
             }
             )
         }
-    },[data])
+    }, [data])
 
     return (
         <div className="bg-[#111] relative">

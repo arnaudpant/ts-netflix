@@ -1,12 +1,12 @@
 /** HOOKS */
 import { useEffect, useState } from "react";
-import { useFetchData } from "../hooks/useFetchData";
 /** COMPONENTS */
 /** UTILS */
 import { IMAGE_URL_ORIGINAL, TYPE_MOVIE, TYPE_TV } from "../utils/config";
 /** API */
 import { clientAPI } from "../api/apiMovieDB";
 import clsx from "clsx";
+import { useQuery } from "react-query";
 /** MUI */
 import { CustumizedAlert } from "../theme/theme";
 import { AlertTitle } from "@mui/material";
@@ -26,7 +26,7 @@ type Props = {
 
 const NetflixRow = ({ title, wideImage, type = TYPE_MOVIE, param, filter = "latest", watermark }: Props) => {
 
-    const { data, status, error, execute } = useFetchData()
+    // const { data, status, error, execute } = useFetchData()
     const [moviesArr, setMoviesArr] = useState([])
 
     const endpointLatest = `${type}/latest`
@@ -34,15 +34,7 @@ const NetflixRow = ({ title, wideImage, type = TYPE_MOVIE, param, filter = "late
     const endpointGenre = `discover/${type}/?with_genres=${param}`
     const endpointTrending = `trending/${type}/day`
 
-    useEffect(() => {
-        if(data) {
-            setMoviesArr(data.data.results)
-        }
-
-    }, [data])
-
-
-    let endpoint: string
+    let endpoint: string = 'latest'
 
     switch (filter) {
         case 'latest':
@@ -61,10 +53,16 @@ const NetflixRow = ({ title, wideImage, type = TYPE_MOVIE, param, filter = "late
             break
     }
 
-
+    const { data, error, status } = useQuery(`${endpoint}`, () =>
+        clientAPI(`${endpoint}`)
+    )
     useEffect(() => {
-        execute(clientAPI(`${endpoint}`))
-    }, [execute])
+        if (data) {
+            setMoviesArr(data.data.results)
+        }
+    }, [data])
+
+
 
 
     const buildImagePath = (movie: any) => {
@@ -74,17 +72,16 @@ const NetflixRow = ({ title, wideImage, type = TYPE_MOVIE, param, filter = "late
 
     const watermarkClass = watermark ? "watermarked" : "hidden"
 
-    if (status === 'fetching' || status === 'idle') {
+    if (status === 'loading' || status === 'idle') {
         return (
             <RowsSkeleton wideImage={wideImage} title={title} />
         )
     }
-    if (status === 'error') {
+    if (error) {
         return (
             <div className="absolute top-20 left-0 w-full">
                 <CustumizedAlert severity="error" variant="filled">
                     <AlertTitle>ERREUR !</AlertTitle>
-                    Détail: {error?.message}
                 </CustumizedAlert>
             </div>
         )

@@ -1,21 +1,23 @@
 /** HOOKS */
 import { useState, useEffect } from "react";
 import useFirestore from "../../hooks/useFirestore"
-/** TYPES */
+/** API */
+import { useQuery } from "react-query";
 /** COMPONENTS */
-import HeaderSkeleton from "../skeletons/HeaderSkeleton";
-import { useFetchData } from "../../hooks/useFetchData";
+// import HeaderSkeleton from "../skeletons/HeaderSkeleton";
 import { clientAPI } from "../../api/apiMovieDB";
-import { CustumizedAlert } from "../../theme/theme";
-import { AlertTitle } from "@mui/material";
+// import { CustumizedAlert } from "../../theme/theme";
+// import { AlertTitle } from "@mui/material";
 import { TYPE_MOVIE, TYPE_TV } from "../../utils/config";
 /** FIRESTORE */
 import { getRandomType } from "../../utils/helpers";
 import { AfficheShow } from "../../type/types";
 /** MUI */
 import Snackbar from "@mui/material/Snackbar";
-import { Alert } from '@mui/material';
+import { Alert, AlertTitle } from '@mui/material';
 import NetflixHeaderView from "./NetflixHeaderView";
+import HeaderSkeleton from "../skeletons/HeaderSkeleton";
+import { CustumizedAlert } from "../../theme/theme";
 
 type Props = {
     movieForNetflixHeader?: AfficheShow
@@ -29,7 +31,7 @@ const NetflixHeader = ({ movieForNetflixHeader }: Props) => {
     const [type] = useState<typeof TYPE_MOVIE | typeof TYPE_TV>(getRandomType())
 
     /** API */
-    const { data, status, error, execute } = useFetchData()
+    // const { data, status, error, execute } = useFetchData()
     const { listFavoris, putMovieInFavoris, addAfficheShowHeaderToFavoris, removeAfficheShowHeaderToFavoris, statusFirestore } = useFirestore()
 
     /** FAVORIS */
@@ -38,6 +40,9 @@ const NetflixHeader = ({ movieForNetflixHeader }: Props) => {
 
     /** AFFICHAGE ALEATOIRE D'UN MOVIE DANS LE HEADER */
     let movies: any | undefined
+    const { data, status, error } = useQuery(`${type}/top_rated`, () =>
+        clientAPI(`${type}/top_rated`)
+    )
     if (data) {
         movies = data.data.results[randomMovie]
     }
@@ -49,7 +54,7 @@ const NetflixHeader = ({ movieForNetflixHeader }: Props) => {
     */
     useEffect(() => {
         if (!movieForNetflixHeader) {
-            execute(clientAPI(`${type}/top_rated`))
+            //execute(clientAPI(`${type}/top_rated`))
             setRandomMovie(Math.floor(Math.random() * 20))
             putMovieInFavoris()
         }
@@ -70,7 +75,7 @@ const NetflixHeader = ({ movieForNetflixHeader }: Props) => {
 
     /** FILM OU SERIE ID ? */
     useEffect(() => {
-        if(movieForNetflixHeader){
+        if (movieForNetflixHeader) {
             movies = undefined
             movieOrTvInHeader()
         }
@@ -200,18 +205,17 @@ const NetflixHeader = ({ movieForNetflixHeader }: Props) => {
 
     /** SKELETON */
     if (!movieForNetflixHeader) {
-        if (status === 'fetching' || status === 'idle') {
+        if (status === 'loading' || status === 'idle') {
             return (
                 <HeaderSkeleton />
             )
         }
     }
-    if (status === 'error') {
+    if (error) {
         return (
             <div className="absolute top-20 left-0 w-full ">
                 <CustumizedAlert severity="error" variant="filled">
                     <AlertTitle>ERREUR !</AlertTitle>
-                    Détail: {error?.message}
                 </CustumizedAlert>
             </div>
         )
