@@ -8,3 +8,4 @@ Clone de Netflix codé en **TypeScript** avec **React**
 - TailWindCSS
 API
 - Axios
+- React Query
