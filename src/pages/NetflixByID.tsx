@@ -5,7 +5,6 @@ import NetflixAppBar from "../components/NetflixAppBar";
 import NetflixRow from "../components/NetflixRow";
 import NetflixHeader from "../components/layout/NetflixHeader";
 import HeaderSkeleton from "../components/skeletons/HeaderSkeleton";
-//import { useFetchData } from "../hooks/useFetchData";
 /** TYPES */
 import { TYPE_MOVIE, TYPE_TV } from "../utils/config";
 import { AfficheShow } from "../type/types";
@@ -15,8 +14,6 @@ import { clientAPI } from "../api/apiMovieDB";
 import { useParams, useLocation } from "react-router-dom";
 
 const NetflixByID = () => {
-
-    // const { data, execute } = useFetchData()
 
     const { tvId, movieId } = useParams()
     const location = useLocation()
@@ -32,9 +29,6 @@ const NetflixByID = () => {
         clientAPI(`${type}/${id}`)
     )
 
-    // useEffect(() => {
-    //     execute(clientAPI(`${type}/${id}`))
-    // }, [execute, type, id])
 
     useEffect(() => {
         const newType = location.pathname.includes(TYPE_MOVIE) ? TYPE_MOVIE : TYPE_TV

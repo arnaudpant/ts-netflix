@@ -42,6 +42,7 @@ const useFirestore = () => {
      */
     async function putMovieInFavoris() {
         await getFilmsFavorisData()
+        
         try {
             if (listFavoris) {
                 if (films) {

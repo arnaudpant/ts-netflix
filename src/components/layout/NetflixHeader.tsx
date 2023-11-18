@@ -4,10 +4,7 @@ import useFirestore from "../../hooks/useFirestore"
 /** API */
 import { useQuery } from "react-query";
 /** COMPONENTS */
-// import HeaderSkeleton from "../skeletons/HeaderSkeleton";
 import { clientAPI } from "../../api/apiMovieDB";
-// import { CustumizedAlert } from "../../theme/theme";
-// import { AlertTitle } from "@mui/material";
 import { TYPE_MOVIE, TYPE_TV } from "../../utils/config";
 /** FIRESTORE */
 import { getRandomType } from "../../utils/helpers";
@@ -38,27 +35,25 @@ const NetflixHeader = ({ movieForNetflixHeader }: Props) => {
     const [afficheShowHeader, setAfficheShowHeader] = useState<AfficheShow | null>(null)
     const [presentInFavoris, setPresentInfavoris] = useState<boolean>(false)
 
-    /** AFFICHAGE ALEATOIRE D'UN MOVIE DANS LE HEADER */
+    /** AFFICHAGE ALEATOIRE D'UN MOVIE DANS LE HEADER
+     * 
+     * 1: APPEL API FILMS MIEUX NOTES
+     */
     let movies: any | undefined
-    const { data, status, error } = useQuery(`${type}/top_rated`, () =>
-        clientAPI(`${type}/top_rated`)
+    const { data, status, error } = useQuery(`${type}/trending/${type}/day`, () => {
+        /** 2: Index aleatoire pour movie entre 1 et 20 */
+        if (!movieForNetflixHeader) {
+            setRandomMovie(Math.floor(Math.random() * 20))
+        }
+        /** 3: GET liste des ID de films dans les favoris */
+        putMovieInFavoris()
+
+        return clientAPI(`trending/${type}/day`)
+    }
     )
     if (data) {
         movies = data.data.results[randomMovie]
     }
-
-    /**
-     * 1: APPEL API FILMS MIEUX NOTES
-     * 2: Index aleatoire pour movie entre 1 et 20
-     * 3: GET liste des ID de films dans les favoris
-    */
-    useEffect(() => {
-        if (!movieForNetflixHeader) {
-            //execute(clientAPI(`${type}/top_rated`))
-            setRandomMovie(Math.floor(Math.random() * 20))
-            putMovieInFavoris()
-        }
-    }, [])
 
 
     /** FILM OU SERIE ? */

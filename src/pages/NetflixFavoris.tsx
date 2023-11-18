@@ -8,6 +8,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "../firebase/firebase.config";
 import NetflixRowFav from "../components/NetflixRowFav";
 import RowsSkeleton from "../components/skeletons/RowsSkeleton";
+import { Skeleton } from "@mui/material";
 
 
 const NetflixFavoris = () => {
@@ -55,7 +56,7 @@ const NetflixFavoris = () => {
         <div className="bg-[#111] relative">
             <NetflixAppBar />
             {
-                afficheShowHeader ? (<NetflixHeader movieForNetflixHeader={afficheShowHeader} />) : (<NetflixHeader />)
+                afficheShowHeader ? (<NetflixHeader movieForNetflixHeader={afficheShowHeader} />) : (<Skeleton />)
             }
             {
                 listMoviesInFavoris ? (<NetflixRowFav title="Ma liste" wideImage={false} watermark={true} listMoviesInFavoris={listMoviesInFavoris} />) : (<RowsSkeleton wideImage={false} title="Ma liste" />)
@@ -63,6 +64,7 @@ const NetflixFavoris = () => {
             
             <NetflixRow title="Films tendances Netflix" wideImage={true} watermark={true} type={TYPE_MOVIE} filter="trending" />
             <NetflixRow title="Séries tendances Netflix" wideImage={true} watermark={true} type={TYPE_TV} filter="trending" />
+            <NetflixRow title="Les Films d'action" wideImage={true} watermark={false} type={TYPE_MOVIE} filter="genre" param="28" />
             <NetflixRow title="Les Films fantastiques" wideImage={true} watermark={false} type={TYPE_MOVIE} filter="genre" param="14" />
             <NetflixRow title="Les Films sciences fictions" wideImage={true} watermark={false} type={TYPE_MOVIE} filter="genre" param="878" />
         </div>
