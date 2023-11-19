@@ -9,54 +9,33 @@ import HeaderSkeleton from "../components/skeletons/HeaderSkeleton";
 import { TYPE_MOVIE, TYPE_TV } from "../utils/config";
 import { AfficheShow } from "../type/types";
 /** API */
-import { useQuery } from "react-query";
-import { clientAPI } from "../api/apiMovieDB";
-import { useParams, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const NetflixByID = () => {
 
-    const { tvId, movieId } = useParams()
+    //const { tvId, movieId } = useParams()
     const location = useLocation()
+    const {movie, type} = location.state
 
-    const [type, setType] = useState<typeof TYPE_MOVIE | typeof TYPE_TV>(
-        location.pathname.includes(TYPE_MOVIE) ? TYPE_MOVIE : TYPE_TV
-    )
-    const [id, setId] = useState(type === TYPE_MOVIE ? movieId : tvId)
     const [movieForNetflixHeader, setMovieForNetflixHeader] = useState<AfficheShow | null>(null)
 
 
-    const { data } = useQuery(`${type}/${id}`, () => 
-        clientAPI(`${type}/${id}`)
-    )
-
 
     useEffect(() => {
-        const newType = location.pathname.includes(TYPE_MOVIE) ? TYPE_MOVIE : TYPE_TV
-        setType(newType)
-        setId(type === TYPE_MOVIE ? movieId : tvId)
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        })
-    }, [location.pathname, tvId, movieId, type])
-    if(data){
-
-    }
-
-    useEffect(() => {
-        if (data) {
+        if (movie) {
             setMovieForNetflixHeader({
                 type: type,
-                id: data.data.id,
-                name: data.data.name,
-                title: data.data.title,
-                overview: data.data.overview,
-                backdrop_path: data.data.backdrop_path,
-                poster_path: data.data.poster_path
+                id: movie.id,
+                name: movie.name ? movie.name : "",
+                title: movie.title ? movie.title : "",
+                overview: movie.overview,
+                backdrop_path: movie.backdrop_path,
+                poster_path: movie.poster_path
             }
             )
         }
-    }, [data])
+    }, [movie])
+
 
     return (
         <div className="bg-[#111] relative">

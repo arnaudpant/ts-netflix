@@ -7,7 +7,7 @@ const NetflixMovies = () => {
     return (
         <div className="bg-[#111] relative">
         <NetflixAppBar />
-        <NetflixHeader />
+        <NetflixHeader typeOfMovie={TYPE_MOVIE} />
         <NetflixRow title="Films tendances Netflix" wideImage={true} watermark={true} type={TYPE_MOVIE} filter="trending" />
         <NetflixRow title="Films les mieux notées" wideImage={true} watermark={false} type={TYPE_MOVIE} filter="toprated"  />
         <NetflixRow title="Les Films fantastiques" wideImage={true} watermark={false} type={TYPE_MOVIE} filter="genre" param="14" />

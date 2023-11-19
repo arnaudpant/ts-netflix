@@ -1,13 +1,13 @@
 /** HOOKS */
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import useFirestore from "../../hooks/useFirestore"
 /** API */
-import { useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 /** COMPONENTS */
 import { clientAPI } from "../../api/apiMovieDB";
 import { TYPE_MOVIE, TYPE_TV } from "../../utils/config";
 /** FIRESTORE */
-import { getRandomType } from "../../utils/helpers";
+import { getRandomIndex, getRandomType } from "../../utils/helpers";
 import { AfficheShow } from "../../type/types";
 /** MUI */
 import Snackbar from "@mui/material/Snackbar";
@@ -17,194 +17,181 @@ import HeaderSkeleton from "../skeletons/HeaderSkeleton";
 import { CustumizedAlert } from "../../theme/theme";
 
 type Props = {
-    movieForNetflixHeader?: AfficheShow
+    movieForNetflixHeader?: AfficheShow,
+    typeOfMovie?: typeof TYPE_MOVIE | typeof TYPE_TV
 }
 
-const NetflixHeader = ({ movieForNetflixHeader }: Props) => {
+const NetflixHeader = ({ movieForNetflixHeader, typeOfMovie }: Props) => {
 
-    /** TYPE DE FILM OU SERIE ALEATOIRE */
-    const [randomMovie, setRandomMovie] = useState<number>(0)
+    const [randomMovie] = useState<number>(getRandomIndex(1, 5))
+    const [typeRandom] = useState<typeof TYPE_MOVIE | typeof TYPE_TV>(typeOfMovie ? (typeOfMovie) : (getRandomType()))
+    const [afficheShowHeader, setAfficheShowHeader] = useState<AfficheShow>()
     const [snackBarOpen, setSnackBarOpen] = useState(false)
-    const [type] = useState<typeof TYPE_MOVIE | typeof TYPE_TV>(getRandomType())
-
-    /** API */
-    // const { data, status, error, execute } = useFetchData()
-    const { listFavoris, putMovieInFavoris, addAfficheShowHeaderToFavoris, removeAfficheShowHeaderToFavoris, statusFirestore } = useFirestore()
-
     /** FAVORIS */
-    const [afficheShowHeader, setAfficheShowHeader] = useState<AfficheShow | null>(null)
-    const [presentInFavoris, setPresentInfavoris] = useState<boolean>(false)
+    const { addAfficheShowHeaderToFavoris, removeAfficheShowHeaderToFavoris, getFilmsFavorisData } = useFirestore()
+    const [mutationError, setMutationError] = useState<boolean>(false)
+    const queryClient = useQueryClient()
 
-    /** AFFICHAGE ALEATOIRE D'UN MOVIE DANS LE HEADER
-     * 
-     * 1: APPEL API FILMS MIEUX NOTES
-     */
-    let movies: any | undefined
-    const { data, status, error } = useQuery(`${type}/trending/${type}/day`, () => {
-        /** 2: Index aleatoire pour movie entre 1 et 20 */
-        if (!movieForNetflixHeader) {
-            setRandomMovie(Math.floor(Math.random() * 20))
-        }
-        /** 3: GET liste des ID de films dans les favoris */
-        putMovieInFavoris()
 
-        return clientAPI(`trending/${type}/day`)
-    }
+
+    /**
+     * CAS 1: Pas de movie specifique a afficher =>
+     * Random un film ou serie = movie
+     * Affichage du movie dans le Header
+    */
+
+
+    /** GET LIST MOVIES */
+    const { data, isLoading, error } = useQuery(
+        `${typeRandom}/trending/${typeRandom}/day`,
+        () => clientAPI(`trending/${typeRandom}/day`)
     )
-    if (data) {
-        movies = data.data.results[randomMovie]
+
+    useEffect(() => {
+        if (!movieForNetflixHeader && data) {
+            movieOrTvRandomInHeader(data.data.results[randomMovie])
+        }
+    }, [data])
+
+    function movieOrTvRandomInHeader(movieToHeader: AfficheShow) {
+        if (data) {
+            if (typeRandom === TYPE_MOVIE) {
+                setAfficheShowHeader(
+                    {
+                        type: typeRandom,
+                        id: movieToHeader.id,
+                        title: movieToHeader.title,
+                        name: "",
+                        overview: movieToHeader.overview,
+                        backdrop_path: movieToHeader.backdrop_path,
+                        poster_path: movieToHeader.poster_path
+                    })
+            }
+            if (typeRandom === TYPE_TV) {
+                setAfficheShowHeader(
+                    {
+                        type: typeRandom,
+                        id: movieToHeader.id,
+                        title: "",
+                        name: movieToHeader.name,
+                        overview: movieToHeader.overview,
+                        backdrop_path: movieToHeader.backdrop_path,
+                        poster_path: movieToHeader.poster_path
+                    })
+            }
+        }
     }
 
 
-    /** FILM OU SERIE ? */
-    useEffect(() => {
-        if (!movieForNetflixHeader) {
-            movieOrTvInHeader()
-        }
-    }, [movies])
+    /**
+    * CAS 2: movie specifique a afficher =>
+    * Affichage du movie dans le Header
+    */
 
-    /** FILM OU SERIE DANS LES FAVORIS ? */
-    useEffect(() => {
-        isMovieInFavoris()
-    }, [listFavoris, movieForNetflixHeader])
-
-    /** FILM OU SERIE ID ? */
     useEffect(() => {
         if (movieForNetflixHeader) {
-            movies = undefined
-            movieOrTvInHeader()
+            movieOrTvSpecifiqueInHeader(movieForNetflixHeader)
         }
     }, [movieForNetflixHeader])
 
 
-    /**
-     * Affichage title ou name en fonction film ou serie
-     */
-    async function movieOrTvInHeader() {
-        if (movies !== undefined) {
-            if (movies.title) {
-                setAfficheShowHeader(
-                    {
-                        type: type,
-                        id: movies.id,
-                        title: movies.title,
-                        name: "",
-                        overview: movies.overview,
-                        backdrop_path: movies.backdrop_path,
-                        poster_path: movies.poster_path
-                    })
-            }
-            if (movies.name) {
-                setAfficheShowHeader(
-                    {
-                        type: type,
-                        id: movies.id,
-                        title: "",
-                        name: movies.name,
-                        overview: movies.overview,
-                        backdrop_path: movies.backdrop_path,
-                        poster_path: movies.poster_path
-                    })
-            }
+    function movieOrTvSpecifiqueInHeader(movieToHeader: AfficheShow) {
+        if (movieToHeader.type === TYPE_MOVIE) {
+            setAfficheShowHeader({
+                type: movieToHeader.type,
+                id: movieToHeader.id,
+                title: movieToHeader.title,
+                name: "",
+                overview: movieToHeader.overview,
+                backdrop_path: movieToHeader.backdrop_path,
+                poster_path: movieToHeader.poster_path
+            })
         }
-        if (movieForNetflixHeader && movieForNetflixHeader.title) {
-            setAfficheShowHeader(
-                {
-                    type: movieForNetflixHeader.type,
-                    id: movieForNetflixHeader.id,
-                    title: movieForNetflixHeader.title,
-                    name: "",
-                    overview: movieForNetflixHeader.overview,
-                    backdrop_path: movieForNetflixHeader.backdrop_path,
-                    poster_path: movieForNetflixHeader.poster_path
-                })
-        }
-        if (movieForNetflixHeader && movieForNetflixHeader.name) {
-            setAfficheShowHeader(
-                {
-                    type: movieForNetflixHeader.type,
-                    id: movieForNetflixHeader.id,
-                    title: "",
-                    name: movieForNetflixHeader.name,
-                    overview: movieForNetflixHeader.overview,
-                    backdrop_path: movieForNetflixHeader.backdrop_path,
-                    poster_path: movieForNetflixHeader.poster_path
-                })
+        if (movieToHeader.type === TYPE_TV) {
+            setAfficheShowHeader({
+                type: movieToHeader.type,
+                id: movieToHeader.id,
+                title: "",
+                name: movieToHeader.name,
+                overview: movieToHeader.overview,
+                backdrop_path: movieToHeader.backdrop_path,
+                poster_path: movieToHeader.poster_path
+            })
         }
     }
+
+    /** FAVORIS */
+    const { data: dataFavoris } = useQuery('dataFavoris', () => getFilmsFavorisData())
+
+    let movieIsInFavoris = false
+    if (dataFavoris) {
+        function testIfMovieIsInFavoris() {
+            return dataFavoris.map((fav: AfficheShow) => fav.id).includes(afficheShowHeader?.id)
+        }
+        movieIsInFavoris = testIfMovieIsInFavoris()
+    }
+
+    const addMutation = useMutation(
+        () => addAfficheShowHeaderToFavoris(afficheShowHeader as AfficheShow),
+        {
+            onSuccess: () => {
+                queryClient.invalidateQueries('dataFavoris')
+                setMutationError(false)
+                setSnackBarOpen(true)
+            },
+            onError: () => {
+                setMutationError(true)
+                setSnackBarOpen(true)
+            }
+        }
+    )
+    let idToRemove: number
+    if(afficheShowHeader){
+        idToRemove = afficheShowHeader.id
+    }
+    const deleteMutation = useMutation(
+        () => removeAfficheShowHeaderToFavoris(idToRemove),
+        {
+            onSuccess: () => {
+                queryClient.invalidateQueries('dataFavoris')
+                setMutationError(false)
+                setSnackBarOpen(true)
+            },
+            onError: () => {
+                setMutationError(true)
+                setSnackBarOpen(true)
+            }
+        }
+    )
+
+
+
 
 
     /**
      *  === FIRESTORE ===
      */
-    /** MOVIE DANS LES FAVORIS ? */
-    async function isMovieInFavoris() {
-        await putMovieInFavoris()
-        if (afficheShowHeader) {
-            if (listFavoris.includes(afficheShowHeader.id)) {
-                setPresentInfavoris(true)
-            } else {
-                setPresentInfavoris(false)
-            }
-        }
-    }
+
 
     /**
      * ENVOI MOVIE DANS BASE DE DONNEES FIRESTORE
      */
 
     async function addMovieHeaderToFirestore() {
-        setSnackBarOpen(false)
-        if (afficheShowHeader) {
-            if (listFavoris.includes(afficheShowHeader.id)) {
-                return
-            }
-        }
-        if (afficheShowHeader?.title) {
-            const movieForFirestore: AfficheShow = {
-                id: afficheShowHeader.id,
-                type: afficheShowHeader.type,
-                title: afficheShowHeader.title,
-                name: "",
-                overview: afficheShowHeader.overview,
-                backdrop_path: afficheShowHeader.backdrop_path,
-                poster_path: afficheShowHeader.poster_path
-            }
-            addAfficheShowHeaderToFavoris(movieForFirestore)
-        }
-        if (afficheShowHeader?.name) {
-            const movieForFirestore: AfficheShow = {
-                id: afficheShowHeader.id,
-                type: afficheShowHeader.type,
-                title: "",
-                name: afficheShowHeader.name,
-                overview: afficheShowHeader.overview,
-                backdrop_path: afficheShowHeader.backdrop_path,
-                poster_path: afficheShowHeader.poster_path
-            }
-            addAfficheShowHeaderToFavoris(movieForFirestore)
-        }
-        await isMovieInFavoris()
-        setSnackBarOpen(true)
+        addMutation.mutate()
     }
 
     async function removeMovieHeaderToFirestore() {
-        setSnackBarOpen(false)
-        if (afficheShowHeader) {
-            removeAfficheShowHeaderToFavoris(afficheShowHeader.id)
-        }
-        setSnackBarOpen(true)
+        deleteMutation.mutate()
     }
 
 
 
     /** SKELETON */
-    if (!movieForNetflixHeader) {
-        if (status === 'loading' || status === 'idle') {
-            return (
-                <HeaderSkeleton />
-            )
-        }
+    if (isLoading) {
+        return (
+            <HeaderSkeleton />
+        )
     }
     if (error) {
         return (
@@ -221,12 +208,12 @@ const NetflixHeader = ({ movieForNetflixHeader }: Props) => {
     return (
         <header className="relative h-[448px] text-white overflow-hidden">
             {
-                afficheShowHeader && <NetflixHeaderView movie={afficheShowHeader} removeMovieHeaderToFirestore={removeMovieHeaderToFirestore} addMovieHeaderToFirestore={addMovieHeaderToFirestore} presentInFavoris={presentInFavoris} />
+                afficheShowHeader && <NetflixHeaderView movie={afficheShowHeader} removeMovieHeaderToFirestore={removeMovieHeaderToFirestore} addMovieHeaderToFirestore={addMovieHeaderToFirestore} presentInFavoris={movieIsInFavoris} />
             }
 
 
             {
-                statusFirestore === 'done' ? (
+                snackBarOpen && !mutationError ? (
                     <Snackbar open={snackBarOpen} autoHideDuration={3000} onClose={() => { setSnackBarOpen(false) }}>
                         <Alert onClose={() => { setSnackBarOpen(false) }} severity="success" sx={{ width: '100%' }}>
                             Ajouté dans vos favoris !
@@ -235,7 +222,7 @@ const NetflixHeader = ({ movieForNetflixHeader }: Props) => {
                 ) : null
             }
             {
-                statusFirestore === 'error' ? (
+                snackBarOpen && mutationError ? (
                     <Snackbar open={snackBarOpen} autoHideDuration={3000} onClose={() => { setSnackBarOpen(false) }}>
                         <Alert onClose={() => { setSnackBarOpen(false) }} severity="error" sx={{ width: '100%' }}>
                             Une erreur avec la liste de vos favoris est survenue !
@@ -243,7 +230,7 @@ const NetflixHeader = ({ movieForNetflixHeader }: Props) => {
                     </Snackbar>
                 ) : null
             }
-            {
+            {/* {
                 statusFirestore === 'remove' ? (
                     <Snackbar open={snackBarOpen} autoHideDuration={3000} onClose={() => { setSnackBarOpen(false) }}>
                         <Alert onClose={() => { setSnackBarOpen(false) }} severity="info" sx={{ width: '100%' }}>
@@ -251,7 +238,7 @@ const NetflixHeader = ({ movieForNetflixHeader }: Props) => {
                         </Alert>
                     </Snackbar>
                 ) : null
-            }
+            } */}
 
         </header>
     );

@@ -95,7 +95,7 @@ const NetflixRow = ({ title, wideImage, type = TYPE_MOVIE, param, filter = "late
                 {
                     moviesArr.length > 0 ? (moviesArr.map((movie: any) => (
                         <div className={clsx(wideImage ? "max-w-[400px]" : " max-w-[166px]", 'relative shrink-0 mr-5 vignettes hover:scale-110')} key={movie.id}>
-                            <Link to={`/${type}/${movie.id}`}>
+                            <Link to={`/${type}/${movie.id}`} state={{movie, type}}>
                                 <img src={`${buildImagePath(movie)}`} alt={`${movie.original_title}`} className="cursor-pointer object-contain" />
                                 <div className={watermarkClass}></div>
                             </Link>
