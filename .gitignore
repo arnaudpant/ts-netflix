@@ -13,7 +13,6 @@ dist-ssr
 netflix-clone
 *.local
 *.md
-.env
 *.local
 
 # Editor directories and files
