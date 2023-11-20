@@ -11,6 +11,7 @@ node_modules
 netflix-clone
 *.local
 *.md
+.env
 *.local
 
 # Editor directories and files
