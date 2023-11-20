@@ -26,7 +26,8 @@ const NetflixHeader = ({ movieForNetflixHeader, typeOfMovie }: Props) => {
     const [randomMovie] = useState<number>(getRandomIndex(1, 5))
     const [typeRandom] = useState<typeof TYPE_MOVIE | typeof TYPE_TV>(typeOfMovie ? (typeOfMovie) : (getRandomType()))
     const [afficheShowHeader, setAfficheShowHeader] = useState<AfficheShow>()
-    const [snackBarOpen, setSnackBarOpen] = useState(false)
+    const [snackBarOpenAdd, setSnackBarOpenAdd] = useState(false)
+    const [snackBarOpenRemove, setSnackBarOpenRemove] = useState(false)
     /** FAVORIS */
     const { addAfficheShowHeaderToFavoris, removeAfficheShowHeaderToFavoris, getFilmsFavorisData } = useFirestore()
     const [mutationError, setMutationError] = useState<boolean>(false)
@@ -137,11 +138,11 @@ const NetflixHeader = ({ movieForNetflixHeader, typeOfMovie }: Props) => {
             onSuccess: () => {
                 queryClient.invalidateQueries('dataFavoris')
                 setMutationError(false)
-                setSnackBarOpen(true)
+                setSnackBarOpenAdd(true)
             },
             onError: () => {
                 setMutationError(true)
-                setSnackBarOpen(true)
+                setSnackBarOpenAdd(true)
             }
         }
     )
@@ -155,11 +156,11 @@ const NetflixHeader = ({ movieForNetflixHeader, typeOfMovie }: Props) => {
             onSuccess: () => {
                 queryClient.invalidateQueries('dataFavoris')
                 setMutationError(false)
-                setSnackBarOpen(true)
+                setSnackBarOpenRemove(true)
             },
             onError: () => {
                 setMutationError(true)
-                setSnackBarOpen(true)
+                setSnackBarOpenAdd(true)
             }
         }
     )
@@ -213,32 +214,32 @@ const NetflixHeader = ({ movieForNetflixHeader, typeOfMovie }: Props) => {
 
 
             {
-                snackBarOpen && !mutationError ? (
-                    <Snackbar open={snackBarOpen} autoHideDuration={3000} onClose={() => { setSnackBarOpen(false) }}>
-                        <Alert onClose={() => { setSnackBarOpen(false) }} severity="success" sx={{ width: '100%' }}>
+                snackBarOpenAdd && !mutationError ? (
+                    <Snackbar open={snackBarOpenAdd} autoHideDuration={3000} onClose={() => { setSnackBarOpenAdd(false) }}>
+                        <Alert onClose={() => { setSnackBarOpenAdd(false) }} severity="success" sx={{ width: '100%' }}>
                             Ajouté dans vos favoris !
                         </Alert>
                     </Snackbar>
                 ) : null
             }
             {
-                snackBarOpen && mutationError ? (
-                    <Snackbar open={snackBarOpen} autoHideDuration={3000} onClose={() => { setSnackBarOpen(false) }}>
-                        <Alert onClose={() => { setSnackBarOpen(false) }} severity="error" sx={{ width: '100%' }}>
+                snackBarOpenAdd && mutationError ? (
+                    <Snackbar open={snackBarOpenAdd} autoHideDuration={3000} onClose={() => { setSnackBarOpenAdd(false) }}>
+                        <Alert onClose={() => { setSnackBarOpenAdd(false) }} severity="error" sx={{ width: '100%' }}>
                             Une erreur avec la liste de vos favoris est survenue !
                         </Alert>
                     </Snackbar>
                 ) : null
             }
-            {/* {
-                statusFirestore === 'remove' ? (
-                    <Snackbar open={snackBarOpen} autoHideDuration={3000} onClose={() => { setSnackBarOpen(false) }}>
-                        <Alert onClose={() => { setSnackBarOpen(false) }} severity="info" sx={{ width: '100%' }}>
+            {
+                snackBarOpenRemove && !mutationError ? (
+                    <Snackbar open={snackBarOpenRemove} autoHideDuration={3000} onClose={() => { setSnackBarOpenRemove(false) }}>
+                        <Alert onClose={() => { setSnackBarOpenRemove(false) }} severity="info" sx={{ width: '100%' }}>
                             Supprimé de vos favoris !
                         </Alert>
                     </Snackbar>
                 ) : null
-            } */}
+            }
 
         </header>
     );
