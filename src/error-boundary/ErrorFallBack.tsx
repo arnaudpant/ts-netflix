@@ -4,7 +4,7 @@ import NetflixAppBar from "../components/NetflixAppBar";
 
 const ErrorFallBack: React.ComponentType<FallbackProps> = ({ error, resetErrorBoundary }) => {
     return (
-        <div className="bg-error-boundary bg-cover bg-center relative flex flex-col justify-center items-center h-[100vh]">
+        <div className="bg-error-404 bg-cover bg-center relative flex flex-col justify-center items-center h-[100vh]">
             <NetflixAppBar />
             <div className="flex flex-col justify-center items-center gap-5">
                 <h1 className="text-4xl text-white font-bold">Vous cherchez votre chemin ?</h1>

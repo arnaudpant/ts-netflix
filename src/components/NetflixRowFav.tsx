@@ -20,7 +20,6 @@ type Props = {
 
 const NetflixRowFav = ({ title, wideImage, watermark, listMoviesInFavoris }: Props) => {
 
-
     const buildImagePath = (movie: AfficheShow) => {
         const image = wideImage ? movie?.backdrop_path : movie?.poster_path
 

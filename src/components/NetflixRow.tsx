@@ -26,7 +26,6 @@ type Props = {
 
 const NetflixRow = ({ title, wideImage, type = TYPE_MOVIE, param, filter = "latest", watermark }: Props) => {
 
-    // const { data, status, error, execute } = useFetchData()
     const [moviesArr, setMoviesArr] = useState([])
 
     const endpointLatest = `${type}/latest`
@@ -53,7 +52,7 @@ const NetflixRow = ({ title, wideImage, type = TYPE_MOVIE, param, filter = "late
             break
     }
 
-    const { data, error, status } = useQuery(`${endpoint}`, () =>
+    const { data, error, isLoading } = useQuery(`${endpoint}`, () =>
         clientAPI(`${endpoint}`)
     )
     useEffect(() => {
@@ -72,7 +71,7 @@ const NetflixRow = ({ title, wideImage, type = TYPE_MOVIE, param, filter = "late
 
     const watermarkClass = watermark ? "watermarked" : "hidden"
 
-    if (status === 'loading' || status === 'idle') {
+    if (isLoading) {
         return (
             <RowsSkeleton wideImage={wideImage} title={title} />
         )

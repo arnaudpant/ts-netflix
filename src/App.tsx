@@ -15,7 +15,20 @@ import AuthApp from "./components/auth/AuthApp"
 import { useEffect, useState } from "react"
 
 // Create a client
-const queryClient = new QueryClient()
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      useErrorBoundary: true,
+      refetchOnWindowFocus: false,
+      retryDelay: 500,
+    },
+    mutations: {
+      useErrorBoundary: true,
+      retryDelay: 500,
+      retry: 1
+    }
+  }
+})
 
 function App() {
 

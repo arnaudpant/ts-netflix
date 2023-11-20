@@ -165,15 +165,9 @@ const NetflixHeader = ({ movieForNetflixHeader, typeOfMovie }: Props) => {
         }
     )
 
-
-
-
-
     /**
      *  === FIRESTORE ===
      */
-
-
     /**
      * ENVOI MOVIE DANS BASE DE DONNEES FIRESTORE
      */

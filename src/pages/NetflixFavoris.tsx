@@ -1,67 +1,32 @@
-import { useEffect, useState } from "react";
 import NetflixAppBar from "../components/NetflixAppBar";
 import NetflixRow from "../components/NetflixRow";
 import NetflixHeader from "../components/layout/NetflixHeader";
 import { TYPE_MOVIE, TYPE_TV } from "../utils/config";
-import { FirebaseError } from "firebase/app";
-import { doc, getDoc } from "firebase/firestore";
-import { auth, db } from "../firebase/firebase.config";
 import NetflixRowFav from "../components/NetflixRowFav";
 import RowsSkeleton from "../components/skeletons/RowsSkeleton";
 import HeaderSkeleton from "../components/skeletons/HeaderSkeleton";
+import { useQuery } from "react-query";
+import useFirestore from "../hooks/useFirestore";
 
 
 const NetflixFavoris = () => {
 
-    /** API */
-    const authUser: string | undefined = auth.currentUser?.uid
-    let docRef: any
-    let favoris: any
-    if (authUser) {
-        docRef = doc(db, "users", authUser);
-    }
-
+    const { getFilmsFavorisData } = useFirestore()
     /** FAVORIS */
-    const [afficheShowHeader, setAfficheShowHeader] = useState()
-    const [listMoviesInFavoris, setListMoviesInFavoris] = useState()
+    const { data: dataPageFavoris } = useQuery('dataPageFavoris', () => getFilmsFavorisData())
 
-
-    /**
-     * 1 - Recuperer liste des favoris
-     */
-    useEffect(() => {
-        const getFirstFavoris = async () => {
-            try {
-                const docSnap = await getDoc(docRef);
-                favoris = docSnap.data() // [{}, {}, ...]
-            } catch (error) {
-                const firebaseError = error as FirebaseError
-                return {
-                    errorFirestore: {
-                        code: firebaseError.code,
-                        message: firebaseError.message
-                    }
-                }
-            }
-            if(favoris) {
-                setAfficheShowHeader(favoris.films[0])
-                setListMoviesInFavoris(favoris.films)
-            }
-        }
-        getFirstFavoris()
-    }, [favoris])
 
 
     return (
         <div className="bg-[#111] relative">
             <NetflixAppBar />
             {
-                afficheShowHeader ? (<NetflixHeader movieForNetflixHeader={afficheShowHeader} />) : (<HeaderSkeleton />)
+                dataPageFavoris ? (<NetflixHeader movieForNetflixHeader={dataPageFavoris[0]} />) : (<HeaderSkeleton />)
             }
             {
-                listMoviesInFavoris ? (<NetflixRowFav title="Ma liste" wideImage={false} watermark={true} listMoviesInFavoris={listMoviesInFavoris} />) : (<RowsSkeleton wideImage={false} title="Ma liste" />)
+                dataPageFavoris ? (<NetflixRowFav title="Ma liste" wideImage={false} watermark={true} listMoviesInFavoris={dataPageFavoris} />) : (<RowsSkeleton wideImage={false} title="Ma liste" />)
             }
-            
+
             <NetflixRow title="Films tendances Netflix" wideImage={true} watermark={true} type={TYPE_MOVIE} filter="trending" />
             <NetflixRow title="Séries tendances Netflix" wideImage={true} watermark={true} type={TYPE_TV} filter="trending" />
             <NetflixRow title="Les Films d'action" wideImage={true} watermark={false} type={TYPE_MOVIE} filter="genre" param="28" />

@@ -39,5 +39,3 @@ export const FirestoreUpdateDocument = async (collectionName: string, documentId
         }
     }
 }
-
-// collectionName: users, documentId: auth., data: object)
