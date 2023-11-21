@@ -10,9 +10,12 @@ export default defineConfig(({ mode }) => {
     },
     plugins: [react()],
     test: {
-          globals: true,
-          environment: 'jsdom',
-          setupFiles: ['./vitest.setup.ts']
-        }
+      globals: true,
+      environment: 'jsdom',
+      setupFiles: ['./vitest.setup.ts']
+    },
+    build: {
+      chunkSizeWarningLimit: 1600
+    }
   }
 })
