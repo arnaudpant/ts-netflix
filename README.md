@@ -9,3 +9,5 @@ Clone de Netflix codé en **TypeScript** avec **React**
 API
 - Axios
 - React Query
+
+Netlify
