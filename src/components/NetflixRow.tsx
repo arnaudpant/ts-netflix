@@ -80,7 +80,7 @@ const NetflixRow = ({ title, wideImage, type = TYPE_MOVIE, param, filter = "late
         return (
             <div className="absolute top-20 left-0 w-full">
                 <CustumizedAlert severity="error" variant="filled">
-                    <AlertTitle>ERREUR !</AlertTitle>
+                    <AlertTitle>{`ERREUR ! ${error}`}</AlertTitle>
                 </CustumizedAlert>
             </div>
         )
