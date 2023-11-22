@@ -30,7 +30,10 @@ export function useFetchData () {
         dispatch({type: 'fetching'})
         promise
         .then((data: any )=> dispatch({type: 'done', payload: data}))
-        .catch((error: any) => dispatch({type: 'error', error: error}))
+        .catch((error: any) => {
+            console.log(error.response.data)
+            dispatch({type: 'error', error: error})}
+        )
     }, [])
     return { data, error, status, execute }
 }
