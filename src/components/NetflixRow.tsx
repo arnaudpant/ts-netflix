@@ -30,7 +30,7 @@ const NetflixRow = ({ title, wideImage, type = TYPE_MOVIE, param, filter = "late
 
     const endpointLatest = `${type}/latest`
     const endpointTopRated = `${type}/top_rated`
-    const endpointGenre = `discover/${type}/?api_key=${API_KEY}&with_genres=${param}`
+    const endpointGenre = `discover/${type}?api_key=${API_KEY}&with_genres=${param}`
     const endpointTrending = `trending/${type}/day`
 
     let endpoint: string = 'latest'
