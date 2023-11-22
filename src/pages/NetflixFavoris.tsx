@@ -29,9 +29,9 @@ const NetflixFavoris = () => {
 
             <NetflixRow title="Films tendances Netflix" wideImage={true} watermark={true} type={TYPE_MOVIE} filter="trending" />
             <NetflixRow title="Séries tendances Netflix" wideImage={true} watermark={true} type={TYPE_TV} filter="trending" />
-            <NetflixRow title="Les Films d'action" wideImage={true} watermark={false} type={TYPE_MOVIE} filter="genre" param="28" />
+            {/* <NetflixRow title="Les Films d'action" wideImage={true} watermark={false} type={TYPE_MOVIE} filter="genre" param="28" />
             <NetflixRow title="Les Films fantastiques" wideImage={true} watermark={false} type={TYPE_MOVIE} filter="genre" param="14" />
-            <NetflixRow title="Les Films sciences fictions" wideImage={true} watermark={false} type={TYPE_MOVIE} filter="genre" param="878" />
+            <NetflixRow title="Les Films sciences fictions" wideImage={true} watermark={false} type={TYPE_MOVIE} filter="genre" param="878" /> */}
         </div>
     );
 };
