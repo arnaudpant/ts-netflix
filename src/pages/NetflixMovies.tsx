@@ -13,6 +13,8 @@ const NetflixMovies = () => {
         <NetflixRow title="Films les mieux notées" wideImage={true} watermark={false} type={TYPE_MOVIE} filter="toprated"  />
         <NetflixRow title="Les Films fantastiques" wideImage={true} watermark={false} type={TYPE_MOVIE} filter="genre" param="14" />
         <NetflixRow title="Les Films sciences fictions" wideImage={true} watermark={false} type={TYPE_MOVIE} filter="genre" param="878" />
+        <NetflixRow title="Les Films d'horreur" wideImage={true} watermark={false} type={TYPE_MOVIE} filter="genre" param="27" />
+        <NetflixRow title="Les Thrillers" wideImage={true} watermark={false} type={TYPE_MOVIE} filter="genre" param="53" />
         <NetflixFooter />
     </div>
     );
