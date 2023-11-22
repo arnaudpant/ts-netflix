@@ -7,6 +7,7 @@ import RowsSkeleton from "../components/skeletons/RowsSkeleton";
 import HeaderSkeleton from "../components/skeletons/HeaderSkeleton";
 import { useQuery } from "react-query";
 import useFirestore from "../hooks/useFirestore";
+import NetflixFooter from "../components/layout/NetflixFooter";
 
 
 const NetflixFavoris = () => {
@@ -32,6 +33,7 @@ const NetflixFavoris = () => {
             {/* <NetflixRow title="Les Films d'action" wideImage={true} watermark={false} type={TYPE_MOVIE} filter="genre" param="28" />
             <NetflixRow title="Les Films fantastiques" wideImage={true} watermark={false} type={TYPE_MOVIE} filter="genre" param="14" />
             <NetflixRow title="Les Films sciences fictions" wideImage={true} watermark={false} type={TYPE_MOVIE} filter="genre" param="878" /> */}
+            <NetflixFooter />
         </div>
     );
 };

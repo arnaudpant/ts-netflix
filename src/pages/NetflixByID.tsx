@@ -10,6 +10,7 @@ import { TYPE_MOVIE, TYPE_TV } from "../utils/config";
 import { AfficheShow } from "../type/types";
 /** API */
 import { useLocation } from "react-router-dom";
+import NetflixFooter from "../components/layout/NetflixFooter";
 
 const NetflixByID = () => {
 
@@ -47,6 +48,7 @@ const NetflixByID = () => {
             <NetflixRow title="Séries tendances Netflix" wideImage={true} watermark={true} type={TYPE_TV} filter="trending" />
             {/* <NetflixRow title="Les Films fantastiques" wideImage={true} watermark={false} type={TYPE_MOVIE} filter="genre" param="14" />
             <NetflixRow title="Les Films sciences fictions" wideImage={true} watermark={false} type={TYPE_MOVIE} filter="genre" param="878" /> */}
+            <NetflixFooter />
         </div>
     );
 };

@@ -1,5 +1,6 @@
 import NetflixAppBar from "../components/NetflixAppBar";
 import NetflixRow from "../components/NetflixRow";
+import NetflixFooter from "../components/layout/NetflixFooter";
 import NetflixHeader from "../components/layout/NetflixHeader";
 import { TYPE_TV } from "../utils/config";
 
@@ -13,6 +14,7 @@ const NetflixSeries = () => {
             <NetflixRow title="Séries les mieux notées" wideImage={true} watermark={false} type={TYPE_TV} filter="toprated"  />
             {/* <NetflixRow title="Les documentaires" wideImage={true} watermark={false} type={TYPE_TV} filter="genre" param="99" />
             <NetflixRow title="Les séries criminelles" wideImage={true} watermark={false} type={TYPE_TV} filter="genre" param="80" /> */}
+            <NetflixFooter />
         </div>
     );
 };
