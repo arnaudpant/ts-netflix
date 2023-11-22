@@ -6,5 +6,5 @@ export const clientAPI = async (endPoint: string) => {
     const startChar = endPoint.includes('?') ? `&` : `?`
     const keyLang = `${startChar}api_key=${API_KEY}&language=${lang}&page=${page}`
 
-    return axios.get(`${BASE_URL}/${endPoint}${keyLang}`)
+    return axios.get(`https://api.themoviedb.org/3/${endPoint}${keyLang}`)
 }
