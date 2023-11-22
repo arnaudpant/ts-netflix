@@ -1,4 +1,4 @@
-import { API_KEY, BASE_URL, lang } from '../utils/config'
+import { API_KEY, lang } from '../utils/config'
 import axios from "axios";
 
 export const clientAPI = async (endPoint: string) => {
