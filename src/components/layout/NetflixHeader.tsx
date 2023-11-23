@@ -198,7 +198,7 @@ const NetflixHeader = ({ movieForNetflixHeader, typeOfMovie }: Props) => {
         )
     }
 
-    console.log('render')
+    //console.log('render')
 
     return (
         <header className="relative h-[448px] text-white overflow-hidden">
