@@ -7,7 +7,7 @@ import Inscription from "../../pages/Inscription"
 import Error404 from "../../pages/Error404"
 import NetflixFavoris from "../../pages/NetflixFavoris"
 /** API */
-import { BrowserRouter, Route, Routes } from "react-router-dom"
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom"
 import ErrorFallBack from "../../error-boundary/ErrorFallBack"
 import { ErrorBoundary } from "react-error-boundary"
 /** MUI */
@@ -19,7 +19,7 @@ function AuthApp() {
   return (
     <BrowserRouter>
       <ThemeProvider theme={theme}>
-        <ErrorBoundary FallbackComponent={ErrorFallBack} onReset={() => { }}>
+        <ErrorBoundary FallbackComponent={ErrorFallBack} onReset={() => {<Navigate to="/" replace={true} /> }}>
           <Routes>
             <Route path="/" element={<NetflixApp />} />
             <Route path="/tv/:tvId" element={<NetflixByID />} />

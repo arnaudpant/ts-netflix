@@ -18,12 +18,14 @@ import { useEffect, useState } from "react"
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
+      useErrorBoundary: true,
       refetchOnWindowFocus: false,
       retryDelay: 500,
     },
     mutations: {
       retryDelay: 500,
-      retry: 1
+      retry: 1,
+      useErrorBoundary: false
     }
   }
 })
@@ -49,7 +51,6 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={theme}>
-
         {
           showBackdrop ? (
             <div className="absolute top-0 bottom-0 w-full flex items-center justify-center">
@@ -57,7 +58,6 @@ function App() {
               <CircularProgress color="success" />
             </div>) : authUser ? (<AuthApp />) : (<UnauthApp />)
         }
-
       </ThemeProvider>
     </QueryClientProvider>
   )
