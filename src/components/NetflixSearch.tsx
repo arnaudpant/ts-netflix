@@ -42,8 +42,6 @@ const NetflixSearch = () => {
     } 
 
 
-    console.log(movieHeader)
-
     return (
         <div className="bg-[#111] relative">
             <NetflixAppBar />
