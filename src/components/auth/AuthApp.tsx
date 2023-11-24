@@ -13,7 +13,7 @@ import { ErrorBoundary } from "react-error-boundary"
 /** MUI */
 import { ThemeProvider } from "@mui/material"
 import { theme } from "../../theme/theme"
-import NetflixSearch from "../NetflixSearch"
+// import NetflixSearch from "../NetflixSearch"
 
 function AuthApp() {
 
@@ -28,7 +28,7 @@ function AuthApp() {
             <Route path="/series" element={<NetflixSeries />} />
             <Route path="/movies" element={<NetflixMovies />} />
             <Route path="/favoris" element={<NetflixFavoris />} />
-            <Route path="/search/:query" element={<NetflixSearch />} />
+            {/* <Route path="/search/:query" element={<NetflixSearch />} /> */}
             <Route path="/inscription" element={<Inscription />} />
             <Route path="/*" element={<Error404 />} />
           </Routes>

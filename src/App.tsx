@@ -18,7 +18,7 @@ import { useEffect, useState } from "react"
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      useErrorBoundary: true,
+      useErrorBoundary: false,
       refetchOnWindowFocus: false,
       retryDelay: 500,
     },
