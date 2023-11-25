@@ -6,7 +6,7 @@ import { AppBar, Toolbar, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase/firebase.config";
-import { FaSearch } from "react-icons/fa";
+// import { FaSearch } from "react-icons/fa";
 import { QueryClient } from "react-query";
 
 export const NetflixAppBar = () => {
@@ -67,8 +67,8 @@ export const NetflixAppBar = () => {
                 <Link to="/series" className="m-2 hover:scale-110"><Typography variant="h6" className="title-header">Séries</Typography></Link>
                 <Link to="/movies" className="m-2 hover:scale-110"><Typography variant="h6" className="title-header">Films</Typography></Link>
                 <Link to="/favoris" className="m-2 hover:scale-110"><Typography variant="h6" className="title-header">Ma liste</Typography></Link>
-                <div className="ml-auto hover:scale-150">
-                    <Link to="/search"><FaSearch /></Link>
+                <div className="ml-auto">
+                    <input type="text" className="block w-full bg-gray-100 rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 placeholder:text-gray-400 border-none sm:text-sm sm:leading-6" placeholder="Rechercher" />
                 </div>
                 <div className="h-8 w-10 ml-10 cursor-pointer hover:scale-150" onClick={logOut}>
                     <img src="/avatar/avatar-default2.svg" alt="logo Netflix" />
