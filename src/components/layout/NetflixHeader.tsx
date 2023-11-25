@@ -125,11 +125,16 @@ const NetflixHeader = ({ movieForNetflixHeader, typeOfMovie }: Props) => {
     const { data: dataFavoris } = useQuery('dataFavoris', () => getFilmsFavorisData())
 
     let movieIsInFavoris = false
-    if (dataFavoris) {
+
+    if (dataFavoris.length > 0) {
         function testIfMovieIsInFavoris() {
             return dataFavoris.map((fav: AfficheShow) => fav.id).includes(afficheShowHeader?.id)
         }
         movieIsInFavoris = testIfMovieIsInFavoris()
+    }
+    if (dataFavoris.length === 1) {
+        const testIfMovieIsInFavoris = dataFavoris.id
+        movieIsInFavoris = testIfMovieIsInFavoris.includes(afficheShowHeader?.id)
     }
 
     const addMutation = useMutation(
