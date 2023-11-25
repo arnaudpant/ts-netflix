@@ -7,10 +7,11 @@ import { Link } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase/firebase.config";
 import { FaSearch } from "react-icons/fa";
+import { QueryClient } from "react-query";
 
 export const NetflixAppBar = () => {
 
-    // const navigate = useNavigate()
+    const queryClient = new QueryClient()
 
     const [appBarStyle, setAppBarStyle] = useState(
         {
@@ -20,6 +21,7 @@ export const NetflixAppBar = () => {
     )
 
     const logOut = async () => {
+        queryClient.clear()
         await signOut(auth)
     }
 
