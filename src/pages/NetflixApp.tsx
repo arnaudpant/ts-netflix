@@ -18,8 +18,8 @@ const NetflixApp = () => {
             <NetflixRow title="Netflix films" wideImage={true} watermark={true} type={TYPE_MOVIE} filter="trending" />
             <NetflixRow title="Netflix séries" wideImage={false} watermark={true} type={TYPE_TV} filter="trending"  />
             <NetflixRow title="Les mieux notés" wideImage={true} watermark={false} type={TYPE_MOVIE} filter="toprated" />
-            <NetflixRow title="Les Films fantastiques" wideImage={true} watermark={false} type={TYPE_MOVIE} filter="genre" param="14" />
-            <NetflixRow title="Les meilleurs Thrillers" wideImage={true} watermark={false} type={TYPE_MOVIE} filter="genre" param="53" />
+            {/* <NetflixRow title="Les Films fantastiques" wideImage={true} watermark={false} type={TYPE_MOVIE} filter="genre" param="14" />
+            <NetflixRow title="Les meilleurs Thrillers" wideImage={true} watermark={false} type={TYPE_MOVIE} filter="genre" param="53" /> */}
             <NetflixFooter />
         </div>
     );
