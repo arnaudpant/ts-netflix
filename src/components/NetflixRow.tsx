@@ -99,7 +99,7 @@ const NetflixRow = ({ title, wideImage, type = TYPE_MOVIE, param, filter = "late
                                 <div className={watermarkClass}></div>
                             </Link>
                         </div>
-                    ))) : ("")
+                    ))) : (<RowsSkeleton wideImage={wideImage} title={title} />)
                 }
             </div>
         </div>
