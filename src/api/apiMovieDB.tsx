@@ -8,3 +8,4 @@ export const clientAPI = async (endPoint: string) => {
 
     return axios.get(`https://api.themoviedb.org/3/${endPoint}${keyLang}`)
 }
+

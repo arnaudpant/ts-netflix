@@ -30,6 +30,7 @@ function AuthApp() {
             <Route path="/movies" element={<NetflixMovies />} />
             <Route path="/favoris" element={<NetflixFavoris />} />
             <Route path="/search" element={<NetflixSearch />} />
+            {/* <Route path="/search/:query" element={<NetflixSearch />} /> */}
             <Route path="/inscription" element={<Inscription />} />
             <Route path="/*" element={<Error404 />} />
           </Routes>
