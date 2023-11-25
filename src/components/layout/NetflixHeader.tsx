@@ -122,7 +122,7 @@ const NetflixHeader = ({ movieForNetflixHeader, typeOfMovie }: Props) => {
     }
 
     /** FAVORIS */
-    const { data: dataFavoris } = useQuery('dataFavoris', () => getFilmsFavorisData())
+    const { data: dataFavoris } = useQuery('dataFavoris', async () => await getFilmsFavorisData())
 
     console.log('datafavoris', dataFavoris)
 
