@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 /** COMPONENTS */
 /** UTILS */
-import { API_KEY, IMAGE_URL_ORIGINAL, TYPE_MOVIE, TYPE_TV } from "../utils/config";
+import { IMAGE_URL_ORIGINAL, TYPE_MOVIE, TYPE_TV } from "../utils/config";
 /** API */
 import { clientAPI } from "../api/apiMovieDB";
 import clsx from "clsx";
@@ -30,7 +30,7 @@ const NetflixRow = ({ title, wideImage, type = TYPE_MOVIE, param, filter = "late
 
     const endpointLatest = `${type}/latest`
     const endpointTopRated = `${type}/top_rated`
-    const endpointGenre = `discover/${type}?api_key=${API_KEY}&with_genres=${param}`
+    const endpointGenre = `discover/${type}?api_key=${import.meta.env.VITE_API_KEY}&with_genres=${param}`
     const endpointTrending = `trending/${type}/day`
 
     let endpoint: string = 'latest'

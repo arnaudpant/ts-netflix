@@ -9,8 +9,3 @@ export function getRandomIndex (min: number, max: number): number {
 export function getRandomType (): any {
     return [TYPE_TV, TYPE_MOVIE][getRandomIndex(0, 1)]
 }
-
-
-export function sleep (tempo: number): void {
-    new Promise(resolve => setTimeout(resolve, tempo))
-}
