@@ -124,12 +124,9 @@ const NetflixHeader = ({ movieForNetflixHeader, typeOfMovie }: Props) => {
     /** FAVORIS */
     const { data: dataFavoris } = useQuery('dataFavoris', async () => await getFilmsFavorisData())
 
-    console.log('datafavoris', dataFavoris)
-
     let movieIsInFavoris = false
 
-    useEffect(() => {
-       
+    useEffect(() => {  
         if (dataFavoris && dataFavoris.length === 1) {
             const testIfMovieIsInFavoris = dataFavoris.id
             movieIsInFavoris = testIfMovieIsInFavoris.includes(afficheShowHeader?.id)
@@ -139,6 +136,7 @@ const NetflixHeader = ({ movieForNetflixHeader, typeOfMovie }: Props) => {
                 return dataFavoris.map((fav: AfficheShow) => fav.id).includes(afficheShowHeader?.id)
             }
             movieIsInFavoris = testIfMovieIsInFavoris()
+            console.log("movieIsInFavoris",movieIsInFavoris)
         }
     }, [dataFavoris])
 
