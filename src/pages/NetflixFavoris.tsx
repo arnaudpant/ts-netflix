@@ -3,24 +3,29 @@ import NetflixRow from "../components/NetflixRow";
 import NetflixHeader from "../components/layout/NetflixHeader";
 import { TYPE_MOVIE, TYPE_TV } from "../utils/config";
 import HeaderSkeleton from "../components/skeletons/HeaderSkeleton";
-import { useQuery } from "react-query";
 import useFirestore from "../hooks/useFirestore";
 import NetflixFooter from "../components/layout/NetflixFooter";
+import { useEffect } from "react";
+import NetflixRowFav from "../components/NetflixRowFav";
+import RowsSkeleton from "../components/skeletons/RowsSkeleton";
 
 
 const NetflixFavoris = () => {
 
-    const { getFilmsFavorisData } = useFirestore()
-    /** FAVORIS */
-    const { data: dataPageFavoris } = useQuery('dataPageFavoris', () => getFilmsFavorisData())
+    const { listFavoris, getFilmsFavorisData } = useFirestore()
 
-
+    useEffect(() => {
+        getFilmsFavorisData()
+    }, [])
 
     return (
         <div className="bg-[#111] relative">
             <NetflixAppBar />
             {
-                dataPageFavoris ? (<NetflixHeader movieForNetflixHeader={dataPageFavoris[0]} />) : (<HeaderSkeleton />)
+                listFavoris ? (<NetflixHeader movieForNetflixHeader={listFavoris[0]} />) : (<HeaderSkeleton />)
+            }
+            {
+                listFavoris ? ( <NetflixRowFav title="Ma liste" wideImage={true} watermark={false} listMoviesInFavoris={listFavoris} />) : (<RowsSkeleton wideImage={true} title="Ma liste" />)
             }
             <NetflixRow title="Films tendances Netflix" wideImage={true} watermark={true} type={TYPE_MOVIE} filter="trending" />
             <NetflixRow title="Séries tendances Netflix" wideImage={true} watermark={true} type={TYPE_TV} filter="trending" />

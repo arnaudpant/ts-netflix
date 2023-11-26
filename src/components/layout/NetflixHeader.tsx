@@ -2,17 +2,17 @@
 import { useEffect, useState } from "react";
 import useFirestore from "../../hooks/useFirestore"
 /** API */
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useMutation, useQuery } from "react-query";
 /** COMPONENTS */
 import { clientAPI } from "../../api/apiMovieDB";
 import { TYPE_MOVIE, TYPE_TV } from "../../utils/config";
+import NetflixHeaderView from "./NetflixHeaderView";
 /** FIRESTORE */
 import { getRandomIndex, getRandomType } from "../../utils/helpers";
 import { AfficheShow } from "../../type/types";
 /** MUI */
 import Snackbar from "@mui/material/Snackbar";
 import { Alert, AlertTitle } from '@mui/material';
-import NetflixHeaderView from "./NetflixHeaderView";
 import HeaderSkeleton from "../skeletons/HeaderSkeleton";
 import { CustumizedAlert } from "../../theme/theme";
 
@@ -23,15 +23,16 @@ type Props = {
 
 const NetflixHeader = ({ movieForNetflixHeader, typeOfMovie }: Props) => {
 
-    const [randomMovie] = useState<number>(getRandomIndex(1, 5))
+    const [movieIsInFavoris, setMovieIsInFavoris] = useState<boolean>(false)
     const [typeRandom] = useState<typeof TYPE_MOVIE | typeof TYPE_TV>(typeOfMovie ? (typeOfMovie) : (getRandomType()))
     const [afficheShowHeader, setAfficheShowHeader] = useState<AfficheShow>()
+
     const [snackBarOpenAdd, setSnackBarOpenAdd] = useState(false)
     const [snackBarOpenRemove, setSnackBarOpenRemove] = useState(false)
-    /** FAVORIS */
-    const { addAfficheShowHeaderToFavoris, removeAfficheShowHeaderToFavoris, getFilmsFavorisData } = useFirestore()
+
+    const { addAfficheShowHeaderToFavoris, removeAfficheShowHeaderToFavoris, getFilmsFavorisData, listFavoris } = useFirestore()
+
     const [mutationError, setMutationError] = useState<boolean>(false)
-    const queryClient = useQueryClient()
 
 
 
@@ -41,6 +42,7 @@ const NetflixHeader = ({ movieForNetflixHeader, typeOfMovie }: Props) => {
      * Affichage du movie dans le Header
     */
 
+    const randomMovie = getRandomIndex(1, 5)
 
     /** GET LIST MOVIES */
     const { data, isLoading, error } = useQuery(
@@ -52,6 +54,7 @@ const NetflixHeader = ({ movieForNetflixHeader, typeOfMovie }: Props) => {
         if (!movieForNetflixHeader && data) {
             movieOrTvRandomInHeader(data.data.results[randomMovie])
         }
+        getFilmsFavorisData()
     }, [data])
 
     function movieOrTvRandomInHeader(movieToHeader: AfficheShow) {
@@ -93,6 +96,7 @@ const NetflixHeader = ({ movieForNetflixHeader, typeOfMovie }: Props) => {
         if (movieForNetflixHeader) {
             movieOrTvSpecifiqueInHeader(movieForNetflixHeader)
         }
+        getFilmsFavorisData()
     }, [movieForNetflixHeader])
 
 
@@ -122,30 +126,28 @@ const NetflixHeader = ({ movieForNetflixHeader, typeOfMovie }: Props) => {
     }
 
     /** FAVORIS */
-    const { data: dataFavoris } = useQuery('dataFavoris', async () => await getFilmsFavorisData())
 
-    let movieIsInFavoris = false
-
-    useEffect(() => {  
-        if (dataFavoris && dataFavoris.length === 1) {
-            const testIfMovieIsInFavoris = dataFavoris.id
-            movieIsInFavoris = testIfMovieIsInFavoris.includes(afficheShowHeader?.id)
+    useEffect(() => {
+        if (listFavoris.length === 1) {
+            const testIfMovieIsInFavoris = listFavoris[0].id
+            testIfMovieIsInFavoris === afficheShowHeader?.id ? setMovieIsInFavoris(true) : setMovieIsInFavoris(false)
         }
-        if (dataFavoris && dataFavoris.length > 1) {
-            function testIfMovieIsInFavoris() {
-                return dataFavoris.map((fav: AfficheShow) => fav.id).includes(afficheShowHeader?.id)
+        if (listFavoris.length > 1) {
+            const ArrId = listFavoris.map((fav) => fav.id)
+            if (afficheShowHeader?.id) {
+                const testIfMovieIsInFavoris = ArrId.includes(afficheShowHeader?.id)
+                setMovieIsInFavoris(testIfMovieIsInFavoris)
             }
-            movieIsInFavoris = testIfMovieIsInFavoris()
-            console.log("movieIsInFavoris",movieIsInFavoris)
         }
-    }, [dataFavoris])
+    }, [listFavoris])
+
 
 
     const addMutation = useMutation(
         () => addAfficheShowHeaderToFavoris(afficheShowHeader as AfficheShow),
         {
             onSuccess: () => {
-                queryClient.invalidateQueries('dataFavoris')
+                getFilmsFavorisData()
                 setMutationError(false)
                 setSnackBarOpenAdd(true)
             },
@@ -156,14 +158,14 @@ const NetflixHeader = ({ movieForNetflixHeader, typeOfMovie }: Props) => {
         }
     )
     let idToRemove: number
-    if(afficheShowHeader){
+    if (afficheShowHeader) {
         idToRemove = afficheShowHeader.id
     }
     const deleteMutation = useMutation(
         () => removeAfficheShowHeaderToFavoris(idToRemove),
         {
             onSuccess: () => {
-                queryClient.invalidateQueries('dataFavoris')
+                getFilmsFavorisData()
                 setMutationError(false)
                 setSnackBarOpenRemove(true)
             },

@@ -12,6 +12,7 @@ import { AfficheShow } from "../type/types";
 import { useLocation } from "react-router-dom";
 import NetflixFooter from "../components/layout/NetflixFooter";
 
+
 const NetflixByID = () => {
 
     //const { tvId, movieId } = useParams()
@@ -19,7 +20,6 @@ const NetflixByID = () => {
     const {movie, type} = location.state
 
     const [movieForNetflixHeader, setMovieForNetflixHeader] = useState<AfficheShow | null>(null)
-
 
 
     useEffect(() => {
@@ -35,6 +35,10 @@ const NetflixByID = () => {
             }
             )
         }
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        })
     }, [movie])
 
 

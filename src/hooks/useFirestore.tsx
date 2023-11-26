@@ -7,7 +7,7 @@ import { FirebaseError } from "firebase/app";
 
 
 const useFirestore = () => {
-    const [listFavoris, setListFavoris] = useState<number[]>([])
+    const [listFavoris, setListFavoris] = useState<AfficheShow[]>([])
     const [statusFirestore, setStatusFirestore] = useState<'idle' | 'done' | 'remove' | 'error'>('idle')
 
     const authUser: string | undefined = auth.currentUser?.uid
@@ -25,7 +25,7 @@ const useFirestore = () => {
         try {
             const docSnap = await getDoc(docRef);
             const films: any = docSnap.data() // [{}, {}, ...]
-            return films.films
+            setListFavoris(films.films) 
         } catch (error) {
             const firebaseError = error as FirebaseError
             return {
