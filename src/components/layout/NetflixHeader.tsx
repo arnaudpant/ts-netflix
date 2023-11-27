@@ -133,7 +133,7 @@ const NetflixHeader = ({ movieForNetflixHeader, typeOfMovie }: Props) => {
             testIfMovieIsInFavoris === afficheShowHeader?.id ? setMovieIsInFavoris(true) : setMovieIsInFavoris(false)
         }
         if (listFavoris.length > 1) {
-            const ArrId = listFavoris.map((fav) => fav.id)
+            const ArrId = listFavoris.map((fav: any) => fav.id)
             if (afficheShowHeader?.id) {
                 const testIfMovieIsInFavoris = ArrId.includes(afficheShowHeader?.id)
                 setMovieIsInFavoris(testIfMovieIsInFavoris)
