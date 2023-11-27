@@ -141,7 +141,7 @@ const NetflixHeader = ({ movieForNetflixHeader, typeOfMovie }: Props) => {
         }
     }, [listFavoris])
 
-
+    console.log(listFavoris)
 
     const addMutation = useMutation(
         () => addAfficheShowHeaderToFavoris(afficheShowHeader as AfficheShow),
