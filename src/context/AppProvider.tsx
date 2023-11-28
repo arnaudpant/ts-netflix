@@ -1,6 +1,7 @@
 import { ThemeProvider } from "@mui/material";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { theme } from "../theme/theme";
+import { HistoryMovieProvider } from "./HistoryMovieContext";
 
 // Create a client
 const queryClient = new QueryClient({
@@ -18,11 +19,13 @@ const queryClient = new QueryClient({
     }
 })
 
-const AppProvider = ({children}:any) => {
+const AppProvider = ({ children }: any) => {
     return (
         <QueryClientProvider client={queryClient}>
             <ThemeProvider theme={theme}>
-                {children}
+                <HistoryMovieProvider>
+                    {children}
+                </HistoryMovieProvider>
             </ThemeProvider>
         </QueryClientProvider>
     );
