@@ -1,9 +1,9 @@
-import { Dispatch, SetStateAction, createContext, useContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 export type GlobalContext = {
     movies: any[],
     series: any[],
-    setMovies: Dispatch<SetStateAction<never[]>>,
-    setSeries: Dispatch<SetStateAction<never[]>>,
+    setMovies: any,
+    setSeries: any,
 }
 
 const HistoryMovieContext = createContext<GlobalContext>({
