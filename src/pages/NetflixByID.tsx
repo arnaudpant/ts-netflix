@@ -22,9 +22,16 @@ const NetflixByID = () => {
 
     const [movieForNetflixHeader, setMovieForNetflixHeader] = useState<AfficheShow | null>(null)
 
-    const {addSeries, addMovie} = useHistoryMovie()
+    const {addSeries, addMovie, movies, series} = useHistoryMovie()
+
+    //console.log(movies)
 
     useEffect(() => {
+        const MoviesId = movies.map(elt => elt.id).includes(movie.id)
+        const SeriesId = series.map(elt => elt.id).includes(movie.id)
+        console.log(MoviesId, SeriesId)
+
+
         if (movie) {
             setMovieForNetflixHeader({
                 type: type,
@@ -37,9 +44,10 @@ const NetflixByID = () => {
             }
             )
         }
-        if(type === TYPE_MOVIE){
+        if(type === TYPE_MOVIE && !MoviesId){
             addMovie(movie)
-        } else {
+        } 
+        if (type === TYPE_TV && !SeriesId) {
             addSeries(movie)
         }
         // Retour haut de page
