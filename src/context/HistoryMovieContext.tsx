@@ -26,7 +26,7 @@ const initialState: InitialState = {
     series: []
 }
 
-const reducer = (state: typeof initialState, action: { type: 'addMovie' | 'addSerie', payload: AfficheShow | never }): typeof state => {
+const reducer = (state: typeof initialState, action: { type: 'addMovie' | 'addSerie' , payload: AfficheShow  | never }): typeof state => {
     switch (action.type) {
         case 'addMovie':
             return {
@@ -58,6 +58,7 @@ const HistoryMovieProvider = (props: any) => {
         }, []
     )
 
+
     const { series, movies } = state
     const value: GlobalContext = { movies, series, addMovie, addSeries }
 
@@ -88,5 +89,6 @@ const useAddHistory = (movie: AfficheShow, type = TYPE_TV) => {
 
     }, [movie])
 }
+
 
 export { HistoryMovieContext, HistoryMovieProvider, useHistoryMovie, useAddHistory }

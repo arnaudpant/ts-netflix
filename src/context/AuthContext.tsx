@@ -6,13 +6,6 @@ const authInit = false
 
 const AuthContext = createContext(authInit)
 
-// const useAuth = () => {
-//     const context = useContext(AuthContext)
-//     if(!context){
-//         throw new Error("useAuth s'utilise avec <AuthProvider>")
-//     }
-// }
-
 const AuthProvider = () => {
     const [authUser, setAuthUser] = useState(false)
 

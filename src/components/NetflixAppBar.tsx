@@ -60,6 +60,9 @@ export const NetflixAppBar = () => {
 
 
 
+
+
+
     return (
         <AppBarStyle>
             <Toolbar  >
