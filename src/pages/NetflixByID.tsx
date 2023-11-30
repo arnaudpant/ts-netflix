@@ -11,7 +11,7 @@ import { AfficheShow } from "../type/types";
 /** API */
 import { useLocation } from "react-router-dom";
 import NetflixFooter from "../components/layout/NetflixFooter";
-import { useHistoryMovie } from "../context/HistoryMovieContext";
+import { useAddHistory } from "../context/HistoryMovieContext";
 
 
 const NetflixByID = () => {
@@ -22,15 +22,9 @@ const NetflixByID = () => {
 
     const [movieForNetflixHeader, setMovieForNetflixHeader] = useState<AfficheShow | null>(null)
 
-    const {addSeries, addMovie, movies, series} = useHistoryMovie()
-
-    //console.log(movies)
+    useAddHistory(movie, type)
 
     useEffect(() => {
-        const MoviesId = movies.map(elt => elt.id).includes(movie.id)
-        const SeriesId = series.map(elt => elt.id).includes(movie.id)
-        console.log(MoviesId, SeriesId)
-
 
         if (movie) {
             setMovieForNetflixHeader({
@@ -44,19 +38,14 @@ const NetflixByID = () => {
             }
             )
         }
-        if(type === TYPE_MOVIE && !MoviesId){
-            addMovie(movie)
-        } 
-        if (type === TYPE_TV && !SeriesId) {
-            addSeries(movie)
-        }
+        
         // Retour haut de page
         window.scrollTo({
             top: 0,
             behavior: 'smooth'
         })
     }, [movie])
-
+    
     
 
 
