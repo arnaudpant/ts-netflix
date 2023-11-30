@@ -22,10 +22,8 @@ const NetflixByID = () => {
 
     const [movieForNetflixHeader, setMovieForNetflixHeader] = useState<AfficheShow | null>(null)
 
-    const {movies, setMovies, series, setSeries} = useHistoryMovie()
+    const {addSeries, addMovie} = useHistoryMovie()
 
-    console.log(movie)
-    const MAX_ELEMENTS = 3
     useEffect(() => {
         if (movie) {
             setMovieForNetflixHeader({
@@ -40,9 +38,9 @@ const NetflixByID = () => {
             )
         }
         if(type === TYPE_MOVIE){
-            setMovies([movie, ...movies.slice(0, MAX_ELEMENTS -1)])
+            addMovie(movie)
         } else {
-            setSeries([movie, ...series.slice(0, MAX_ELEMENTS -1)])
+            addSeries(movie)
         }
         // Retour haut de page
         window.scrollTo({

@@ -61,8 +61,6 @@ export default function CustomizedMenus() {
         setAnchorEl(null);
     };
 
-    console.log('movie', movies)
-    console.log('series', series)
     return (
         <div>
             <Button
