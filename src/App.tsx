@@ -4,7 +4,7 @@ import { onAuthStateChanged } from "firebase/auth"
 import { auth } from "./firebase/firebase.config"
 import LoadingFullScreen from "./components/skeletons/LoadingFullScreen"
 const UnAuthApp = lazy(()=> import("./components/auth/UnAuthApp"))
-const AuthApp = lazy(()=> import("./components/auth/AuthApp"))
+const AuthApp = lazy(()=> import(/* webpackPrefetch: true */ "./components/auth/AuthApp"))
 function App() {
 
   const [authUser, setAuthUser] = useState(false)
