@@ -21,4 +21,4 @@ const [emailInput, setEmailInput] = useState<string>("")
 
 }
 
-export { UnauthApp }
+export default  UnauthApp
