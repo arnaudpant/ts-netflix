@@ -12,7 +12,6 @@ const useFirestore = () => {
 
     const authUser: string | undefined = auth.currentUser?.uid
     let docRef: any
-    //let films: any
 
     if (authUser) {
         docRef = doc(db, "users", authUser);
@@ -24,7 +23,7 @@ const useFirestore = () => {
     async function getFilmsFavorisData() {
         try {
             const docSnap = await getDoc(docRef);
-            const films: any = docSnap.data() // [{}, {}, ...]
+            const films: any = docSnap.data()
             setListFavoris(films.films)
         } catch (error) {
             const firebaseError = error as FirebaseError
