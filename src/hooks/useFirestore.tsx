@@ -8,7 +8,7 @@ import { FirebaseError } from "firebase/app";
 
 const useFirestore = () => {
     const [listFavoris, setListFavoris] = useState<AfficheShow[]>([])
-    const [statusFirestore, setStatusFirestore] = useState<'idle' | 'done' | 'remove' | 'error'>('idle')
+    const [statusFirestore, setStatusFirestore] = useState<'idle' | 'error'>('idle')
 
     const authUser: string | undefined = auth.currentUser?.uid
     let docRef: any
@@ -20,7 +20,7 @@ const useFirestore = () => {
     /** 
      * GET FILMS FAVORIS
     */
-    async function getFilmsFavorisData() {
+     async function getFilmsFavorisData() {
         try {
             const docSnap = await getDoc(docRef);
             const films: any = docSnap.data()
