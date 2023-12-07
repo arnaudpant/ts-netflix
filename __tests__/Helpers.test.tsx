@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest'
-import "@testing-library/jest-dom";
 import { getRandomIndex, getRandomType } from '../src/utils/helpers'
+import "@testing-library/jest-dom";
 
 test('get random index', () => {
     const randomIndex = getRandomIndex(0, 5)
