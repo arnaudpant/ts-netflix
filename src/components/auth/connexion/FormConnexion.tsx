@@ -62,7 +62,7 @@ const FormConnexion = ({ setNewUser }: Props) => {
                 >
                     S'identifier
                 </Button>
-                <p className="text-gray-400 text-[16px]">Première visite sur Netflix ? <span className="text-white cursor-pointer" onClick={handleIdent}>Inscrivez-vous</span></p>
+                <p className="text-gray-400 text-[16px]">Première visite sur Netflix ? <span role="button" className="text-white cursor-pointer" onClick={handleIdent}>Inscrivez-vous</span></p>
                 <p className="text-gray-400 text-sm">Cette page est protégée par Google reCAPTCHA pour nous assurer que vous n'êtes pas un robot. </p>
 
             </form>

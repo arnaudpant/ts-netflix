@@ -63,7 +63,7 @@ const PageAcceuil = ({ setBoxInscriptionToShow, setEmailInput, emailInput }: Pro
                             <div className=''>
                                 <form className='flex flex-row gap-4 mt-5' onSubmit={handleSubmit}>
                                     <input type='email' className='w-60 h-14 bg-gray-800 border-2 rounded text-lg pl-2 text-white' placeholder='Adresse e-mail' onChange={e => setEmailInput(e.target.value)} />
-                                    <button type='submit' className='px-4 text-white text-xl bg-red-600 rounded'>Commencer</button>
+                                    <button role="button" type='submit' className='px-4 text-white text-xl bg-red-600 rounded'>Commencer</button>
                                 </form>
                                 <p className={clsx(errorInput ? "block" : "hidden", 'text-gray-200')}>Veuillez entrer un email</p>
                             </div>
