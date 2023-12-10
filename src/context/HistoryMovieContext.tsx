@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useReducer } from "react";
 import { AfficheShow } from "../type/types";
 import { TYPE_MOVIE, TYPE_TV } from "../utils/config";
+
 export type GlobalContext = {
     movies: any[],
     series: any[],
@@ -58,11 +59,13 @@ const HistoryMovieProvider = (props: any) => {
         }, []
     )
 
-
     const { series, movies } = state
     const value: GlobalContext = useMemo(()=>({ movies, series, addMovie, addSeries }),[movies, series, addMovie, addSeries]) 
     return <HistoryMovieContext.Provider value={value} {...props} />
 }
+
+
+
 
 const useHistoryMovie = () => {
     const context = useContext(HistoryMovieContext)
@@ -71,6 +74,9 @@ const useHistoryMovie = () => {
     }
     return context
 }
+
+
+
 
 const useAddHistory = (movie: AfficheShow, type = TYPE_TV) => {
     const { addSeries, addMovie, movies, series } = useHistoryMovie()
